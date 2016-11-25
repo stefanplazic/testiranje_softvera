@@ -15,6 +15,9 @@ public class Customer extends User{
 	@OneToMany(mappedBy="customer", fetch = FetchType.LAZY)
 	private Set<Rate> rates  = new HashSet<Rate>();
 
+	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+	private Set<Comment> comments = new HashSet<Comment>();
+	
 	public Customer(Set<Rate> rates) {
 		super();
 		this.rates = rates;
