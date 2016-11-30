@@ -25,7 +25,7 @@ public class Company {
 	@Column(nullable = false)
 	private boolean approved;
 	
-	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER,mappedBy="company")
 	private Set<Advertiser> members = new HashSet<Advertiser>();
 	
 	@OneToOne(cascade = CascadeType.REFRESH)
