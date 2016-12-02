@@ -79,6 +79,11 @@ public class UserDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "UserDTO [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", username=" + username + ", password=" + password + "]";
+	}
 	
 }

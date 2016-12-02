@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 import java.nio.charset.Charset;
 
 import javax.annotation.PostConstruct;
@@ -29,10 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.nekretnine.MyprojectApplication;
 import com.nekretnine.TestUtil;
-import com.nekretnine.models.Administrator;
 import com.nekretnine.models.User;
-
-
 
 @SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -82,10 +78,25 @@ public class UserControllerTest {
     	user.setPassword("mile");
     	
     	String json = TestUtil.json(user);
-        this.mockMvc.perform(post(URL_PREFIX)
-                .contentType(contentType)
+        mockMvc.perform(post(URL_PREFIX)
+        		.contentType(contentType)
                 .content(json))
                 .andExpect(status().isCreated());
     }
-	
+    
+    @Test
+    public void testFindOneByUsernameAndPassword() throws Exception {
+    	User usr = new User();
+    	usr.setUsername("stefi");
+    	usr.setPassword("jazavac");
+    	String json = TestUtil.json(usr);
+    	mockMvc.perform(post(URL_PREFIX + "/findUser")
+    			.contentType(contentType)
+    			.content(json))
+    		.andExpect(status().isOk())
+    		.andExpect(jsonPath("$.email").value("stefi@gmail.com"))
+    		.andExpect(jsonPath("$.firstName").value("Stefan"))
+    	    .andExpect(jsonPath("$.lastName").value("Plazic" ));
+    }
+    
 }

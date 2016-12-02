@@ -36,4 +36,8 @@ public class UserService {
 	public void remove(Long id) {
 		repository.delete(id);
 	}
+	
+	public User findOneByUsernameAndPassword(String username, String password) {
+		return repository.findOneByUsernameAndPassword(username, password);
+	}
 }
