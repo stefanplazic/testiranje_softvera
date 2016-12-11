@@ -9,8 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.nekretnine.dto.AdvertiserDTO;
+import com.nekretnine.dto.CompanyDTO;
 
 @Entity
 public class Company {
@@ -29,6 +33,7 @@ public class Company {
 	private Set<Advertiser> members = new HashSet<Advertiser>();
 	
 	@OneToOne(cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "owner")
 	private Advertiser owner;
 	
 	public Company() {}
@@ -40,6 +45,14 @@ public class Company {
 		this.approved = approved;
 		this.members = members;
 		this.owner = owner;
+	}
+	
+	public Company(CompanyDTO cmpdto) {
+		this.id = cmpdto.getId();
+		this.name = cmpdto.getName();
+		this.approved = cmpdto.isApproved();
+		setMembers(cmpdto.getMembers());
+		this.owner = new Advertiser(cmpdto.getOwner());
 	}
 	
 	public Long getId() {
@@ -69,9 +82,17 @@ public class Company {
 	public Set<Advertiser> getMembers() {
 		return members;
 	}
-
-	public void setMembers(Set<Advertiser> members) {
-		this.members = members;
+	
+	public void setMembers(Set<?> members) {
+		this.members = new HashSet<Advertiser>();
+		for(Object obj : members) {
+			if(obj instanceof Advertiser) {
+				this.members.add((Advertiser)obj);
+			}
+			else if (obj instanceof AdvertiserDTO) {
+				this.members.add(new Advertiser((AdvertiserDTO)obj));
+			}
+		}
 	}
 
 	public Advertiser getOwner() {

@@ -10,13 +10,6 @@ public class LocationDTO {
 	private double longitude;
 	
 	public LocationDTO() {}
-	
-	public LocationDTO(Location location) {
-		this.id = location.getId();
-		this.name = location.getName();
-		this.latitude = location.getLatitude();
-		this.longitude = location.getLongitude();
-	}
 
 	public LocationDTO(Long id, String name, double latitude, double longitude) {
 		super();
@@ -24,6 +17,13 @@ public class LocationDTO {
 		this.name = name;
 		this.latitude = latitude;
 		this.longitude = longitude;
+	}
+	
+	public LocationDTO(Location location) {
+		this.id = location.getId();
+		this.name = location.getName();
+		this.latitude = location.getLatitude();
+		this.longitude = location.getLongitude();
 	}
 
 	public Long getId() {

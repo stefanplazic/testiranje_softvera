@@ -1,16 +1,23 @@
 package com.nekretnine.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.nekretnine.dto.ReportDTO;
+import com.nekretnine.dto.UserDTO;
 
 @Entity
 public class User {
 
 	@Id
 	@GeneratedValue
-	private Long userId;
+	private Long id;
 	
 	@Column(nullable = true)
 
@@ -28,23 +35,41 @@ public class User {
 	@Column(nullable = true)
 	private String password;
 	
-	public User() {}
+	@OneToMany
+	private Set<Report> reports = new HashSet<Report>();
 
-	public User(String first_name, String last_name, String email, String username, String password) {
+	public User() {
 		super();
-		this.firstName = first_name;
-		this.lastName = last_name;
+	}
+
+	public User(Long id, String firstName, String lastName, String email, String username, String password,
+			Set<Report> reports) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
 		this.username = username;
 		this.password = password;
+		this.reports = reports;
+	}
+	
+	public User(UserDTO userdto) {
+		this.id = userdto.getId();
+		this.firstName = userdto.getFirstName();
+		this.lastName = userdto.getLastName();
+		this.email = userdto.getEmail();
+		this.username = userdto.getUsername();
+		this.password = userdto.getPassword();
+		setReports(userdto.getReports());	
 	}
 
-	public Long getUserId() {
-		return userId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -58,7 +83,7 @@ public class User {
 	public String getLastName() {
 		return lastName;
 	}
-	
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
@@ -86,6 +111,21 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
+	public Set<Report> getReports() {
+		return reports;
+	}
+
+	public void setReports(Set<?> reports) {
+		this.reports = new HashSet<Report>();
+		for(Object obj : reports) {
+			if(obj instanceof Report) {
+				this.reports.add((Report)obj);
+			}
+			else if (obj instanceof ReportDTO) {
+				this.reports.add(new Report((ReportDTO)obj));
+			}
+		}
+	}
 	
 }

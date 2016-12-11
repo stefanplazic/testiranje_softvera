@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.nekretnine.dto.LocationDTO;
+
 @Entity
 public class Location {
 
@@ -23,13 +25,21 @@ public class Location {
 	
 	public Location() {}
 
-	public Location(String name, double latitude, double longitude) {
+	public Location(Long id, String name, double latitude, double longitude) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
 
+	public Location(LocationDTO loc) {
+		this.id = loc.getId();
+		this.name = loc.getName();
+		this.latitude = loc.getLatitude();
+		this.longitude = loc.getLongitude();
+	}
+	
 	public Long getId() {
 		return id;
 	}

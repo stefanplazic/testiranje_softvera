@@ -1,5 +1,9 @@
 package com.nekretnine.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Estate;
 
 public class EstateDTO {
@@ -9,37 +13,42 @@ public class EstateDTO {
 	private double price;
 	private double area;
 	private String technicalEquipment;
-	private String imagePath;
+	private Set<String> images = new HashSet<String>();
 	private String heatingSystem;
 	private CategoryDTO category;
 	private LocationDTO location;
+	private Set<AdvertisementDTO> advertisements = new HashSet<AdvertisementDTO>();
 	
 	public EstateDTO() {}
 
-	public EstateDTO(Long id, String name, double price, double area, String technicalEquipment, String imagePath,
-			String heatingSystem, CategoryDTO category, LocationDTO location) {
+	public EstateDTO(Long id, String name, double price, double area, String technicalEquipment, Set<String> images,
+			String heatingSystem, CategoryDTO category, LocationDTO location, Set<AdvertisementDTO> advertisements) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.area = area;
 		this.technicalEquipment = technicalEquipment;
-		this.imagePath = imagePath;
+		this.images = images;
 		this.heatingSystem = heatingSystem;
 		this.category = category;
 		this.location = location;
+		this.advertisements = advertisements;
 	}
-	
+
 	public EstateDTO(Estate estate) {
 		this.id = estate.getId();
 		this.name = estate.getName();
 		this.price = estate.getPrice();
 		this.area = estate.getArea();
 		this.technicalEquipment = estate.getTechnicalEquipment();
-		this.imagePath = estate.getImagePath();
+		this.images = estate.getImages();
 		this.heatingSystem = estate.getHeatingSystem();
 		this.category = new CategoryDTO(estate.getCategory());
 		this.location = new LocationDTO(estate.getLocation());
+		for(Advertisement adv : estate.getAdvertisements()) {
+			this.advertisements.add(new AdvertisementDTO(adv));
+		}
 	}
 
 	public Long getId() {
@@ -82,12 +91,12 @@ public class EstateDTO {
 		this.technicalEquipment = technicalEquipment;
 	}
 
-	public String getImagePath() {
-		return imagePath;
+	public Set<String> getImages() {
+		return images;
 	}
 
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
+	public void setImages(Set<String> images) {
+		this.images = images;
 	}
 
 	public String getHeatingSystem() {
@@ -113,6 +122,13 @@ public class EstateDTO {
 	public void setLocation(LocationDTO location) {
 		this.location = location;
 	}
-	
+
+	public Set<AdvertisementDTO> getAdvertisements() {
+		return advertisements;
+	}
+
+	public void setAdvertisements(Set<AdvertisementDTO> advertisements) {
+		this.advertisements = advertisements;
+	}
 	
 }

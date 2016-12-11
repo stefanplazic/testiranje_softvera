@@ -10,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.nekretnine.dto.CategoryDTO;
+import com.nekretnine.dto.EstateDTO;
+
 @Entity
 public class Category {
 
@@ -20,15 +23,22 @@ public class Category {
 	@Column(nullable = false)
 	private String description;
 	
-	@OneToMany(mappedBy="category",fetch = FetchType.LAZY)
-	private Set<Estate> estates = new HashSet<Estate>();;
+	@OneToMany(mappedBy="category", fetch = FetchType.LAZY)
+	private Set<Estate> estates = new HashSet<Estate>();
 	
 	public Category() {}
-	
-	public Category(String description, Set<Estate> estates) {
+
+	public Category(Long id, String description, Set<Estate> estates) {
 		super();
+		this.id = id;
 		this.description = description;
 		this.estates = estates;
+	}
+
+	public Category(CategoryDTO catdto) {
+		this.id = catdto.getId();
+		this.description = catdto.getDescription();
+		setEstates(catdto.getEstates());
 	}
 
 	public Long getId() {
@@ -51,8 +61,16 @@ public class Category {
 		return estates;
 	}
 
-	public void setEstates(Set<Estate> estates) {
-		this.estates = estates;
+	public void setEstates(Set<?> est) {
+		this.estates = new HashSet<Estate>();
+		for(Object obj : est) {
+			if(obj instanceof Estate) {
+				this.estates.add((Estate)obj);
+			}
+			else if (obj instanceof EstateDTO) {
+				this.estates.add(new Estate((EstateDTO) obj));
+			}
+		}
 	}
 
 	
