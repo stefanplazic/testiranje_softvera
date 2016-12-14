@@ -49,7 +49,7 @@ public class AdvertisementDTO {
 		this.expiryDate = advertisement.getExpiryDate();
 		this.lastUpdate = advertisement.getLastUpdate();
 		this.contactInfo = advertisement.getContactInfo();
-		
+		setState(advertisement.getState());
 		
 		for(Comment comm : advertisement.getComments()) {
 			this.comments.add(new CommentDTO(comm));
@@ -104,26 +104,24 @@ public class AdvertisementDTO {
 	public State getState() {
 		return state;
 	}
-
-	public void setState(State state) {
-		this.state = state;
-	}
+	
+	//obican setter ce da se pokrlja sa dole napisanim zbog nekog razloga
 	
 	public void setState(Advertisement.State state) {
 		if(state == Advertisement.State.OPEN) {
-			setState(State.OPEN);
+			this.state = State.OPEN;
 		}
 		else if (state == Advertisement.State.EXPIRED) {
-			setState(State.EXPIRED);
+			this.state = State.EXPIRED;
 		}
 		else if (state == Advertisement.State.REPORTED) {
-			setState(State.REPORTED);
+			this.state = State.REPORTED;
 		}
 		else if (state == Advertisement.State.REMOVED) {
-			setState(State.REMOVED);
+			this.state = State.REMOVED;
 		}
 		else {
-			setState(State.SOLD);
+			this.state = State.SOLD;
 		}
 	}
 
