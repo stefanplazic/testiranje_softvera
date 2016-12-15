@@ -28,6 +28,10 @@ public class Advertiser extends User{
 		this.advertisements = advertisements;
 	}
 
+	public Advertiser(User owner) {
+		super(owner);
+	}
+
 	public Company getCompany() {
 		return company;
 	}

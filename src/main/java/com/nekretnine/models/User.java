@@ -50,6 +50,16 @@ public class User {
 		this.reports = reports;
 	}
 
+	public User(User user) {
+		id = user.getId();
+		firstName = user.getFirstName();
+		lastName = user.getLastName();
+		email = user.getEmail();
+		username = user.getUsername();
+		password = user.getPassword();
+		reports = user.getReports();
+	}
+
 	public Long getId() {
 		return id;
 	}

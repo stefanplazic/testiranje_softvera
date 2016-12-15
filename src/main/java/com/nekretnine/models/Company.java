@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.nekretnine.dto.CompanyDTO;
+
 @Entity
 public class Company {
 
@@ -24,7 +26,10 @@ public class Company {
 	private String name;
 	
 	@Column(nullable = false)
-	private boolean approved;
+	private String address;
+	
+	@Column(nullable = false)
+	private boolean on_hold;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER,mappedBy="company")
 	private Set<Advertiser> members = new HashSet<Advertiser>();
@@ -35,15 +40,24 @@ public class Company {
 	
 	public Company() {}
 
-	public Company(Long id, String name, boolean approved, Set<Advertiser> members, Advertiser owner) {
+	public Company(Long id, String name, String address, boolean on_hold,
+			Set<Advertiser> members, Advertiser owner) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.approved = approved;
+		this.address = address;
+		this.on_hold = on_hold;
 		this.members = members;
 		this.owner = owner;
 	}
-	
+
+	public Company(CompanyDTO companyDTO) {
+		id = companyDTO.getId();
+		name = companyDTO.getName();
+		address = companyDTO.getAddress();
+		on_hold = companyDTO.isOn_hold();
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -60,12 +74,12 @@ public class Company {
 		this.name = name;
 	}
 
-	public boolean isApproved() {
-		return approved;
+	public boolean isOn_hold() {
+		return on_hold;
 	}
 
-	public void setApproved(boolean approved) {
-		this.approved = approved;
+	public void setOn_hold(boolean on_hold) {
+		this.on_hold = on_hold;
 	}
 
 	public Set<Advertiser> getMembers() {
@@ -83,6 +97,16 @@ public class Company {
 	public void setOwner(Advertiser owner) {
 		this.owner = owner;
 	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	
 
 
 }
