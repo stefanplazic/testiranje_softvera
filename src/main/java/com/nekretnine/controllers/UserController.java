@@ -2,6 +2,7 @@ package com.nekretnine.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.mail.MessagingException;
 
@@ -51,15 +52,26 @@ public class UserController {
 	private MyMailSenderService mailSender;
 	
 	/*REGISTER CUSTOMER*/
-	@RequestMapping(value="/customer/register",method=RequestMethod.POST, consumes="application/json")
-	public ResponseEntity<String> saveCustomer(@RequestBody UserDTO userDTO){
+	@RequestMapping(value="/register/{userType}",method=RequestMethod.POST, consumes="application/json")
+	public ResponseEntity<String> saveCustomer(@PathVariable String userType,@RequestBody UserDTO userDTO){
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		User user = new Customer();
+		User user;
+		if(userType.equalsIgnoreCase("customer")){
+			user = new Customer();
+		}
+		
+		else if(userType.equalsIgnoreCase("advertiser")){
+			user = new Advertiser();
+		}
+		else{
+			return new ResponseEntity<>("Cant create that type of user, ony Customer and Advertiser allowed", HttpStatus.BAD_REQUEST);
+		}
 		user.setFirstName(userDTO.getFirstName());
 		user.setLastName(userDTO.getLastName());
 		user.setEmail(userDTO.getEmail());
 		user.setUsername(userDTO.getUsername());
 		user.setPassword(encoder.encode(userDTO.getPassword()));
+		user.setVerifyCode(UUID.randomUUID().toString());
 		
 		//check if user with the email exist
 		if(service.findByEmail(user.getEmail())!=null || service.findByUsername(user.getUsername())!=null)
@@ -68,32 +80,10 @@ public class UserController {
 		}
 		
 		user = service.save(user);
-		mailSender.sendMail(user.getEmail(), "Registration", "Click her to finish registration: <a href='http://localhost:8080/api/users/verify/"+user.getId()+"'>Click</a>");
+		mailSender.sendMail(user.getEmail(), "Registration", "Click her to finish registration: <a href='http://localhost:8080/api/users/verify/"+user.getVerifyCode()+"'>Click</a>");
 		return new ResponseEntity<>("Customer has been created Go to "+user.getEmail()+" to verify your account", HttpStatus.CREATED);	
 	}
-	
-	/*REGISTER Advertiser*/
-	@RequestMapping(value="/advertiser/register",method=RequestMethod.POST, consumes="application/json")
-	public ResponseEntity<String> saveAdvertiser(@RequestBody UserDTO userDTO){
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		User user = new Advertiser();
-		user.setFirstName(userDTO.getFirstName());
-		user.setLastName(userDTO.getLastName());
-		user.setEmail(userDTO.getEmail());
-		user.setUsername(userDTO.getUsername());
-		user.setPassword(encoder.encode(userDTO.getPassword()));
 		
-		//check if user with the email exist
-		if(service.findByEmail(user.getEmail())!=null || service.findByUsername(user.getUsername())!=null)
-		{
-			return new ResponseEntity<>("User with that username, or email already exists", HttpStatus.BAD_REQUEST);
-		}
-		
-		user = service.save(user);
-		mailSender.sendMail(user.getEmail(), "Registration", "Click her to finish registration: <a href='http://localhost:8080/api/users/verify/"+user.getId()+"'>Click</a>");
-		return new ResponseEntity<>("Advertiser has been created. Go to "+user.getEmail()+" to verify your account", HttpStatus.CREATED);	
-	}
-	
 	/*USER LOGIN*/
 	@RequestMapping(value = "/login", method = RequestMethod.POST,consumes="application/json")
 	public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
@@ -116,10 +106,10 @@ public class UserController {
 	}
 	
 	/*verify email*/
-	@RequestMapping(value="/verify/{id}",method=RequestMethod.GET)
-	public ResponseEntity<String> verify(@PathVariable Long id){
+	@RequestMapping(value="/verify/{verifyCode}",method=RequestMethod.GET)
+	public ResponseEntity<String> verify(@PathVariable String verifyCode){
 		
-		User user = service.findOne(id);
+		User user = service.findByVerifyCode(verifyCode);
 		if(user!=null){
 			user.setVerified(true);
 			service.save(user);

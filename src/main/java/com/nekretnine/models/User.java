@@ -41,13 +41,16 @@ public class User {
 	
 	@Column(nullable = true)
 	private boolean isVerified;
+	
+	@Column(nullable = true)
+	private String verifyCode;
 
 	public User() {
 		super();
 	}
 
 	public User(Long id, String firstName, String lastName, String email, String username, String password,
-			Set<Report> reports, Set<UserAuthority> userAuthorities,boolean isVerified) {
+			Set<Report> reports, Set<UserAuthority> userAuthorities,boolean isVerified, String verifyCode) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -57,6 +60,7 @@ public class User {
 		this.password = password;
 		this.reports = reports;
 		this.userAuthorities = userAuthorities;
+		this.verifyCode = verifyCode;
 	}
 
 	public Long getId() {
@@ -129,6 +133,14 @@ public class User {
 
 	public void setVerified(boolean isVerified) {
 		this.isVerified = isVerified;
+	}
+
+	public String getVerifyCode() {
+		return verifyCode;
+	}
+
+	public void setVerifyCode(String verifyCode) {
+		this.verifyCode = verifyCode;
 	}
 	
 }

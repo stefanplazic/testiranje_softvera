@@ -48,4 +48,7 @@ public class UserService {
 	public User findByEmail(String email) {
 		return repository.findByEmail(email);
 	}
+	public User findByVerifyCode(String verifyCode) {
+		return repository.findByVerifyCode(verifyCode);
+	}
 }
