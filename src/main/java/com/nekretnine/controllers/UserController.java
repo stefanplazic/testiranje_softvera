@@ -43,20 +43,9 @@ public class UserController {
 	@Autowired
 	TokenUtils tokenUtils;
 	
-	
-	@RequestMapping(value="/{id}", method = RequestMethod.GET)
-	public ResponseEntity<UserDTO> getUserById(@PathVariable Long id){
-		
-		User user = service.findOne(id);
-		if(user==null)
-			return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
-		
-		return new ResponseEntity<UserDTO>(new UserDTO(user),HttpStatus.OK);
-	}
-	
 	/*REGISTER CUSTOMER*/
 	@RequestMapping(value="/customer/register",method=RequestMethod.POST, consumes="application/json")
-	public ResponseEntity<UserDTO> saveCustomer(@RequestBody UserDTO userDTO){
+	public ResponseEntity<String> saveCustomer(@RequestBody UserDTO userDTO){
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		User user = new Customer();
 		user.setFirstName(userDTO.getFirstName());
@@ -65,13 +54,19 @@ public class UserController {
 		user.setUsername(userDTO.getUsername());
 		user.setPassword(encoder.encode(userDTO.getPassword()));
 		
+		//check if user with the email exist
+		if(service.findByEmail(user.getEmail())!=null || service.findByUsername(user.getUsername())!=null)
+		{
+			return new ResponseEntity<>("User with that username, or email already exists", HttpStatus.BAD_REQUEST);
+		}
+		
 		user = service.save(user);
-		return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);	
+		return new ResponseEntity<>("Customer has been created", HttpStatus.CREATED);	
 	}
 	
 	/*REGISTER Advertiser*/
 	@RequestMapping(value="/advertiser/register",method=RequestMethod.POST, consumes="application/json")
-	public ResponseEntity<UserDTO> saveAdvertiser(@RequestBody UserDTO userDTO){
+	public ResponseEntity<String> saveAdvertiser(@RequestBody UserDTO userDTO){
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		User user = new Advertiser();
 		user.setFirstName(userDTO.getFirstName());
@@ -80,8 +75,14 @@ public class UserController {
 		user.setUsername(userDTO.getUsername());
 		user.setPassword(encoder.encode(userDTO.getPassword()));
 		
+		//check if user with the email exist
+		if(service.findByEmail(user.getEmail())!=null || service.findByUsername(user.getUsername())!=null)
+		{
+			return new ResponseEntity<>("User with that username, or email already exists", HttpStatus.BAD_REQUEST);
+		}
+		
 		user = service.save(user);
-		return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);	
+		return new ResponseEntity<>("Advertiser has been created", HttpStatus.CREATED);	
 	}
 	
 	/*USER LOGIN*/
