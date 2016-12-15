@@ -27,8 +27,8 @@ import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Customer;
 import com.nekretnine.models.User;
 import com.nekretnine.security.TokenUtils;
+import com.nekretnine.services.MyMailSenderService;
 import com.nekretnine.services.UserService;
-import com.nekretnine.utils.MyMailSender;
 
 
 @RestController
@@ -48,7 +48,7 @@ public class UserController {
 	TokenUtils tokenUtils;
 	
 	@Autowired
-	private MyMailSender mailSender;
+	private MyMailSenderService mailSender;
 	
 	/*REGISTER CUSTOMER*/
 	@RequestMapping(value="/customer/register",method=RequestMethod.POST, consumes="application/json")
@@ -114,7 +114,16 @@ public class UserController {
         }
 	}
 	
-	//SEND mail
-	
+	/*verify email*/
+	@RequestMapping(value="/verify/{id}",method=RequestMethod.GET)
+	public ResponseEntity<String> verify(@PathVariable Long id){
+		
+		User user = service.findOne(id);
+		if(user!=null){
+			
+		}
+		
+		return new ResponseEntity<>( HttpStatus.OK);
+	}
 		
 }

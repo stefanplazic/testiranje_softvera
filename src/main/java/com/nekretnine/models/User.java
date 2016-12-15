@@ -38,13 +38,16 @@ public class User {
 	
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
+	
+	@Column(nullable = true)
+	private boolean isVerified;
 
 	public User() {
 		super();
 	}
 
 	public User(Long id, String firstName, String lastName, String email, String username, String password,
-			Set<Report> reports, Set<UserAuthority> userAuthorities) {
+			Set<Report> reports, Set<UserAuthority> userAuthorities,boolean isVerified) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -118,6 +121,14 @@ public class User {
 
 	public void setUserAuthorities(Set<UserAuthority> userAuthorities) {
 		this.userAuthorities = userAuthorities;
+	}
+
+	public boolean isVerified() {
+		return isVerified;
+	}
+
+	public void setVerified(boolean isVerified) {
+		this.isVerified = isVerified;
 	}
 	
 }
