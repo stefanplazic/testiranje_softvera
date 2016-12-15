@@ -68,7 +68,7 @@ public class UserController {
 		}
 		
 		user = service.save(user);
-		mailSender.sendMail(user.getEmail(), "Registration", "Click her to finish registration: <a href='#'>Click</a>");
+		mailSender.sendMail(user.getEmail(), "Registration", "Click her to finish registration: <a href='http://localhost:8080/api/users/verify/"+user.getId()+"'>Click</a>");
 		return new ResponseEntity<>("Customer has been created Go to "+user.getEmail()+" to verify your account", HttpStatus.CREATED);	
 	}
 	
@@ -90,6 +90,7 @@ public class UserController {
 		}
 		
 		user = service.save(user);
+		mailSender.sendMail(user.getEmail(), "Registration", "Click her to finish registration: <a href='http://localhost:8080/api/users/verify/"+user.getId()+"'>Click</a>");
 		return new ResponseEntity<>("Advertiser has been created. Go to "+user.getEmail()+" to verify your account", HttpStatus.CREATED);	
 	}
 	
@@ -120,10 +121,11 @@ public class UserController {
 		
 		User user = service.findOne(id);
 		if(user!=null){
-			
+			user.setVerified(true);
+			service.save(user);
 		}
 		
-		return new ResponseEntity<>( HttpStatus.OK);
+		return new ResponseEntity<>("Succesfully verified user" ,HttpStatus.OK);
 	}
 		
 }
