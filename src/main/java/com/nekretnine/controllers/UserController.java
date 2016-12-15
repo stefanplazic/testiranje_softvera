@@ -2,6 +2,9 @@ package com.nekretnine.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,7 @@ import com.nekretnine.models.Customer;
 import com.nekretnine.models.User;
 import com.nekretnine.security.TokenUtils;
 import com.nekretnine.services.UserService;
+import com.nekretnine.utils.MyMailSender;
 
 
 @RestController
@@ -42,6 +46,9 @@ public class UserController {
 	
 	@Autowired
 	TokenUtils tokenUtils;
+	
+	@Autowired
+	private MyMailSender mailSender;
 	
 	/*REGISTER CUSTOMER*/
 	@RequestMapping(value="/customer/register",method=RequestMethod.POST, consumes="application/json")
@@ -61,7 +68,8 @@ public class UserController {
 		}
 		
 		user = service.save(user);
-		return new ResponseEntity<>("Customer has been created", HttpStatus.CREATED);	
+		mailSender.sendMail(user.getEmail(), "Registration", "Click her to finish registration: <a href='#'>Click</a>");
+		return new ResponseEntity<>("Customer has been created Go to "+user.getEmail()+" to verify your account", HttpStatus.CREATED);	
 	}
 	
 	/*REGISTER Advertiser*/
@@ -82,7 +90,7 @@ public class UserController {
 		}
 		
 		user = service.save(user);
-		return new ResponseEntity<>("Advertiser has been created", HttpStatus.CREATED);	
+		return new ResponseEntity<>("Advertiser has been created. Go to "+user.getEmail()+" to verify your account", HttpStatus.CREATED);	
 	}
 	
 	/*USER LOGIN*/
@@ -105,5 +113,8 @@ public class UserController {
             return new ResponseEntity<String>("Invalid login", HttpStatus.BAD_REQUEST);
         }
 	}
+	
+	//SEND mail
+	
 		
 }
