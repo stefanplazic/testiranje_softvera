@@ -9,9 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.nekretnine.dto.AdvertisementDTO;
-import com.nekretnine.dto.AdvertiserDTO;
-
 @Entity
 public class Advertiser extends User{
 
@@ -30,12 +27,6 @@ public class Advertiser extends User{
 		this.company = company;
 		this.advertisements = advertisements;
 	}
-	
-	public Advertiser(AdvertiserDTO advdto) {
-		super(advdto);
-		this.company = new Company(advdto.getCompany());
-		setAdvertisements(advdto.getAdvertisements());
-	}
 
 	public Company getCompany() {
 		return company;
@@ -49,16 +40,9 @@ public class Advertiser extends User{
 		return advertisements;
 	}
 
-	public void setAdvertisements(Set<?> advs) {
-		this.advertisements = new HashSet<Advertisement>();
-		for(Object obj : advs) {
-			if(obj instanceof Advertisement) {
-				this.advertisements.add((Advertisement)obj);
-			}
-			else if (obj instanceof AdvertisementDTO) {
-				this.advertisements.add(new Advertisement((AdvertisementDTO)obj));
-			}
-		}
+	public void setAdvertisements(Set<Advertisement> advertisements) {
+		this.advertisements = advertisements;
 	}
+
 	
 }

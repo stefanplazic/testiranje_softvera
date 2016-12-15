@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.nekretnine.dto.RateDTO;
-
 @Entity
 public class Rate {
 
@@ -33,12 +31,6 @@ public class Rate {
 		this.id = id;
 		this.advertisementRate = advertisementRate;
 		this.customer = customer;
-	}
-	
-	public Rate(RateDTO rtdto) {
-		this.id = rtdto.getId();
-		this.advertisementRate = rtdto.getAdvertisementRate();
-		this.customer = new Customer(rtdto.getCustomer());
 	}
 
 	public Long getId() {

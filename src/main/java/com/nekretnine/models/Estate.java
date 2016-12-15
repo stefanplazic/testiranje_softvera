@@ -15,9 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.nekretnine.dto.AdvertisementDTO;
-import com.nekretnine.dto.EstateDTO;
-
 @Entity
 public class Estate {
 	
@@ -71,19 +68,6 @@ public class Estate {
 		this.category = category;
 		this.location = location;
 		this.advertisements = advertisements;
-	}
-
-	public Estate(EstateDTO estdto) {
-		this.id = estdto.getId();
-		this.name = estdto.getName();
-		this.price = estdto.getPrice();
-		this.area = estdto.getArea();
-		this.technicalEquipment = estdto.getTechnicalEquipment();
-		this.images = estdto.getImages();
-		this.heatingSystem = estdto.getHeatingSystem();
-		this.category = new Category(estdto.getCategory());
-		this.location = new Location(estdto.getLocation());
-		setAdvertisements(estdto.getAdvertisements());
 	}
 
 	public Long getId() {
@@ -162,16 +146,8 @@ public class Estate {
 		return advertisements;
 	}
 
-	public void setAdvertisements(Set<?> advs) {
-		this.advertisements = new HashSet<Advertisement>();
-		for(Object obj : advs) {
-			if(obj instanceof Advertisement) {
-				this.advertisements.add((Advertisement)obj);
-			}
-			else if(obj instanceof AdvertisementDTO) {
-				this.advertisements.add(new Advertisement((AdvertisementDTO)obj));
-			}
-		}
+	public void setAdvertisements(Set<Advertisement> advertisements) {
+		this.advertisements = advertisements;
 	}
 
 }

@@ -14,10 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.nekretnine.dto.AdvertisementDTO;
-import com.nekretnine.dto.CommentDTO;
-import com.nekretnine.dto.ReportDTO;
-
 @Entity
 public class Advertisement {
 
@@ -77,19 +73,6 @@ public class Advertisement {
 		this.estate = estate;
 		this.reports = reports;
 	}
-	
-	public Advertisement(AdvertisementDTO advdto) {
-		this.id = advdto.getId();
-		this.publicationDate = advdto.getPublicationDate();
-		this.expiryDate = advdto.getExpiryDate();
-		this.lastUpdate = advdto.getLastUpdate();
-		this.contactInfo = advdto.getContactInfo();
-		setState(advdto.getState());
-		setComments(advdto.getComments());
-		this.advertiser = new Advertiser(advdto.getAdvertiser());
-		this.estate = new Estate(advdto.getEstate());
-		setReports(advdto.getReports());
-	}
 
 	public Long getId() {
 		return id;
@@ -138,40 +121,13 @@ public class Advertisement {
 	public void setState(State state) {
 		this.state = state;
 	}
-	
-	public void setState(AdvertisementDTO.State state) {
-		
-		if(state == AdvertisementDTO.State.OPEN) {
-			setState(State.OPEN);
-		}
-		else if (state == AdvertisementDTO.State.EXPIRED) {
-			setState(State.EXPIRED);
-		}
-		else if (state == AdvertisementDTO.State.REPORTED) {
-			setState(State.REPORTED);
-		}
-		else if (state == AdvertisementDTO.State.REMOVED) {
-			setState(State.REMOVED);
-		}
-		else {
-			setState(State.SOLD);
-		}
-	}
 
 	public Set<Comment> getComments() {
 		return comments;
 	}
 	
-	public void setComments(Set<?> comments) {
-		this.comments = new HashSet<Comment>();
-		for(Object obj : comments) {
-			if(obj instanceof Comment) {
-				this.comments.add((Comment)obj);
-			}
-			else if (obj instanceof CommentDTO) {
-				this.comments.add(new Comment((CommentDTO)obj));
-			}
-		}
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
 	}
 
 	public Advertiser getAdvertiser() {
@@ -193,17 +149,9 @@ public class Advertisement {
 	public Set<Report> getReports() {
 		return reports;
 	}
-
-	public void setReports(Set<?> reps) {
-		this.reports = new HashSet<Report>();
-		for(Object obj : reps) {
-			if(obj instanceof Report) {
-				this.reports.add((Report)obj);
-			}
-			else if(obj instanceof ReportDTO){
-				this.reports.add(new Report((ReportDTO)obj));
-			}
-		}
+	
+	public void setReports(Set<Report> reports) {
+		this.reports = reports;
 	}
 	
 }

@@ -13,9 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.nekretnine.dto.AdvertiserDTO;
-import com.nekretnine.dto.CompanyDTO;
-
 @Entity
 public class Company {
 
@@ -47,14 +44,6 @@ public class Company {
 		this.owner = owner;
 	}
 	
-	public Company(CompanyDTO cmpdto) {
-		this.id = cmpdto.getId();
-		this.name = cmpdto.getName();
-		this.approved = cmpdto.isApproved();
-		setMembers(cmpdto.getMembers());
-		this.owner = new Advertiser(cmpdto.getOwner());
-	}
-	
 	public Long getId() {
 		return id;
 	}
@@ -82,17 +71,9 @@ public class Company {
 	public Set<Advertiser> getMembers() {
 		return members;
 	}
-	
-	public void setMembers(Set<?> members) {
-		this.members = new HashSet<Advertiser>();
-		for(Object obj : members) {
-			if(obj instanceof Advertiser) {
-				this.members.add((Advertiser)obj);
-			}
-			else if (obj instanceof AdvertiserDTO) {
-				this.members.add(new Advertiser((AdvertiserDTO)obj));
-			}
-		}
+
+	public void setMembers(Set<Advertiser> members) {
+		this.members = members;
 	}
 
 	public Advertiser getOwner() {

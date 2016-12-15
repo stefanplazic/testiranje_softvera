@@ -7,8 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.nekretnine.dto.ReportDTO;
-
 @Entity
 public class Report {
 
@@ -43,13 +41,6 @@ public class Report {
 		this.advertisement = advertisement;
 		this.state = state;
 	}
-	
-	public Report(ReportDTO repdto) {
-		this.id = repdto.getId();
-		this.user = new User(repdto.getUser());
-		this.advertisement = new Advertisement(repdto.getAdvertisement());
-		setState(repdto.getState());
-	}
 
 	public Long getId() {
 		return id;
@@ -79,19 +70,8 @@ public class Report {
 		return state;
 	}
 
-	public void setState(Object state) {
-		if(state instanceof Report.State) {
-			this.state = (Report.State)state;
-		}
-		else if (state instanceof ReportDTO.State) {
-			if(state == ReportDTO.State.OPEN) {
-				this.state = State.OPEN;
-			}
-			else {
-				this.state = State.CLOSED;
-			}
-			
-		}
-	}	
+	public void setState(State state) {
+		this.state = state;
+	}
 	
 }

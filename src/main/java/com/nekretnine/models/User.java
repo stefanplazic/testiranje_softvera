@@ -9,9 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.nekretnine.dto.ReportDTO;
-import com.nekretnine.dto.UserDTO;
-
 @Entity
 public class User {
 
@@ -51,16 +48,6 @@ public class User {
 		this.username = username;
 		this.password = password;
 		this.reports = reports;
-	}
-	
-	public User(UserDTO userdto) {
-		this.id = userdto.getId();
-		this.firstName = userdto.getFirstName();
-		this.lastName = userdto.getLastName();
-		this.email = userdto.getEmail();
-		this.username = userdto.getUsername();
-		this.password = userdto.getPassword();
-		setReports(userdto.getReports());	
 	}
 
 	public Long getId() {
@@ -115,16 +102,8 @@ public class User {
 		return reports;
 	}
 
-	public void setReports(Set<?> reports) {
-		this.reports = new HashSet<Report>();
-		for(Object obj : reports) {
-			if(obj instanceof Report) {
-				this.reports.add((Report)obj);
-			}
-			else if (obj instanceof ReportDTO) {
-				this.reports.add(new Report((ReportDTO)obj));
-			}
-		}
+	public void setReports(Set<Report> reports) {
+		this.reports = reports;
 	}
 	
 }
