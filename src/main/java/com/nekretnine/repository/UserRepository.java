@@ -7,4 +7,7 @@ import com.nekretnine.models.User;
 public interface UserRepository extends JpaRepository<User, Long>{
 
 	User findOneByUsernameAndPassword(String username, String password);
+	User findByUsername(String username);
+	User findByEmail(String email);
+	User findByVerifyCode(String verifyCode);
 }

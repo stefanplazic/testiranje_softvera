@@ -3,8 +3,10 @@ package com.nekretnine.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -33,13 +35,22 @@ public class User {
 	
 	@OneToMany
 	private Set<Report> reports = new HashSet<Report>();
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
+	
+	@Column(nullable = true)
+	private boolean isVerified;
+	
+	@Column(nullable = true)
+	private String verifyCode;
 
 	public User() {
 		super();
 	}
 
 	public User(Long id, String firstName, String lastName, String email, String username, String password,
-			Set<Report> reports) {
+			Set<Report> reports, Set<UserAuthority> userAuthorities,boolean isVerified, String verifyCode) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -48,6 +59,8 @@ public class User {
 		this.username = username;
 		this.password = password;
 		this.reports = reports;
+		this.userAuthorities = userAuthorities;
+		this.verifyCode = verifyCode;
 	}
 
 	public User(User user) {
@@ -114,6 +127,30 @@ public class User {
 
 	public void setReports(Set<Report> reports) {
 		this.reports = reports;
+	}
+
+	public Set<UserAuthority> getUserAuthorities() {
+		return userAuthorities;
+	}
+
+	public void setUserAuthorities(Set<UserAuthority> userAuthorities) {
+		this.userAuthorities = userAuthorities;
+	}
+
+	public boolean isVerified() {
+		return isVerified;
+	}
+
+	public void setVerified(boolean isVerified) {
+		this.isVerified = isVerified;
+	}
+
+	public String getVerifyCode() {
+		return verifyCode;
+	}
+
+	public void setVerifyCode(String verifyCode) {
+		this.verifyCode = verifyCode;
 	}
 	
 }
