@@ -60,8 +60,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 			.authorizeRequests()
-				.antMatchers( "/api/users/login", "/api/users/advertiser/register","/api/users/customer/register").
+				.antMatchers( "/api/users/login", "/api/users/register").
 					permitAll();
+				//.authorizeRequests()
+				//.antMatchers( "/api/users/login", "/api/users/register"). ******OVO CE SE KORISTITI AKO ZELIMO SAMO ODREDJENOJ ULOZI DA DOPUSTIMO PRISTUP
+				//hasAuthority("ADMIN"). 
+				//anyRequest().authenticated();
 		
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(),
 				UsernamePasswordAuthenticationFilter.class);

@@ -1,7 +1,9 @@
 package com.nekretnine.controllers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
@@ -27,6 +29,9 @@ import com.nekretnine.dto.UserDTO;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Customer;
 import com.nekretnine.models.User;
+import com.nekretnine.models.UserAuthority;
+import com.nekretnine.repository.AuthorityRepository;
+import com.nekretnine.repository.UserAuthorityRepository;
 import com.nekretnine.security.TokenUtils;
 import com.nekretnine.services.MyMailSenderService;
 import com.nekretnine.services.UserService;
@@ -51,17 +56,27 @@ public class UserController {
 	@Autowired
 	private MyMailSenderService mailSender;
 	
+	@Autowired
+	private AuthorityRepository authorityRepository;
+	@Autowired
+	private UserAuthorityRepository userAuthorityRepository;
+	
 	/*REGISTER CUSTOMER*/
 	@RequestMapping(value="/register/{userType}",method=RequestMethod.POST, consumes="application/json")
 	public ResponseEntity<String> saveCustomer(@PathVariable String userType,@RequestBody UserDTO userDTO){
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		User user;
+		UserAuthority authority = new UserAuthority();
 		if(userType.equalsIgnoreCase("customer")){
 			user = new Customer();
+			authority.setAuthority(authorityRepository.findByName(("CUSTOMER")));		
+			authority.setUser(user);
 		}
 		
 		else if(userType.equalsIgnoreCase("advertiser")){
 			user = new Advertiser();
+			authority.setAuthority(authorityRepository.findByName(("ADVERTISER")));
+			authority.setUser(user);
 		}
 		else{
 			return new ResponseEntity<>("Cant create that type of user, ony Customer and Advertiser allowed", HttpStatus.BAD_REQUEST);
@@ -80,6 +95,7 @@ public class UserController {
 		}
 		
 		user = service.save(user);
+		userAuthorityRepository.save(authority);
 		mailSender.sendMail(user.getEmail(), "Registration", "Click her to finish registration: <a href='http://localhost:8080/api/users/verify/"+user.getVerifyCode()+"'>Click</a>");
 		return new ResponseEntity<>("Customer has been created Go to "+user.getEmail()+" to verify your account", HttpStatus.CREATED);	
 	}
