@@ -1,5 +1,8 @@
 package com.nekretnine.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 
 import com.nekretnine.dto.EstateDTO;
 
@@ -45,12 +50,15 @@ public class Estate {
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	private Advertiser owner;
 	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy="estate")
+	private Set<Image> images = new HashSet<Image>();
+	
 	
 	public Estate() {}
 
 	public Estate(Long id, String name, double price, double area,String address,String city,
 			String cityPart,String technicalEquipment,
-			String heatingSystem,Advertiser owner) {
+			String heatingSystem,Advertiser owner,Set<Image> images) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -63,6 +71,7 @@ public class Estate {
 		this.heatingSystem = heatingSystem;
 		
 		this.owner=owner;
+		this.images=images;
 		
 		
 	}
@@ -70,10 +79,18 @@ public class Estate {
 	public Estate(EstateDTO estate){
 		this(estate.getId(),estate.getName(),estate.getPrice(),
 				estate.getArea(),estate.getAddress(),estate.getCity(),estate.getCityPart(),estate.getTechnicalEquipment(),
-				estate.getHeatingSystem(),estate.getOwner());
+				estate.getHeatingSystem(),estate.getOwner(),estate.getImages());
 	}
 	
 	
+
+	public Set<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<Image> images) {
+		this.images = images;
+	}
 
 	public String getCity() {
 		return city;

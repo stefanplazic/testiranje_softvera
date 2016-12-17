@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.models.Estate;
+import com.nekretnine.models.Image;
 import com.nekretnine.services.EstateService;
 
 @RestController
@@ -23,7 +24,11 @@ public class EstateController {
 	public ResponseEntity<String> saveEstate(@RequestBody EstateDTO estateDTO){
 		
 		Estate estate= new Estate(estateDTO);
-		estateService.save(estate);		
+		for(Image i :estate.getImages()){
+			i.setEstate(estate);
+		}
+		estateService.save(estate);	
+		System.out.println(estate.toString());
 		
 		return new ResponseEntity<String>("aloebebebebe",HttpStatus.OK);
 	}
