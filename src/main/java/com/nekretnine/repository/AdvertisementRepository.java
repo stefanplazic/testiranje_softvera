@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertisement.State;
-import com.nekretnine.models.User;
 
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long> {
 
@@ -16,5 +15,10 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 	@Modifying(clearAutomatically = true)
 	@Query("update Advertisement a set a.state = ?1 where a.id = ?2")
 	void setState(State status,Long id );
+	
+	@Modifying
+	@Transactional
+    @Query("delete from Advertisement a where a.id = ?1")
+	void deleteById(Long id);
 	
 }

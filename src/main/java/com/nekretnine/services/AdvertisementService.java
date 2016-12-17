@@ -19,11 +19,17 @@ public class AdvertisementService {
 	}
 	
 	public Advertisement findOne(Long id){
-		return repository.getOne(id);
+		return repository.findOne(id);
 	}
 	
 	public void setState(State state,Long id){
 		repository.setState(state,id);
+	}
+	
+	public void delete(Long id){
+		repository.deleteById(id);
+		
+		
 	}
 	
 }

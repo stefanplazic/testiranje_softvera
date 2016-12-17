@@ -36,11 +36,11 @@ public class AdvertisementController {
 	public ResponseEntity<String> modify_addvertisement(@PathVariable Long advert_id,@RequestBody AdvertisementDTO advertDTO){
 		
 		Advertisement adv = advertisementService.findOne(advert_id);
-		
+	
 		//da li reklama postoji
 		if(adv==null) return new ResponseEntity<String>("nemanema",HttpStatus.OK);
 		//da li je oglasivac okacio reklamu
-		if(adv.getId()==advertDTO.getAdvertiser().getId())new ResponseEntity<String>("nemanema",HttpStatus.OK);
+		if(adv.getAdvertiser().getId()!=advertDTO.getAdvertiser().getId())return new ResponseEntity<String>("nemoze",HttpStatus.OK);
 		
 		//apdejt status reklame ako je prosledjen
 		if(advertDTO.getState()!=null) advertisementService.setState(advertDTO.getState(),advert_id);
@@ -48,6 +48,23 @@ public class AdvertisementController {
 		
 		
 		return new ResponseEntity<String>("braobrao",HttpStatus.OK);
+	}
+	
+	//za oglasivaca
+	@RequestMapping(value="/delete/{advert_id}",method=RequestMethod.POST,consumes="application/json")
+	public ResponseEntity<String> delete_advertisement(@PathVariable Long advert_id,@RequestBody AdvertisementDTO advertDTO ){
+		
+		Advertisement adv = advertisementService.findOne(advert_id);
+		
+		//da li reklama postoji
+		if(adv==null) return new ResponseEntity<String>("nemanema",HttpStatus.OK);
+		//da li je oglasivac okacio reklamu
+		if(adv.getAdvertiser().getId()!=advertDTO.getAdvertiser().getId()) return new ResponseEntity<String>("nemoze",HttpStatus.OK);
+			
+		System.out.println("asd");
+		advertisementService.delete(advert_id);
+		System.out.println("asd");
+		return new ResponseEntity<String>("brisnuto",HttpStatus.OK);
 	}
 	
 	
