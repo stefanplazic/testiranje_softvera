@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User {
 
@@ -33,20 +35,26 @@ public class User {
 	@Column(nullable = true)
 	private String password;
 	
+	@JsonIgnore
 	@OneToMany
 	private Set<Report> reports = new HashSet<Report>();
 	
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
 	
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private boolean isVerified;
 	
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String verifyCode;
 
 	public User() {
 		super();
+	}
+	
+	public User(Long id) {
+		super();
+		this.id = id;
 	}
 
 	public User(Long id, String firstName, String lastName, String email, String username, String password,

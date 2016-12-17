@@ -1,56 +1,36 @@
-package com.nekretnine.models;
+package com.nekretnine.dto;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
-import com.nekretnine.dto.AdvertisementDTO;
+import com.nekretnine.models.Advertiser;
+import com.nekretnine.models.Estate;
+import com.nekretnine.models.Advertisement;
+import com.nekretnine.models.Advertisement.State;
 
-@Entity
-public class Advertisement {
+public class AdvertisementDTO {
 
-	public enum State {
-		OPEN, EXPIRED, REPORTED, REMOVED, SOLD
-	}
+
 	
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
 	private Long id;
-	
-	@Column(nullable = false)
 	private Date publicationDate;
-	
-	@Column(nullable = false)
 	private Date expiryDate;
-		
-	@Column(nullable = false)
 	private State state;
-	
-	@ManyToOne
-	@JoinColumn(name = "advertiser")
 	private Advertiser advertiser;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "estate")
 	private Estate estate;
 	
 	
-	public Advertisement() {
+	public AdvertisementDTO() {
 		super();
 	}
 
-	public Advertisement(Long id, Date publicationDate, Date expiryDate, 
+	public AdvertisementDTO(Long id, Date publicationDate, Date expiryDate,
 			State state, Advertiser advertiser, Estate estate) {
 		super();
 		this.id = id;
@@ -62,11 +42,15 @@ public class Advertisement {
 
 	}
 	
-	public Advertisement(AdvertisementDTO a){
-		this(a.getId(),a.getPublicationDate(),a.getExpiryDate()
-				,a.getState(),a.getAdvertiser(),a.getEstate());
+	public AdvertisementDTO(Advertisement advertisement) {
+		this.id = advertisement.getId();
+		this.publicationDate = advertisement.getPublicationDate();
+		this.expiryDate = advertisement.getExpiryDate();
+		this.state = advertisement.getState();
+		this.advertiser = advertisement.getAdvertiser();
+		this.estate = advertisement.getEstate();
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -90,8 +74,6 @@ public class Advertisement {
 	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
 	}
-
-	
 
 	public State getState() {
 		return state;
@@ -117,6 +99,12 @@ public class Advertisement {
 		this.estate = estate;
 	}
 
-
+	@Override
+	public String toString() {
+		return "AdvertisementDTO [id=" + id + ", publicationDate=" + publicationDate + ", expiryDate=" + expiryDate
+				+ ", state=" + state + ", advertiser=" + advertiser + ", estate=" + estate + "]";
+	}
+	
+	
 	
 }

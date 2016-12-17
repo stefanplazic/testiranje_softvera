@@ -18,7 +18,7 @@ public class Authority {
 	
 	String name;
 	
-	@OneToMany(mappedBy = "authority", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	@OneToMany(mappedBy = "authority", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
 
 	public Long getId() {
@@ -44,4 +44,10 @@ public class Authority {
 	public void setUserAuthorities(Set<UserAuthority> userAuthorities) {
 		this.userAuthorities = userAuthorities;
 	}
+
+	@Override
+	public String toString() {
+		return "Authority [id=" + id + ", name=" + name + ", userAuthorities=" + userAuthorities + "]";
+	}
+
 }

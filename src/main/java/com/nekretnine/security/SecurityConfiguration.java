@@ -3,7 +3,6 @@ package com.nekretnine.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CsrfFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -60,14 +58,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 			.authorizeRequests()
+
 				.antMatchers( "/api/users/login", "/api/users/register/**","/api/users/verify/**").
 					permitAll()
 					.and()
 				.authorizeRequests()
 				.antMatchers( "/api/advertiser/profile"). //******OVO CE SE KORISTITI AKO ZELIMO SAMO ODREDJENOJ ULOZI DA DOPUSTIMO PRISTUP
-				hasAuthority("CUSTOMER|ADVERTISER").
+				hasAuthority("CUSTOMER|ADVERTISER")			
+				.and()
+			.authorizeRequests()
+				.antMatchers( "/api/administrator/register")
+				.hasAuthority("ADMINISTRATOR");
+				//.anyRequest().authenticated();
 				
-				anyRequest().authenticated();
 		
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(),
 				UsernamePasswordAuthenticationFilter.class);
