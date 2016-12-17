@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nekretnine.models.Advertisement;
+import com.nekretnine.models.Advertisement.State;
 import com.nekretnine.repository.AdvertisementRepository;
 
 @Service
@@ -15,6 +16,14 @@ public class AdvertisementService {
 	public Advertisement save(Advertisement a){
 		return repository.save(a);
 		
+	}
+	
+	public Advertisement findOne(Long id){
+		return repository.getOne(id);
+	}
+	
+	public void setState(State state,Long id){
+		repository.setState(state,id);
 	}
 	
 }
