@@ -18,6 +18,11 @@ public class NotificationController {
 	@Autowired
 	private NotificationService service;
 	
+	/**
+	 * mile
+	 * @param notification
+	 * @return
+	 */
 	@RequestMapping(method=RequestMethod.POST, consumes="application/json")
 	public ResponseEntity<Notification> saveUser(@RequestBody Notification notification){
 		

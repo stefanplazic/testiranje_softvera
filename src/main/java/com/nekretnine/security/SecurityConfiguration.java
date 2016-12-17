@@ -59,12 +59,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 			.authorizeRequests()
 				.antMatchers( "/api/users/login", "/api/users/register")
-				.permitAll()
-					.and()
+				.permitAll();
+					/*.and()
 			.authorizeRequests()
 				.antMatchers( "/api/administrator/register")
 				.hasAuthority("ADMINISTRATOR")
-				.anyRequest().authenticated();
+				.anyRequest().authenticated();*/
 				
 		
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(),

@@ -19,6 +19,9 @@ public class NotificationHandler extends TextWebSocketHandler {
 	@Autowired
 	private NotificationService service;
 
+	/**
+	 * mile
+	 */
 	@Override
 	public void handleTextMessage(WebSocketSession session, TextMessage message) {
 
@@ -67,6 +70,11 @@ public class NotificationHandler extends TextWebSocketHandler {
 
 	}
 
+	/**
+	 * mile
+	 * @param notifications
+	 * @return
+	 */
 	private List<NotificationDTO> createDtoList(
 			List<Notification> notifications) {
 

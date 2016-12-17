@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nekretnine.dto.LoginDTO;
 import com.nekretnine.dto.UserDTO;
 import com.nekretnine.models.Advertiser;
+import com.nekretnine.models.Company;
 import com.nekretnine.models.Customer;
 import com.nekretnine.models.User;
 import com.nekretnine.models.UserAuthority;
@@ -137,6 +138,20 @@ public class UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}*/	
 
+	/**
+	 * mile
+	 * @param user_id
+	 * @return
+	 */
+	@RequestMapping(value="/isEmployee/{id}/", method=RequestMethod.GET)
+	public ResponseEntity<Boolean> isEmployee(@PathVariable Long id){
+		Company company = service.findAdvertiserCompany(id);
+		if(company == null){
+			return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<>(true, HttpStatus.OK);
+	}
 	
 	/*verify email*/
 	@RequestMapping(value="/verify/{verifyCode}",method=RequestMethod.GET)
