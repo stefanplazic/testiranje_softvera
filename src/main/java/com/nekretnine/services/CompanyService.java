@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nekretnine.models.Company;
-import com.nekretnine.models.User;
 import com.nekretnine.repository.CompanyRepository;
 
 @Service
@@ -19,7 +18,6 @@ public class CompanyService {
 	
 	public Company saveCompany(Company company){
 		return repository.save(company);
-		
 	}
 	
 	public Company findOneByNameAndAddress(String name, String address) {

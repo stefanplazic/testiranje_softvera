@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User {
 
@@ -33,6 +35,7 @@ public class User {
 	@Column(nullable = true)
 	private String password;
 	
+	@JsonIgnore
 	@OneToMany
 	private Set<Report> reports = new HashSet<Report>();
 	
@@ -47,6 +50,11 @@ public class User {
 
 	public User() {
 		super();
+	}
+	
+	public User(Long id) {
+		super();
+		this.id = id;
 	}
 
 	public User(Long id, String firstName, String lastName, String email, String username, String password,

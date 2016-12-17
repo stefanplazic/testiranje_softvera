@@ -32,7 +32,7 @@ public class CompanyController {
 
 		User owner = userService.findOne(companyDTO.getOwner().getId());		
 		if (owner == null && !(owner instanceof Advertiser)) {
-			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}	
 		if(company == null){
 			Company com = new Company(companyDTO);
@@ -40,7 +40,7 @@ public class CompanyController {
 			service.saveCompany(com);
 			return new ResponseEntity<String>("The company has successfully added.", HttpStatus.OK);
 		}
-		return new ResponseEntity<String>("The company with entered name and address already exists.", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<String>("The company with entered name and address already exists.", HttpStatus.NOT_FOUND);
 			
 	}
 }
