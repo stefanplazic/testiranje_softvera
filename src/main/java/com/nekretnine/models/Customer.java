@@ -13,7 +13,7 @@ public class Customer extends User {
 
 	@Column(nullable = false)
 	@OneToMany(mappedBy="customer", fetch = FetchType.LAZY)
-	private Set<Rate> rates  = new HashSet<Rate>();
+	private Set<RateEstate> rates  = new HashSet<RateEstate>();
 
 	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
 	private Set<Comment> comments = new HashSet<Comment>();
@@ -22,17 +22,17 @@ public class Customer extends User {
 		super();
 	}
 
-	public Customer(Set<Rate> rates, Set<Comment> comments) {
+	public Customer(Set<RateEstate> rates, Set<Comment> comments) {
 		super();
 		this.rates = rates;
 		this.comments = comments;
 	}
 
-	public Set<Rate> getRates() {
+	public Set<RateEstate> getRates() {
 		return rates;
 	}
 
-	public void setRates(Set<Rate> rates) {
+	public void setRates(Set<RateEstate> rates) {
 		this.rates = rates;
 	}
 

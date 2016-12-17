@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Rate {
+public class RateEstate {
 
 	@Id
 	@GeneratedValue
@@ -24,9 +24,9 @@ public class Rate {
 	@JoinColumn(name = "customer")
 	private Customer customer;
 
-	public Rate() {}
+	public RateEstate() {}
 
-	public Rate(Long id, double advertisementRate, Customer customer) {
+	public RateEstate(Long id, double advertisementRate, Customer customer) {
 		super();
 		this.id = id;
 		this.advertisementRate = advertisementRate;
