@@ -17,15 +17,21 @@ public class Advertiser extends User{
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy="advertiser")
 	private Set<Advertisement> advertisements = new HashSet<Advertisement>();
+	
+	
+	@OneToMany(mappedBy="advertiserRate", fetch = FetchType.LAZY)
+	private Set<RateAdvertiser> rates  = new HashSet<RateAdvertiser>();
+	
 
 	public Advertiser() {
 		super();
 	}
 
-	public Advertiser(Company company, Set<Advertisement> advertisements) {
+	public Advertiser(Company company, Set<Advertisement> advertisements, Set<RateAdvertiser> rates) {
 		super();
 		this.company = company;
 		this.advertisements = advertisements;
+		this.rates = rates;
 	}
 
 	public Advertiser(User owner) {
@@ -48,5 +54,17 @@ public class Advertiser extends User{
 		this.advertisements = advertisements;
 	}
 
+
+	public Set<RateAdvertiser> getRates() {
+		return rates;
+	}
+
+
+	public void setRates(Set<RateAdvertiser> rates) {
+		this.rates = rates;
+	}
+
+	
+	
 	
 }

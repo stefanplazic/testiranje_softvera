@@ -53,6 +53,9 @@ public class Estate {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy="estate")
 	private Set<Image> images = new HashSet<Image>();
 	
+	@OneToMany(mappedBy="estate", fetch = FetchType.LAZY)
+	private Set<RateEstate> rates  = new HashSet<RateEstate>();
+	
 	
 	public Estate() {}
 
@@ -170,6 +173,14 @@ public class Estate {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public Set<RateEstate> getRates() {
+		return rates;
+	}
+
+	public void setRates(Set<RateEstate> rates) {
+		this.rates = rates;
 	}
 
 	

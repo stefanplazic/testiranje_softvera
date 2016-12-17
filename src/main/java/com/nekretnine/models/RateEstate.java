@@ -14,24 +14,30 @@ public class RateEstate {
 
 	@Id
 	@GeneratedValue
-	
 	private Long id;
 	
 	@Column(nullable = false, name = "rate")
-	private double advertisementRate;
+	private double estateRate;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer")
 	private Customer customer;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumn(name = "estate")
+	private Estate estate;
 
 	public RateEstate() {}
 
-	public RateEstate(Long id, double advertisementRate, Customer customer) {
+	public RateEstate(Long id, double estateRate, Customer customer, Estate estate) {
 		super();
 		this.id = id;
-		this.advertisementRate = advertisementRate;
+		this.estateRate = estateRate;
 		this.customer = customer;
+		this.estate = estate;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -42,11 +48,11 @@ public class RateEstate {
 	}
 
 	public double getAdvertisementRate() {
-		return advertisementRate;
+		return estateRate;
 	}
 
 	public void setAdvertisementRate(double advertisementRate) {
-		this.advertisementRate = advertisementRate;
+		this.estateRate = advertisementRate;
 	}
 
 	public Customer getCustomer() {
@@ -56,5 +62,15 @@ public class RateEstate {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
+
+	public Estate getEstate() {
+		return estate;
+	}
+
+	public void setEstate(Estate estate) {
+		this.estate = estate;
+	}
+
+	
 	
 }
