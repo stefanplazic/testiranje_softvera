@@ -36,7 +36,7 @@ public class User {
 	@OneToMany
 	private Set<Report> reports = new HashSet<Report>();
 	
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
 	
 	@Column(nullable = true)
