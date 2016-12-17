@@ -53,7 +53,6 @@ public class UserController {
 		user.setLastName(userDTO.getLastName());
 		user.setEmail(userDTO.getEmail());
 		user.setUsername(userDTO.getUsername());
-		user.setPassword(userDTO.getPassword());
 		
 		user = service.save(user);
 		return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);	
