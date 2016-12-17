@@ -5,15 +5,15 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+
+
+import com.nekretnine.dto.EstateDTO;
 
 @Entity
 public class Estate {
@@ -33,41 +33,87 @@ public class Estate {
 	private double area;
 
 	@Column(nullable = false)
+	private String address;
+	
+	@Column(nullable = false)
+	private String city;
+	
+	@Column(nullable = false)
+	private String cityPart;
+	
+	@Column(nullable = false)
 	private String technicalEquipment;
-
-	@ElementCollection
-	@JoinColumn(name = "images")
-	private Set<String> images = new HashSet<String>();
 
 	@Column(nullable = false)
 	private String heatingSystem;
-
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "category")
-	private Category category;
 	
-	@OneToOne
-	@JoinColumn(name = "location")
-	private Location location;
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	private Advertiser owner;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "estate", targetEntity=Advertisement.class)
-	private Set<Advertisement> advertisements = new HashSet<Advertisement>();
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy="estate")
+	private Set<Image> images = new HashSet<Image>();
+	
 	
 	public Estate() {}
 
-	public Estate(Long id, String name, double price, double area, String technicalEquipment, Set<String> images,
-			String heatingSystem, Category category, Location location, Set<Advertisement> advertisements) {
+	public Estate(Long id, String name, double price, double area,String address,String city,
+			String cityPart,String technicalEquipment,
+			String heatingSystem,Advertiser owner,Set<Image> images) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.area = area;
-		this.technicalEquipment = technicalEquipment;
-		this.images = images;
+		this.address=address;
+		this.city=city;
+		this.cityPart=cityPart;
+		this.technicalEquipment = technicalEquipment;		
 		this.heatingSystem = heatingSystem;
-		this.category = category;
-		this.location = location;
-		this.advertisements = advertisements;
+		
+		this.owner=owner;
+		this.images=images;
+		
+		
+	}
+
+	public Estate(EstateDTO estate){
+		this(estate.getId(),estate.getName(),estate.getPrice(),
+				estate.getArea(),estate.getAddress(),estate.getCity(),estate.getCityPart(),estate.getTechnicalEquipment(),
+				estate.getHeatingSystem(),estate.getOwner(),estate.getImages());
+	}
+	
+	
+
+	public Set<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<Image> images) {
+		this.images = images;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCityPart() {
+		return cityPart;
+	}
+
+	public void setCityPart(String cityPart) {
+		this.cityPart = cityPart;
+	}
+
+	public Advertiser getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Advertiser owner) {
+		this.owner = owner;
 	}
 
 	public Long getId() {
@@ -110,14 +156,6 @@ public class Estate {
 		this.technicalEquipment = technicalEquipment;
 	}
 
-	public Set<String> getImages() {
-		return images;
-	}
-
-	public void setImages(Set<String> images) {
-		this.images = images;
-	}
-
 	public String getHeatingSystem() {
 		return heatingSystem;
 	}
@@ -126,28 +164,14 @@ public class Estate {
 		this.heatingSystem = heatingSystem;
 	}
 
-	public Category getCategory() {
-		return category;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-
-	public Set<Advertisement> getAdvertisements() {
-		return advertisements;
-	}
-
-	public void setAdvertisements(Set<Advertisement> advertisements) {
-		this.advertisements = advertisements;
-	}
+	
 
 }

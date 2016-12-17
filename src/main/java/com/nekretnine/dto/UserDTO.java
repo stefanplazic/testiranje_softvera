@@ -4,23 +4,26 @@ import com.nekretnine.models.User;
 
 public class UserDTO {
 
+
 	private Long id;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String username;
+	private String password;
 	
+
 	public UserDTO(Long id, String firstName, String lastName, String email,
-			String username) {
+			String username,String password) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.username = username;
+		this.password = password;
 	}
-	
-	
+
 	public UserDTO() {}
 
 
@@ -63,7 +66,14 @@ public class UserDTO {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
-	
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	
 }

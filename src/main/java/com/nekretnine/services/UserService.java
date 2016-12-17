@@ -40,4 +40,15 @@ public class UserService {
 	public User findOneByUsernameAndPassword(String username, String password) {
 		return repository.findOneByUsernameAndPassword(username, password);
 	}
+	
+	public User findByUsername(String username) {
+		return repository.findByUsername(username);
+	}
+	
+	public User findByEmail(String email) {
+		return repository.findByEmail(email);
+	}
+	public User findByVerifyCode(String verifyCode) {
+		return repository.findByVerifyCode(verifyCode);
+	}
 }
