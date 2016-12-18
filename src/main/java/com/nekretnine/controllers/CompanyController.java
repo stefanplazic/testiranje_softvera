@@ -46,10 +46,8 @@ public class CompanyController {
 			Company com = new Company(companyDTO);
 			com.setOwner(new Advertiser(owner));
 			com = service.saveCompany(com);
-			System.out.println(com);
-			System.out.println(owner.getId());
-			advertiserService.setAdvertisersCompany(com, owner.getId());
-			return new ResponseEntity<String>("The company has successfully added.", HttpStatus.OK);
+			//advertiserService.setAdvertisersCompany(com, owner.getId());
+			return new ResponseEntity<String>("The request for company has successfully added.", HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("The company with entered name and address already exists.", HttpStatus.NOT_FOUND);
 			

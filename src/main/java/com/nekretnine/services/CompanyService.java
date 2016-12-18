@@ -3,6 +3,7 @@ package com.nekretnine.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nekretnine.dto.CompanyDTO;
 import com.nekretnine.models.Company;
 import com.nekretnine.repository.CompanyRepository;
 
@@ -22,5 +23,12 @@ public class CompanyService {
 	
 	public Company findOneByNameAndAddress(String name, String address) {
 		return repository.findOneByNameAndAddress(name, address);
+	}
+
+	public int modifyCompany(CompanyDTO companyDTO) {
+		return repository.modifyCompany(companyDTO.getAddress(),
+				companyDTO.getName(), companyDTO.isOn_hold()
+				, companyDTO.getId());
+		
 	}
 }
