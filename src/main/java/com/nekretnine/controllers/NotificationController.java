@@ -18,8 +18,13 @@ public class NotificationController {
 	@Autowired
 	private NotificationService service;
 	
+	/**
+	 * mile
+	 * @param notification
+	 * @return
+	 */
 	@RequestMapping(method=RequestMethod.POST, consumes="application/json")
-	public ResponseEntity<Notification> saveUser(@RequestBody Notification notification){
+	public ResponseEntity<Notification> saveNotification(@RequestBody Notification notification){
 		
 		notification = service.saveNotification(notification);
 		return new ResponseEntity<>(notification, HttpStatus.CREATED);	

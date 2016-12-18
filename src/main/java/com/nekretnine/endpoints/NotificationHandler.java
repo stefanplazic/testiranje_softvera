@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -19,6 +20,9 @@ public class NotificationHandler extends TextWebSocketHandler {
 	@Autowired
 	private NotificationService service;
 
+	/**
+	 * mile
+	 */
 	@Override
 	public void handleTextMessage(WebSocketSession session, TextMessage message) {
 
@@ -67,6 +71,11 @@ public class NotificationHandler extends TextWebSocketHandler {
 
 	}
 
+	/**
+	 * mile
+	 * @param notifications
+	 * @return
+	 */
 	private List<NotificationDTO> createDtoList(
 			List<Notification> notifications) {
 

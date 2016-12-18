@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nekretnine.dto.CompanyDTO;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Company;
-import com.nekretnine.models.User;
+import com.nekretnine.services.AdvertiserService;
 import com.nekretnine.services.CompanyService;
-import com.nekretnine.services.UserService;
 
 @RestController
 @RequestMapping(value="api/company")
@@ -23,24 +22,36 @@ public class CompanyController {
 	private CompanyService service;
 	
 	@Autowired
-	private UserService userService;
+	private AdvertiserService advertiserService;
 	
+	/**
+	 * mile
+	 * @param companyDTO
+	 * @return
+	 */
 	@RequestMapping(method=RequestMethod.POST, consumes="application/json")
 	public ResponseEntity<String> saveCompany(@RequestBody CompanyDTO companyDTO){
-		Company company = service.findOneByNameAndAddress(companyDTO.getName(), 
-				companyDTO.getAddress());
-
-		User owner = userService.findOne(companyDTO.getOwner().getId());		
+	
+		Advertiser owner = advertiserService.findOne(companyDTO.getOwner().getId());		
 		if (owner == null) {
 			return new ResponseEntity<String>("Owner not found.", HttpStatus.NOT_FOUND);
-		}	
+		}else if(owner.getCompany()!=null){
+			return new ResponseEntity<String>("Owner is already employee.", HttpStatus.BAD_REQUEST);
+		}
+	
+		Company company = service.findOneByNameAndAddress(companyDTO.getName(), 
+				companyDTO.getAddress());
+		
 		if(company == null){
 			Company com = new Company(companyDTO);
 			com.setOwner(new Advertiser(owner));
-			service.saveCompany(com);
-			return new ResponseEntity<String>("The company has successfully added.", HttpStatus.OK);
+			com = service.saveCompany(com);
+			advertiserService.setAdvertisersCompany(com, owner.getId());
+			return new ResponseEntity<String>("The request for company has successfully added.", HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("The company with entered name and address already exists.", HttpStatus.NOT_FOUND);
 			
 	}
+	
+	
 }

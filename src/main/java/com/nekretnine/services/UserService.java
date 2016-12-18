@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.nekretnine.models.Company;
 import com.nekretnine.models.User;
 import com.nekretnine.repository.UserRepository;
 
@@ -51,4 +52,6 @@ public class UserService {
 	public User findByVerifyCode(String verifyCode) {
 		return repository.findByVerifyCode(verifyCode);
 	}
+
+
 }

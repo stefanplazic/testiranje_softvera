@@ -42,10 +42,10 @@ public class User {
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private boolean isVerified;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String verifyCode;
 
 	public User() {

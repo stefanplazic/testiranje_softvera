@@ -57,7 +57,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
-			.authorizeRequests()
+			.authorizeRequests()/*
+<<<<<<< HEAD
 
 				.antMatchers( "/api/users/login", "/api/users/register/**","/api/users/verify/**").
 					permitAll()
@@ -74,6 +75,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("api/advertiser/callToCompany","api/advertiser/acceptCall","api/advertiser/allCalls")
 				.hasAuthority("ADVERTISER");
 				//.anyRequest().authenticated();
+=======*/
+				.antMatchers( "/api/users/login", "/api/users/register")
+				.permitAll();
+					/*.and()
+			.authorizeRequests()
+				.antMatchers( "/api/administrator/register")
+				.hasAuthority("ADMINISTRATOR")
+				.anyRequest().authenticated();*/
 				
 		
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(),
