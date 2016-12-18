@@ -1,7 +1,10 @@
 package com.nekretnine.controllers;
 
+import static org.mockito.Mockito.calls;
+
 import java.security.Principal;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nekretnine.dto.AdvertiserDTO;
+import com.nekretnine.dto.CallToCompanyDTO;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.CallToCompany;
+import com.nekretnine.models.Company;
 import com.nekretnine.models.User;
 import com.nekretnine.services.AdvertiserService;
 import com.nekretnine.services.CallToCompanyService;
@@ -77,24 +82,28 @@ public class AdvertiserController {
 	
 	
 	@RequestMapping(value="/acceptCall",method=RequestMethod.POST,consumes="application/json")
-	public ResponseEntity<String> acceptCallTOCompany(@RequestBody AdvertiserDTO advertiserDTO,Principal principal){
-		User user = userService.findByUsername(advertiserDTO.getUsername());
-		if(user == null || !(user instanceof Advertiser))
-			return new ResponseEntity<>("Ther's not such advertiser" ,HttpStatus.NOT_FOUND);
+	public ResponseEntity<String> acceptCallTOCompany(@RequestBody CallToCompanyDTO callToCompanyDTO,Principal principal){
+		
+		
 		//get the username of advertiser from token
 		Advertiser me = (Advertiser) userService.findByUsername(principal.getName());
-		if(me.getCompany() == null){
-			return new ResponseEntity<>("Advertiser doesn't work in any company" ,HttpStatus.NOT_FOUND);
+		if(me.getCompany() != null){
+			return new ResponseEntity<>("Advertiser is already working in some company" ,HttpStatus.BAD_REQUEST);
 		}
+		//get all data about sender advertiser
+		CallToCompany callToCompany = callService.findOne(callToCompanyDTO.getId());
+		Advertiser sender = callToCompany.getFromAdvertiser();
+		Company company = sender.getCompany();
+		//register new advertiser as company employer
+		me.setCompany(company);
+		service.save(me);
 		
-		CallToCompany callToCompany = new CallToCompany();
-		callToCompany.setFromAdvertiser(me);
-		callToCompany.setToAdvertiser((Advertiser)user);
-		callToCompany.setDateOfCall(new Date());
-		//save call to company
-		callService.save(callToCompany);
-		
-		return new ResponseEntity<>("Request send" ,HttpStatus.OK);
+		//delete all request for qiven user
+		List<CallToCompany> companies =  callService.findByToadvrt(me);
+		for(CallToCompany callToCompan : companies){
+			callService.remove(callToCompan.getId());
+		}
+		return new ResponseEntity<>("Congretulate you are company employee!!" ,HttpStatus.OK);
 	}
 	
 	

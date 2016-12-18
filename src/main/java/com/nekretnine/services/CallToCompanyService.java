@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nekretnine.models.CallToCompany;
+import com.nekretnine.models.User;
 import com.nekretnine.repository.CallToCompanyRepository;
 
 @Service
@@ -28,5 +29,9 @@ public class CallToCompanyService {
 
 	public void remove(Long id) {
 		repository.delete(id);
+	}
+	
+	public List<CallToCompany> findByToadvrt(User toUser){
+		return repository.findByToadvrt(toUser);
 	}
 }

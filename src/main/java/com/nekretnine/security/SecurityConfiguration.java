@@ -71,7 +71,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.hasAuthority("ADMINISTRATOR")
 				.and()
 				.authorizeRequests()
-				.antMatchers("api/advertiser/callToCompany")
+				.antMatchers("api/advertiser/callToCompany","api/advertiser/acceptCall")
 				.hasAuthority("ADVERTISER")
 				.anyRequest().authenticated();
 				
