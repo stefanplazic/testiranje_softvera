@@ -71,9 +71,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.hasAuthority("ADMINISTRATOR")
 				.and()
 				.authorizeRequests()
-				.antMatchers("api/advertiser/callToCompany","api/advertiser/acceptCall")
-				.hasAuthority("ADVERTISER")
-				.anyRequest().authenticated();
+				.antMatchers("api/advertiser/callToCompany","api/advertiser/acceptCall","api/advertiser/allCalls")
+				.hasAuthority("ADVERTISER");
+				//.anyRequest().authenticated();
 				
 		
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(),

@@ -3,6 +3,7 @@ package com.nekretnine.controllers;
 import static org.mockito.Mockito.calls;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -84,7 +85,6 @@ public class AdvertiserController {
 	@RequestMapping(value="/acceptCall",method=RequestMethod.POST,consumes="application/json")
 	public ResponseEntity<String> acceptCallTOCompany(@RequestBody CallToCompanyDTO callToCompanyDTO,Principal principal){
 		
-		
 		//get the username of advertiser from token
 		Advertiser me = (Advertiser) userService.findByUsername(principal.getName());
 		if(me.getCompany() != null){
@@ -106,6 +106,19 @@ public class AdvertiserController {
 		return new ResponseEntity<>("Congretulate you are company employee!!" ,HttpStatus.OK);
 	}
 	
-	
+	@RequestMapping(value="/allCalls",method=RequestMethod.GET)
+	public ResponseEntity<List<CallToCompanyDTO>> acceptCallTOCompany(Principal principal){
+		
+		//get the username of advertiser from token
+		Advertiser me = (Advertiser) userService.findByUsername(principal.getName());
+		
+		//get all call from company
+		List<CallToCompanyDTO> callToCompaniesDTO = new ArrayList<CallToCompanyDTO>();
+		List<CallToCompany> companies =  callService.findByToadvrt(me);
+		for(CallToCompany callToCompan : companies){
+			callToCompaniesDTO.add(new CallToCompanyDTO(callToCompan));
+		}
+		return new ResponseEntity<List<CallToCompanyDTO>>(callToCompaniesDTO ,HttpStatus.FOUND);
+	}
 	
 }
