@@ -1,16 +1,21 @@
 package com.nekretnine.controllers;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nekretnine.dto.AdvertiserDTO;
 import com.nekretnine.models.Advertiser;
+import com.nekretnine.models.User;
 import com.nekretnine.services.AdvertiserService;
+import com.nekretnine.services.UserService;
 
 @RestController
 @RequestMapping(value="api/advertiser")
@@ -18,6 +23,9 @@ public class AdvertiserController {
 	
 	@Autowired
 	private AdvertiserService service;
+	
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 
@@ -32,6 +40,20 @@ public class AdvertiserController {
 		AdvertiserDTO advertiserDTO = new AdvertiserDTO(advertiser);
 		
 		return new ResponseEntity<>(advertiserDTO ,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/callToCompany",method=RequestMethod.POST,consumes="application/json")
+	public ResponseEntity<String> addToCompany(Principal principal,@RequestBody Long idAdvertiser){
+		User user = userService.findOne(idAdvertiser);
+		if(user == null || !(user instanceof Advertiser))
+			return new ResponseEntity<>("Ther's not such advertiser" ,HttpStatus.NOT_FOUND);
+		//get the username of advertiser from token
+		Advertiser me = (Advertiser) userService.findByUsername(principal.getName());
+		if(me.getCompany() == null){
+			return new ResponseEntity<>("Advertiser doesn't work in any company" ,HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>(principal.getName() ,HttpStatus.OK);
 	}
 	
 	
