@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nekretnine.models.Advertiser;
+import com.nekretnine.models.Company;
 import com.nekretnine.repository.AdvertiserRepository;
 
 @Service
@@ -14,6 +15,15 @@ public class AdvertiserService {
 	
 	public Advertiser findOne(Long id) {
 		return repository.findOne(id);
+	}
+	
+	public int setAdvertisersCompany(Company company, Long id) {
+		return repository.setAdvertisersCompany(company, id);
+		
+	}
+	
+	public Company findAdvertisersCompany(Long id) {
+		return repository.findAdvertisersCompany(id);
 	}
 
 }

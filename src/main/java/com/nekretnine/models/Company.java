@@ -105,6 +105,13 @@ public class Company {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
+	@Override
+	public String toString() {
+		return "Company [id=" + id + ", name=" + name + ", address=" + address
+				+ ", on_hold=" + on_hold + ", members=" + members + ", owner="
+				+ owner + "]";
+	}
 	
 	
 

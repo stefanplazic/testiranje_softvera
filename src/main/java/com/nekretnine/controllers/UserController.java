@@ -18,11 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nekretnine.dto.CompanyDTO;
 import com.nekretnine.dto.LoginDTO;
 import com.nekretnine.dto.UserDTO;
 import com.nekretnine.models.Advertiser;
-import com.nekretnine.models.Company;
 import com.nekretnine.models.Customer;
 import com.nekretnine.models.User;
 import com.nekretnine.models.UserAuthority;
@@ -154,60 +152,6 @@ public class UserController {
 	 * loginDTO.getPassword())); return new ResponseEntity<>(user,
 	 * HttpStatus.OK); }
 	 */
-
-	/**
-	 * mile
-	 * 
-	 * @param user_id
-	 * @return
-	 */
-	@RequestMapping(value = "/isEmployee/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Boolean> isEmployee(@PathVariable Long id) {
-		Company company = service.findAdvertisersCompany(id);
-		if (company == null) {
-			return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
-		}
-
-		return new ResponseEntity<>(true, HttpStatus.OK);
-	}
-
-	/**
-	 * mile
-	 * @param id
-	 * @param companyDTO
-	 * @return
-	 */
-	@RequestMapping(value = "/setAdvertisersCompany/{id}", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> setAdvertisersCompany(@PathVariable Long id,
-			@RequestBody CompanyDTO companyDTO) {
-
-		Company company = companyService.findOne(companyDTO.getId());
-		if (company == null) {
-			return new ResponseEntity<>("Company doesn't exist.",
-					HttpStatus.NOT_FOUND);
-		}
-		service.setAdvertisersCompany(new Company(companyDTO), id);
-		return new ResponseEntity<>(
-				"Company is succesfully added to advertiser", HttpStatus.OK);
-	}
-
-	/**
-	 * mile
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping(value = "/findAdvertisersCompany/{id}", method = RequestMethod.GET)
-	public ResponseEntity<CompanyDTO> findAdvertisersCompany(
-			@PathVariable Long id) {
-
-		Company company = service.findAdvertisersCompany(id);
-		if (company == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-
-		return new ResponseEntity<>(new CompanyDTO(company), HttpStatus.OK);
-	}
 
 	/* verify email */
 	@RequestMapping(value = "/verify/{verifyCode}", method = RequestMethod.GET)

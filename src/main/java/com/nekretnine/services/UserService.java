@@ -53,13 +53,5 @@ public class UserService {
 		return repository.findByVerifyCode(verifyCode);
 	}
 
-	public Company findAdvertisersCompany(Long id) {
-		return repository.findAdvertisersCompany(id);
-	}
-
-	public int setAdvertisersCompany(Company company, Long id) {
-		return repository.setAdvertisersCompany(company, id);
-		
-	}
 
 }
