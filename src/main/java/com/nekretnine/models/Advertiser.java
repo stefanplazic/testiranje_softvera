@@ -22,16 +22,26 @@ public class Advertiser extends User{
 	@OneToMany(mappedBy="advertiserRate", fetch = FetchType.LAZY)
 	private Set<RateAdvertiser> rates  = new HashSet<RateAdvertiser>();
 	
+	@OneToMany(mappedBy="fromadvrt", fetch = FetchType.LAZY)
+	private Set<CallToCompany> sendCompanyCalls  = new HashSet<CallToCompany>();
+	
+	@OneToMany(mappedBy="toadvrt", fetch = FetchType.LAZY)
+	private Set<CallToCompany> receivedCompanyCalls  = new HashSet<CallToCompany>();
+	
 
 	public Advertiser() {
 		super();
 	}
 
-	public Advertiser(Company company, Set<Advertisement> advertisements, Set<RateAdvertiser> rates) {
+
+	public Advertiser(Company company, Set<Advertisement> advertisements, Set<RateAdvertiser> rates,
+			Set<CallToCompany> sendCompanyCalls, Set<CallToCompany> receivedCompanyCalls) {
 		super();
 		this.company = company;
 		this.advertisements = advertisements;
 		this.rates = rates;
+		this.sendCompanyCalls = sendCompanyCalls;
+		this.receivedCompanyCalls = receivedCompanyCalls;
 	}
 
 	public Advertiser(User owner) {
@@ -64,7 +74,25 @@ public class Advertiser extends User{
 		this.rates = rates;
 	}
 
-	
-	
-	
+
+	public Set<CallToCompany> getSendCompanyCalls() {
+		return sendCompanyCalls;
+	}
+
+
+	public void setSendCompanyCalls(Set<CallToCompany> sendCompanyCalls) {
+		this.sendCompanyCalls = sendCompanyCalls;
+	}
+
+
+	public Set<CallToCompany> getReceivedCompanyCalls() {
+		return receivedCompanyCalls;
+	}
+
+
+	public void setReceivedCompanyCalls(Set<CallToCompany> receivedCompanyCalls) {
+		this.receivedCompanyCalls = receivedCompanyCalls;
+	}
+
+
 }
