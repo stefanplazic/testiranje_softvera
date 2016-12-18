@@ -50,19 +50,5 @@ public class CompanyController {
 			
 	}
 	
-	/**
-	 * mile
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<CompanyDTO> getUserCompany(@PathVariable Long id){
-		Company company = service.findOne(id);
-		if(company == null){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		
-		return new ResponseEntity<>(new CompanyDTO(company), HttpStatus.OK);
-	}
 	
 }

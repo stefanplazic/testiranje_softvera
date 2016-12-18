@@ -3,7 +3,6 @@ package com.nekretnine.dto;
 import java.util.Date;
 
 import com.nekretnine.models.Notification;
-import com.nekretnine.models.User;
 
 public class NotificationDTO {
 

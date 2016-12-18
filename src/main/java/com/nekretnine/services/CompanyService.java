@@ -13,7 +13,7 @@ public class CompanyService {
 	CompanyRepository repository;
 	
 	public Company findOne(long id){
-		return repository.getOne(id);
+		return repository.findOne(id);
 	}
 	
 	public Company saveCompany(Company company){
