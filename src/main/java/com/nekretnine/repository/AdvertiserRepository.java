@@ -18,4 +18,5 @@ public interface AdvertiserRepository extends JpaRepository<Advertiser, Long>{
 	@Modifying(clearAutomatically = true)
 	@Query("update Advertiser a set a.company = ?1 where a.id = ?2")
 	int setAdvertisersCompany(Company company, Long id);
+
 }

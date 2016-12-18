@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nekretnine.dto.CompanyDTO;
 import com.nekretnine.dto.UserDTO;
 import com.nekretnine.models.Administrator;
+import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Moderator;
 import com.nekretnine.models.Notification;
 import com.nekretnine.models.User;
 import com.nekretnine.models.UserAuthority;
 import com.nekretnine.repository.AuthorityRepository;
 import com.nekretnine.repository.UserAuthorityRepository;
+import com.nekretnine.services.AdminService;
+import com.nekretnine.services.AdvertiserService;
 import com.nekretnine.services.CompanyService;
 import com.nekretnine.services.MyMailSenderService;
 import com.nekretnine.services.NotificationService;
@@ -36,7 +39,13 @@ public class AdministratorController {
 	private UserService userService;
 	
 	@Autowired
+	private AdminService adminService;
+	
+	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
+	private AdvertiserService advertiserService;
 	
 	@Autowired
 	private NotificationService notificationService;
@@ -112,7 +121,7 @@ public class AdministratorController {
 	@RequestMapping(value = "/acceptCompany/{adminId}", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> acceptCompany(@PathVariable Long adminId, @RequestBody CompanyDTO companyDTO){
 		//modify on_hold to false and save
-		User admin = userService.findOne(adminId);
+		Administrator admin = adminService.findOne(adminId);
 		if(admin == null){
 			return new ResponseEntity<>("Admin not found. ", HttpStatus.NOT_FOUND);
 		}
@@ -131,6 +140,33 @@ public class AdministratorController {
 		notification.setFromUser(admin);
 		notificationService.saveNotification(notification);
 		return new ResponseEntity<>("Succes accept company", HttpStatus.OK);
+		
+		
+	}
+	
+	@RequestMapping(value = "/declineCompany/{adminId}", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<String> declineCompany(@PathVariable Long adminId, @RequestBody CompanyDTO companyDTO){
+		//modify on_hold to false and save
+		Administrator admin = adminService.findOne(adminId);
+		if(admin == null){
+			return new ResponseEntity<>("Admin not found. ", HttpStatus.NOT_FOUND);
+		}
+		Advertiser advertiser = companyDTO.getOwner();
+		advertiserService.setAdvertisersCompany(null, advertiser.getId());
+		companyService.deleteCompanyById(companyDTO.getId());
+		
+		//send decline notification to owner
+		Notification notification = new Notification();
+		notification.setnType("info");
+		notification.setToUser(companyDTO.getOwner());
+		notification.setMade(new Date());
+		notification.setStatus("NEW");
+		notification.setSeen(false);
+		notification.setText("Administrator decline registration of "
+				+ "company "+companyDTO.getName());
+		notification.setFromUser(admin);
+		notificationService.saveNotification(notification);
+		return new ResponseEntity<>("Succes decline company", HttpStatus.OK);
 		
 		
 	}

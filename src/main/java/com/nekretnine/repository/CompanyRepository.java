@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nekretnine.dto.CompanyDTO;
-import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Company;
 
 public interface CompanyRepository extends JpaRepository<Company, Long> {
@@ -18,6 +16,10 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 	@Query("update Company c set c.address = ?1, c.name = ?2, c.on_hold = ?3"
 			+ " where c.id = ?4")
 	int modifyCompany(String address, String name, boolean on_hold, long id);
-	
 
+	
+	@Modifying
+	@Transactional
+	@Query("delete from Company c where c.id = ?1")
+	void deleteCompanyById(Long id);
 }

@@ -31,4 +31,10 @@ public class CompanyService {
 				, companyDTO.getId());
 		
 	}
+
+	public void deleteCompanyById(long id) {
+		repository.deleteCompanyById(id);
+		
+	}
+
 }

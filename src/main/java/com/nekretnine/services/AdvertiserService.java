@@ -26,4 +26,5 @@ public class AdvertiserService {
 		return repository.findAdvertisersCompany(id);
 	}
 
+
 }
