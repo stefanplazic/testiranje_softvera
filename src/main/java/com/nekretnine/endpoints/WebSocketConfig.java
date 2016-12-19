@@ -13,10 +13,16 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	@Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(notificationHandler(), "/notification").withSockJS();
+		registry.addHandler(adminDashboardHandler(), "/adminDashboard").withSockJS();
     }
 
     @Bean
     public WebSocketHandler notificationHandler() {
         return new NotificationHandler();
+    }
+    
+    @Bean
+    public WebSocketHandler adminDashboardHandler() {
+        return new AdminDashboardHandler();
     }
 }

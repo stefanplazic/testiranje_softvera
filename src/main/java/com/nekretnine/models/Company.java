@@ -29,7 +29,10 @@ public class Company {
 	private String address;
 	
 	@Column(nullable = false)
-	private boolean on_hold;
+	private boolean onHold;
+	
+	@Column(nullable = true)
+	private String status;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER,mappedBy="company")
 	private Set<Advertiser> members = new HashSet<Advertiser>();
@@ -40,22 +43,26 @@ public class Company {
 	
 	public Company() {}
 
-	public Company(Long id, String name, String address, boolean on_hold,
-			Set<Advertiser> members, Advertiser owner) {
+	public Company(Long id, String name, String address,
+			String status, Set<Advertiser> members, Advertiser owner) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
-		this.on_hold = on_hold;
+		this.onHold = true;
+		this.status = status;
 		this.members = members;
 		this.owner = owner;
 	}
+
+
 
 	public Company(CompanyDTO companyDTO) {
 		id = companyDTO.getId();
 		name = companyDTO.getName();
 		address = companyDTO.getAddress();
-		on_hold = companyDTO.isOn_hold();
+		onHold = true;
+		status = "NEW";
 	}
 
 	public Long getId() {
@@ -74,12 +81,12 @@ public class Company {
 		this.name = name;
 	}
 
-	public boolean isOn_hold() {
-		return on_hold;
+	public boolean isonHold() {
+		return onHold;
 	}
 
-	public void setOn_hold(boolean on_hold) {
-		this.on_hold = on_hold;
+	public void setonHold(boolean onHold) {
+		this.onHold = onHold;
 	}
 
 	public Set<Advertiser> getMembers() {
@@ -106,10 +113,18 @@ public class Company {
 		this.address = address;
 	}
 
+	public String isStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "Company [id=" + id + ", name=" + name + ", address=" + address
-				+ ", on_hold=" + on_hold + ", members=" + members + ", owner="
+				+ ", onHold=" + onHold + ", members=" + members + ", owner="
 				+ owner + "]";
 	}
 	

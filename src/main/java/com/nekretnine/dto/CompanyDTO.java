@@ -9,22 +9,18 @@ public class CompanyDTO {
 	private String name;
 	private String address;
 	private Advertiser owner;
-	private boolean on_hold;
 	
 	public CompanyDTO(){}
 	
-	public CompanyDTO(long id, String name, String address,
-			boolean on_hold) {
+	public CompanyDTO(long id, String name, String address) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
-		this.on_hold = on_hold;
 	}
 
 	public CompanyDTO(Company comp){
-		this(comp.getId(), comp.getName(), comp.getAddress(),
-				comp.isOn_hold() );
+		this(comp.getId(), comp.getName(), comp.getAddress());
 	}
 
 	public long getId() {
@@ -57,14 +53,6 @@ public class CompanyDTO {
 
 	public void setOwner(Advertiser owner) {
 		this.owner = owner;
-	}
-
-	public boolean isOn_hold() {
-		return on_hold;
-	}
-
-	public void setOn_hold(boolean on_hold) {
-		this.on_hold = on_hold;
 	}
 	
 	

@@ -1,5 +1,7 @@
 package com.nekretnine.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +26,32 @@ public class CompanyService {
 	public Company findOneByNameAndAddress(String name, String address) {
 		return repository.findOneByNameAndAddress(name, address);
 	}
+	
+	public List<Company> findAllByOnHold(boolean on_hold) {
+		return repository.findAllByOnHold(on_hold);
+	}
 
 	public int modifyCompany(CompanyDTO companyDTO) {
 		return repository.modifyCompany(companyDTO.getAddress(),
-				companyDTO.getName(), companyDTO.isOn_hold()
-				, companyDTO.getId());
-		
+				companyDTO.getName()
+				, companyDTO.getId());	
 	}
 
 	public void deleteCompanyById(long id) {
 		repository.deleteCompanyById(id);
+		
+	}
+	
+	public int setStatusToAllCompanys(String status) {
+		return repository.setStatusToAllCompanys(status);	
+	}
+
+	public List<Company> findAllByStatus(String status) {
+		return repository.findAllByStatus(status);
+	}
+
+	public int setOnHold(boolean onHold, long id) {
+		return repository.setOnHold(onHold, id);
 		
 	}
 

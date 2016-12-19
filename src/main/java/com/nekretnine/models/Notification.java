@@ -39,7 +39,7 @@ public class Notification {
 	public Notification(){}
 
 	public Notification(Long id, String text, String nType, User toUser,
-			User fromUser, Date made, boolean seen, String status) {
+			User fromUser, Date made, boolean seen) {
 		super();
 		this.id = id;
 		this.text = text;
@@ -48,7 +48,7 @@ public class Notification {
 		this.fromUser = fromUser;
 		this.made = made;
 		this.seen = seen;
-		this.status = status;
+		this.status = "NEW";
 	}
 
 	public Long getId() {

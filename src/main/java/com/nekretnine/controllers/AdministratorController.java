@@ -120,15 +120,16 @@ public class AdministratorController {
 	 */
 	@RequestMapping(value = "/acceptCompany/{adminId}", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> acceptCompany(@PathVariable Long adminId, @RequestBody CompanyDTO companyDTO){
-		//modify on_hold to false and save
+		// check if administrator exists
 		Administrator admin = adminService.findOne(adminId);
 		if(admin == null){
 			return new ResponseEntity<>("Admin not found. ", HttpStatus.NOT_FOUND);
 		}
-		companyDTO.setOn_hold(false);
-		companyService.modifyCompany(companyDTO);
 		
-		//send succes notification to owner
+		// modify onHold to false and save in database
+		companyService.setOnHold(false, companyDTO.getId());
+		
+		// send success notification to owner
 		Notification notification = new Notification();
 		notification.setnType("info");
 		notification.setToUser(companyDTO.getOwner());
@@ -146,11 +147,14 @@ public class AdministratorController {
 	
 	@RequestMapping(value = "/declineCompany/{adminId}", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> declineCompany(@PathVariable Long adminId, @RequestBody CompanyDTO companyDTO){
-		//modify on_hold to false and save
+		
+		// check if administrator exists
 		Administrator admin = adminService.findOne(adminId);
 		if(admin == null){
 			return new ResponseEntity<>("Admin not found. ", HttpStatus.NOT_FOUND);
 		}
+		
+		// set advertiser's company to null, and delete company (request)
 		Advertiser advertiser = companyDTO.getOwner();
 		advertiserService.setAdvertisersCompany(null, advertiser.getId());
 		companyService.deleteCompanyById(companyDTO.getId());

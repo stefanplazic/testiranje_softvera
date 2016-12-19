@@ -12,12 +12,11 @@ public class NotificationDTO {
 	private UserDTO fromUser;
 	private Date made;
 	private boolean seen;
-	private String status;// old or new
 	
 	public NotificationDTO(){}
 
 	public NotificationDTO(Long id, String text, String nType, UserDTO fromUser,
-			Date made, boolean seen, String status) {
+			Date made, boolean seen) {
 		super();
 		this.id = id;
 		this.text = text;
@@ -25,7 +24,6 @@ public class NotificationDTO {
 		this.fromUser = fromUser;
 		this.made = made;
 		this.seen = seen;
-		this.status = status;
 	}
 	
 	public NotificationDTO(Notification notification) {
@@ -36,7 +34,6 @@ public class NotificationDTO {
 		this.fromUser = new UserDTO(notification.getFromUser());
 		this.made = notification.getMade();
 		this.seen = notification.isSeen();
-		this.status = notification.getStatus();
 	}	
 
 	public Long getId() {
@@ -85,14 +82,6 @@ public class NotificationDTO {
 
 	public void setSeen(boolean seen) {
 		this.seen = seen;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 	
 	
