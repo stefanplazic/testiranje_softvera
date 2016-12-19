@@ -54,6 +54,16 @@ public class AdvertiserController {
 		return new ResponseEntity<>(advertiserDTO ,HttpStatus.OK);
 	}
 	
+	@RequestMapping(value="/myprofile",method=RequestMethod.GET)
+	public ResponseEntity<AdvertiserDTO> getMyProfile(Principal principal){
+		
+		//get my user credentials
+		User me = userService.findByUsername(principal.getName());	
+		AdvertiserDTO advertiserDTO = new AdvertiserDTO((Advertiser)me);
+		
+		return new ResponseEntity<>(advertiserDTO ,HttpStatus.OK);
+	}
+	
 	/**
 	 * 
 	 * @param advertiserDTO potencional worker for our company
@@ -119,6 +129,23 @@ public class AdvertiserController {
 			callToCompaniesDTO.add(new CallToCompanyDTO(callToCompan));
 		}
 		return new ResponseEntity<List<CallToCompanyDTO>>(callToCompaniesDTO ,HttpStatus.FOUND);
+	}
+	
+	@RequestMapping(value="/unemployed",method=RequestMethod.GET)
+	public ResponseEntity<List<AdvertiserDTO>> getUnemployed(){
+		
+		//put all unemployed users in this list
+		List<AdvertiserDTO> advertiserDTOs = new ArrayList<AdvertiserDTO>();
+		
+		//get all advertisers
+		List<Advertiser> advertisers =  service.findAll();
+		for(Advertiser advrt : advertisers){
+			//find only them with out company
+			if(advrt.getCompany()==null)
+				advertiserDTOs.add(new AdvertiserDTO(advrt));
+		}
+		
+		return new ResponseEntity<List<AdvertiserDTO>>(advertiserDTOs ,HttpStatus.FOUND);
 	}
 	
 }

@@ -57,14 +57,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
-			.authorizeRequests()/*
-<<<<<<< HEAD
+			.authorizeRequests()
+
 
 				.antMatchers( "/api/users/login", "/api/users/register/**","/api/users/verify/**").
-					permitAll()
-					.and()
+					permitAll();
+					/*.and()
 				.authorizeRequests()
-				.antMatchers( "/api/advertiser/profile"). //******OVO CE SE KORISTITI AKO ZELIMO SAMO ODREDJENOJ ULOZI DA DOPUSTIMO PRISTUP
+				.antMatchers( "/api/advertiser/profile/","/api/customer/profile/"). 
 				hasAuthority("CUSTOMER|ADVERTISER")			
 				.and()
 			.authorizeRequests()
@@ -72,13 +72,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.hasAuthority("ADMINISTRATOR")
 				.and()
 				.authorizeRequests()
-				.antMatchers("api/advertiser/callToCompany","api/advertiser/acceptCall","api/advertiser/allCalls")
-				.hasAuthority("ADVERTISER");
-				//.anyRequest().authenticated();
-=======*/
-				.antMatchers( "/api/users/login", "/api/users/register")
-				.permitAll();
-					/*.and()
+				.antMatchers("api/advertiser/callToCompany","api/advertiser/acceptCall","api/advertiser/allCalls","api/advertiser/myprofile","/api/advertiser/unemployed")
+				.hasAuthority("ADVERTISER")				
+				.and()
+				.authorizeRequests()
+				.antMatchers("/api/customer/myprofile")
+				.hasAuthority("CUSTOMER")
+				.and()
 			.authorizeRequests()
 				.antMatchers( "/api/administrator/register")
 				.hasAuthority("ADMINISTRATOR")
