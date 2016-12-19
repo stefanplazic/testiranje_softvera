@@ -64,7 +64,7 @@ public class Advertisement {
 	
 	public Advertisement(AdvertisementDTO a){
 		this(a.getId(),a.getPublicationDate(),a.getExpiryDate()
-				,a.getState(),a.getAdvertiser(),a.getEstate());
+				,a.getState(),new Advertiser(a.getAdvertiser()),new Estate(a.getEstate()));
 	}
 
 	public Long getId() {

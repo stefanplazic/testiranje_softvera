@@ -77,6 +77,31 @@ public class AdvertisementController {
 		return new ResponseEntity<String>("brisnuto",HttpStatus.OK);
 	}
 	
+	//za sve
+	@RequestMapping(value="/{advert_id}",method=RequestMethod.GET)
+	public ResponseEntity<AdvertisementDTO> get_advertisement(Principal principal,@PathVariable Long advert_id ){
+		
+		Advertisement adv = advertisementService.findOne(advert_id);
+		
+		//da li reklama postoji
+		if(adv==null) return new ResponseEntity<>(HttpStatus.OK);
+		
+		AdvertisementDTO advertDTO = new AdvertisementDTO(adv);
+		
+		
+		//neregistrovan (ogranicen prikaz)
+		if(principal==null){
+			advertDTO.setAdvertiser(null);
+			advertDTO.getEstate().setAddress(null);
+			
+		//registrovan(potpun prikaz)
+		}else{
+			
+		}
+		
+		
+		return new ResponseEntity<>(advertDTO,HttpStatus.OK);
+	}
 	
 
 }

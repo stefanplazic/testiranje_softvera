@@ -22,8 +22,8 @@ public class AdvertisementDTO {
 	private Date publicationDate;
 	private Date expiryDate;
 	private State state;
-	private Advertiser advertiser;
-	private Estate estate;
+	private AdvertiserDTO advertiser;
+	private EstateDTO estate;
 	
 	
 	public AdvertisementDTO() {
@@ -31,7 +31,7 @@ public class AdvertisementDTO {
 	}
 
 	public AdvertisementDTO(Long id, Date publicationDate, Date expiryDate,
-			State state, Advertiser advertiser, Estate estate) {
+			State state, AdvertiserDTO advertiser, EstateDTO estate) {
 		super();
 		this.id = id;
 		this.publicationDate = publicationDate;
@@ -47,8 +47,8 @@ public class AdvertisementDTO {
 		this.publicationDate = advertisement.getPublicationDate();
 		this.expiryDate = advertisement.getExpiryDate();
 		this.state = advertisement.getState();
-		this.advertiser = advertisement.getAdvertiser();
-		this.estate = advertisement.getEstate();
+		this.advertiser =new AdvertiserDTO(advertisement.getAdvertiser());
+		this.estate = new EstateDTO(advertisement.getEstate());
 	}
 	
 	public Long getId() {
@@ -83,19 +83,19 @@ public class AdvertisementDTO {
 		this.state = state;
 	}
 
-	public Advertiser getAdvertiser() {
+	public AdvertiserDTO getAdvertiser() {
 		return advertiser;
 	}
 
-	public void setAdvertiser(Advertiser advertiser) {
+	public void setAdvertiser(AdvertiserDTO advertiser) {
 		this.advertiser = advertiser;
 	}
 
-	public Estate getEstate() {
+	public EstateDTO getEstate() {
 		return estate;
 	}
 
-	public void setEstate(Estate estate) {
+	public void setEstate(EstateDTO estate) {
 		this.estate = estate;
 	}
 

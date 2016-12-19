@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.nekretnine.dto.AdvertiserDTO;
+
 @Entity
 public class Advertiser extends User{
 
@@ -46,6 +48,11 @@ public class Advertiser extends User{
 		this.receivedCompanyCalls = receivedCompanyCalls;
 	}
 
+	public Advertiser(AdvertiserDTO a){
+		super();
+		
+	}
+	
 	public Advertiser(User owner) {
 		super(owner);
 	}

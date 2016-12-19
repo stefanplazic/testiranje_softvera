@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.nekretnine.dto.ImageDTO;
+
 @Entity
 public class Image {
 
@@ -30,6 +32,10 @@ public class Image {
 		this.id=id;
 		this.url=url;
 		this.estate=estate;
+	}
+	
+	public Image(ImageDTO img){
+		this(img.getId(),img.getUrl(),null);
 	}
 
 	public Long getId() {
