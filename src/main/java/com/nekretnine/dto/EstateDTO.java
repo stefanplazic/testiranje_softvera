@@ -1,5 +1,6 @@
 package com.nekretnine.dto;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.nekretnine.models.Advertiser;
@@ -18,7 +19,7 @@ public class EstateDTO {
 	private String technicalEquipment;
 	private String heatingSystem;
 	private Advertiser owner;
-	private Set<Image> images;
+	private Set<ImageDTO> images;
 
 	
 	
@@ -37,15 +38,16 @@ public class EstateDTO {
 		this.cityPart=cityPart;
 		this.technicalEquipment=technicalEquipment;
 		this.heatingSystem=heatingSystem;
+	//	this.images=images;
 	}
 	
 
 
-	public Set<Image> getImages() {
+	public Set<ImageDTO> getImages() {
 		return images;
 	}
 
-	public void setImages(Set<Image> images) {
+	public void setImages(Set<ImageDTO> images) {
 		this.images = images;
 	}
 
@@ -69,6 +71,10 @@ public class EstateDTO {
 		this(estate.getId(),estate.getName(),estate.getPrice(),
 				estate.getArea(),estate.getAddress(),estate.getCity(),estate.getCityPart(),
 				estate.getTechnicalEquipment(),estate.getHeatingSystem());
+		this.images=new HashSet<ImageDTO>();
+		for(Image i : estate.getImages()){
+			this.images.add(new ImageDTO(i));
+		}
 	}
 
 	public String getCity() {

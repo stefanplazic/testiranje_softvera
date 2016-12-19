@@ -82,7 +82,7 @@ public class Estate {
 	public Estate(EstateDTO estate){
 		this(estate.getId(),estate.getName(),estate.getPrice(),
 				estate.getArea(),estate.getAddress(),estate.getCity(),estate.getCityPart(),estate.getTechnicalEquipment(),
-				estate.getHeatingSystem(),estate.getOwner(),estate.getImages());
+				estate.getHeatingSystem(),estate.getOwner(),null);
 	}
 	
 	public Set<Image> getImages() {
