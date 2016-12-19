@@ -1,8 +1,11 @@
 package com.nekretnine.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nekretnine.dto.AdvertEstateDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertisement.State;
 import com.nekretnine.repository.AdvertisementRepository;
@@ -24,6 +27,10 @@ public class AdvertisementService {
 	
 	public void setState(State state,Long id){
 		repository.setState(state,id);
+	}
+	
+	public List<AdvertEstateDTO> findAdvertisements(String query) {
+		return repository.findAdvertisements(query);
 	}
 	
 }

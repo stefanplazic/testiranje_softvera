@@ -73,6 +73,7 @@ public class ApplicationLoader implements ApplicationRunner {
 			admin.setEmail("admin");
 			admin.setUsername("admin");
 			admin.setPassword(encoder.encode("admin"));
+			admin.setVerifyCode("admin needs no code");
 			admin.setVerified(true);
 			userRepository.save(admin);
 			
