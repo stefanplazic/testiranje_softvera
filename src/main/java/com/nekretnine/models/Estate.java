@@ -85,8 +85,6 @@ public class Estate {
 				estate.getHeatingSystem(),estate.getOwner(),estate.getImages());
 	}
 	
-	
-
 	public Set<Image> getImages() {
 		return images;
 	}

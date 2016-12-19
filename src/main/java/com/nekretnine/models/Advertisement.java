@@ -91,8 +91,6 @@ public class Advertisement {
 		this.expiryDate = expiryDate;
 	}
 
-	
-
 	public State getState() {
 		return state;
 	}
