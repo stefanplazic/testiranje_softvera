@@ -159,6 +159,7 @@ public class AdvertisementController {
 		if(principal==null){
 			advertDTO.setAdvertiser(null);
 			advertDTO.getEstate().setAddress(null);
+			advertDTO.getEstate().setOwner(null);
 			
 		//registrovan(potpun prikaz)
 		}else{
