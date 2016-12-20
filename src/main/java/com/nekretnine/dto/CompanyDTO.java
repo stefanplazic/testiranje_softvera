@@ -1,6 +1,5 @@
 package com.nekretnine.dto;
 
-import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Company;
 
 public class CompanyDTO {
@@ -8,7 +7,7 @@ public class CompanyDTO {
 	private long id;
 	private String name;
 	private String address;
-	private Advertiser owner;
+	private AdvertiserDTO owner;
 	
 	public CompanyDTO(){}
 	
@@ -21,6 +20,7 @@ public class CompanyDTO {
 
 	public CompanyDTO(Company comp){
 		this(comp.getId(), comp.getName(), comp.getAddress());
+		this.owner = new AdvertiserDTO(comp.getOwner());
 	}
 
 	public long getId() {
@@ -47,11 +47,11 @@ public class CompanyDTO {
 		this.address = address;
 	}
 
-	public Advertiser getOwner() {
+	public AdvertiserDTO getOwner() {
 		return owner;
 	}
 
-	public void setOwner(Advertiser owner) {
+	public void setOwner(AdvertiserDTO owner) {
 		this.owner = owner;
 	}
 	

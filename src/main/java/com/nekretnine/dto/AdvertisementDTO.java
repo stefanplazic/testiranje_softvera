@@ -2,8 +2,6 @@ package com.nekretnine.dto;
 
 import java.util.Date;
 
-import com.nekretnine.models.Advertiser;
-import com.nekretnine.models.Estate;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertisement.State;
 

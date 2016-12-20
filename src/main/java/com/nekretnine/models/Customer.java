@@ -23,6 +23,9 @@ public class Customer extends User {
 	
 	@OneToMany(mappedBy="soldto", fetch = FetchType.LAZY)
 	private Set<Advertisement> boughtAdvertisement  = new HashSet<Advertisement>();
+
+	@OneToMany(mappedBy="customer", fetch = FetchType.LAZY)
+	private Set<Favourites> favourites  = new HashSet<Favourites>();
 	
 	public Customer() {
 		super();

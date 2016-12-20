@@ -18,10 +18,9 @@ public class EstateService {
 	
 	public Estate save(Estate e){
 		return repository.save(e);
-		
 	}
 	
-	public Estate findOne(Long id) {
+	public Estate findOne(Long id){
 		return repository.findOne(id);
 	}
 

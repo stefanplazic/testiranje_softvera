@@ -2,7 +2,6 @@ package com.nekretnine.dto;
 
 import java.util.Date;
 
-import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.CallToCompany;
 
 public class CallToCompanyDTO {

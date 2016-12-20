@@ -1,7 +1,5 @@
 package com.nekretnine.controllers;
 
-import static org.mockito.Mockito.calls;
-
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nekretnine.dto.AdvertiserDTO;
 import com.nekretnine.dto.CallToCompanyDTO;
+import com.nekretnine.dto.CompanyDTO;
 import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertisement.State;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.CallToCompany;
 import com.nekretnine.models.Company;
-import com.nekretnine.models.Customer;
 import com.nekretnine.models.User;
 import com.nekretnine.services.AdvertiserService;
 import com.nekretnine.services.CallToCompanyService;
@@ -95,6 +93,36 @@ public class AdvertiserController {
 		return new ResponseEntity<>("Request send" ,HttpStatus.OK);
 	}
 	
+	/**
+	 * @author Miodrag Vilotijević
+	 * @param  principal - current logged user
+	 * @return If logged user is employed for any company, return true. 
+	 * 		   Otherwise, return false.
+	 */
+	@RequestMapping(value="/isEmployee",method=RequestMethod.GET)
+	public ResponseEntity<Boolean> isEmployee(Principal principal){
+		Advertiser me = (Advertiser) userService.findByUsername(principal.getName());
+		if(me.getCompany() == null){
+			return new ResponseEntity<>(false, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(true, HttpStatus.OK);
+	}
+	
+	/**
+	 * @author Miodrag Vilotijević
+	 * @param  principal - current logged user
+	 * @return
+	 */
+	@RequestMapping(value="/getCompany",method=RequestMethod.GET)
+	public ResponseEntity<CompanyDTO> getCompany(Principal principal){
+		Advertiser me = (Advertiser) userService.findByUsername(principal.getName());
+		CompanyDTO companyDTO = new CompanyDTO(me.getCompany());
+		companyDTO.setOwner(new AdvertiserDTO(me));
+		if(me.getCompany() != null){
+			return new ResponseEntity<>(companyDTO, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 	
 	@RequestMapping(value="/acceptCall",method=RequestMethod.POST,consumes="application/json")
 	public ResponseEntity<String> acceptCallTOCompany(@RequestBody CallToCompanyDTO callToCompanyDTO,Principal principal){

@@ -9,10 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
 
 import com.nekretnine.dto.EstateDTO;
 
@@ -57,6 +55,9 @@ public class Estate {
 	@OneToMany(mappedBy="estate", fetch = FetchType.LAZY)
 	private Set<RateEstate> rates  = new HashSet<RateEstate>();
 	
+	@OneToMany(mappedBy="estate", fetch = FetchType.LAZY)
+	private Set<Favourites> advertiserFav  = new HashSet<Favourites>();
+	
 	public Estate() {}
 
 	public Estate(Long id, String name, double price, double area,String address,String city,
@@ -80,9 +81,17 @@ public class Estate {
 	}
 
 	public Estate(EstateDTO estate){
-		this(estate.getId(),estate.getName(),estate.getPrice(),
-				estate.getArea(),estate.getAddress(),estate.getCity(),estate.getCityPart(),estate.getTechnicalEquipment(),
-				estate.getHeatingSystem(),estate.getOwner(),null);
+
+		this.id = estate.getId();
+		this.name = estate.getName();
+		this.price = estate.getPrice();
+		this.area = estate.getArea();
+		this.address = estate.getAddress();
+		this.city = estate.getCity();
+		this.cityPart = estate.getCityPart();
+		this.technicalEquipment = estate.getTechnicalEquipment();
+		this.heatingSystem = estate.getHeatingSystem();
+		this.images = null;
 	}
 	
 	public Set<Image> getImages() {
