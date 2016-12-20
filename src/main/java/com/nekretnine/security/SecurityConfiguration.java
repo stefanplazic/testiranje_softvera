@@ -64,7 +64,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					permitAll();
 					/*.and()
 				.authorizeRequests()
-				.antMatchers( "/api/advertiser/profile/","/api/customer/profile/"). 
+				.antMatchers( "/api/advertiser/profile/","/api/customer/profile/","api/account/addMoney/**","api/account/config","api/account/get"). 
 				hasAuthority("CUSTOMER|ADVERTISER")			
 				.and()
 			.authorizeRequests()
@@ -72,11 +72,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.hasAuthority("ADMINISTRATOR")
 				.and()
 				.authorizeRequests()
-				.antMatchers("api/advertiser/callToCompany","api/advertiser/acceptCall","api/advertiser/allCalls","api/advertiser/myprofile","/api/advertiser/unemployed")
+				.antMatchers("api/advertiser/callToCompany","api/advertiser/acceptCall",
+						"api/advertiser/allCalls","api/advertiser/myprofile","/api/advertiser/unemployed","/api/advertiser/soldEstates")
 				.hasAuthority("ADVERTISER")				
 				.and()
 				.authorizeRequests()
-				.antMatchers("/api/customer/myprofile")
+				.antMatchers("/api/customer/myprofile","/api/customer/myEstates")
 				.hasAuthority("CUSTOMER")
 				.and()
 			.authorizeRequests()

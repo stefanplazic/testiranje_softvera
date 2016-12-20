@@ -7,6 +7,7 @@ import com.nekretnine.models.RateAdvertiser;
 
 public class AdvertiserDTO {
 	
+	private Long id;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -17,6 +18,7 @@ public class AdvertiserDTO {
 	public AdvertiserDTO() {}
 	
 	public AdvertiserDTO(Advertiser advertiser) {
+		this.id = advertiser.getId();
 		this.firstName = advertiser.getFirstName();
 		this.lastName = advertiser.getLastName();
 		this.email = advertiser.getEmail();
@@ -77,6 +79,14 @@ public class AdvertiserDTO {
 
 	public void setAvRate(double avRate) {
 		this.avRate = avRate;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	

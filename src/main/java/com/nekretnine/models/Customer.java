@@ -21,17 +21,22 @@ public class Customer extends User {
 	@OneToMany(mappedBy="customAdv", fetch = FetchType.LAZY)
 	private Set<RateAdvertiser> advRates  = new HashSet<RateAdvertiser>();
 	
+	@OneToMany(mappedBy="soldto", fetch = FetchType.LAZY)
+	private Set<Advertisement> boughtAdvertisement  = new HashSet<Advertisement>();
+	
 	public Customer() {
 		super();
 	}
 
-	public Customer(Set<RateEstate> rates, Set<Comment> comments, Set<RateAdvertiser> advRates) {
+	public Customer(Set<RateEstate> rates, Set<Comment> comments, Set<RateAdvertiser> advRates,
+			Set<Advertisement> boughtAdvertisement) {
 		super();
 		this.rates = rates;
 		this.comments = comments;
 		this.advRates = advRates;
+		this.boughtAdvertisement = boughtAdvertisement;
 	}
-
+	
 	public Set<RateEstate> getRates() {
 		return rates;
 	}
@@ -53,9 +58,16 @@ public class Customer extends User {
 		return advRates;
 	}
 
-
 	public void setAdvRates(Set<RateAdvertiser> advRates) {
 		this.advRates = advRates;
+	}
+
+	public Set<Advertisement> getBoughtAdvertisement() {
+		return boughtAdvertisement;
+	}
+
+	public void setBoughtAdvertisement(Set<Advertisement> boughtAdvertisement) {
+		this.boughtAdvertisement = boughtAdvertisement;
 	}
 	
 }

@@ -18,9 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nekretnine.dto.AdvertiserDTO;
 import com.nekretnine.dto.CallToCompanyDTO;
+import com.nekretnine.dto.EstateDTO;
+import com.nekretnine.models.Advertisement;
+import com.nekretnine.models.Advertisement.State;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.CallToCompany;
 import com.nekretnine.models.Company;
+import com.nekretnine.models.Customer;
 import com.nekretnine.models.User;
 import com.nekretnine.services.AdvertiserService;
 import com.nekretnine.services.CallToCompanyService;
@@ -147,5 +151,19 @@ public class AdvertiserController {
 		
 		return new ResponseEntity<List<AdvertiserDTO>>(advertiserDTOs ,HttpStatus.FOUND);
 	}
-	
+	@RequestMapping(value="/soldEstates",method=RequestMethod.GET)
+	public ResponseEntity<List<EstateDTO>> getSoldEstates(Principal principal){
+		
+		//get my user credentials
+		User me = userService.findByUsername(principal.getName());	
+		Advertiser advertiser = (Advertiser)me;
+		
+		List<EstateDTO> estateDTOs = new ArrayList<EstateDTO>();
+		//get estates from advertisement and convert them to DTOs
+		for(Advertisement advertisement : advertiser.getAdvertisements()){
+			if(advertisement.getState() == State.RENTED || advertisement.getState() == State.SOLD)
+			estateDTOs.add(new EstateDTO(advertisement.getEstate()));
+		}
+		return new ResponseEntity<List<EstateDTO>>(estateDTOs, HttpStatus.OK);
+	}
 }

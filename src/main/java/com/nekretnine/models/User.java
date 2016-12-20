@@ -9,7 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -47,6 +50,10 @@ public class User {
 	
 	@Column(nullable = true)
 	private String verifyCode;
+	
+	 @OneToOne(fetch=FetchType.LAZY)
+	 @JoinColumn(name="account")
+	 private Account account;
 
 	public User() {
 		super();
@@ -58,7 +65,8 @@ public class User {
 	}
 
 	public User(Long id, String firstName, String lastName, String email, String username, String password,
-			Set<Report> reports, Set<UserAuthority> userAuthorities,boolean isVerified, String verifyCode) {
+			Set<Report> reports, Set<UserAuthority> userAuthorities, boolean isVerified, String verifyCode,
+			Account account) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -68,7 +76,9 @@ public class User {
 		this.password = password;
 		this.reports = reports;
 		this.userAuthorities = userAuthorities;
+		this.isVerified = isVerified;
 		this.verifyCode = verifyCode;
+		this.account = account;
 	}
 
 	public User(User user) {
@@ -79,6 +89,7 @@ public class User {
 		username = user.getUsername();
 		password = user.getPassword();
 		reports = user.getReports();
+		account = user.getAccount();
 	}
 
 	public Long getId() {
@@ -159,6 +170,14 @@ public class User {
 
 	public void setVerifyCode(String verifyCode) {
 		this.verifyCode = verifyCode;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 	
 }

@@ -20,7 +20,7 @@ import com.nekretnine.dto.AdvertisementDTO;
 public class Advertisement {
 
 	public enum State {
-		OPEN, EXPIRED, REPORTED, REMOVED, SOLD
+		OPEN, EXPIRED, REPORTED, REMOVED, SOLD, RENTED
 	}
 	
 	@Id
@@ -44,6 +44,10 @@ public class Advertisement {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "estate")
 	private Estate estate;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumn(name = "soldto")
+	private Customer soldto;
 	
 	
 	public Advertisement() {
@@ -115,6 +119,12 @@ public class Advertisement {
 		this.estate = estate;
 	}
 
+	public Customer getSoldto() {
+		return soldto;
+	}
 
-	
+	public void setSoldto(Customer soldto) {
+		this.soldto = soldto;
+	}
+
 }

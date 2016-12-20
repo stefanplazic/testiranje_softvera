@@ -32,7 +32,6 @@ public class Advertiser extends User{
 	@OneToMany(mappedBy="toadvrt", fetch = FetchType.LAZY)
 	private Set<CallToCompany> receivedCompanyCalls  = new HashSet<CallToCompany>();
 	
-
 	public Advertiser() {
 		super();
 	}
@@ -104,4 +103,7 @@ public class Advertiser extends User{
 	}
 
 
+	
+
+	
 }
