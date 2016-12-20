@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nekretnine.dto.EstateDTO;
+import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Estate;
 import com.nekretnine.models.Image;
 import com.nekretnine.services.EstateService;
+import com.nekretnine.services.UserService;
 
 @RestController
 @RequestMapping(value="api/estate")
@@ -19,11 +21,16 @@ public class EstateController {
 
 	@Autowired
 	private EstateService estateService;
+	
+	@Autowired
+	private UserService userService;
 		
 	@RequestMapping(method=RequestMethod.POST,consumes="application/json")
 	public ResponseEntity<String> saveEstate(@RequestBody EstateDTO estateDTO){
 		
 		Estate estate= new Estate(estateDTO);
+		Advertiser owner = (Advertiser)userService.findByEmail(estateDTO.getOwner().getEmail());
+		estate.setOwner(owner);
 		for(Image i :estate.getImages()){
 			i.setEstate(estate);
 		}

@@ -83,9 +83,16 @@ public class Estate {
 	}
 
 	public Estate(EstateDTO estate){
-		this(estate.getId(),estate.getName(),estate.getPrice(),
-				estate.getArea(),estate.getAddress(),estate.getCity(),estate.getCityPart(),estate.getTechnicalEquipment(),
-				estate.getHeatingSystem(),estate.getOwner(),estate.getImages());
+		this.id = estate.getId();
+		this.name = estate.getName();
+		this.price = estate.getPrice();
+		this.area = estate.getArea();
+		this.address = estate.getAddress();
+		this.city = estate.getCity();
+		this.cityPart = estate.getCityPart();
+		this.technicalEquipment = estate.getTechnicalEquipment();
+		this.heatingSystem = estate.getHeatingSystem();
+		this.images = estate.getImages();
 	}
 	
 	

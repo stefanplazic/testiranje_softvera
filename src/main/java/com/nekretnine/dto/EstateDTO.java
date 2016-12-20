@@ -2,7 +2,6 @@ package com.nekretnine.dto;
 
 import java.util.Set;
 
-import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Estate;
 import com.nekretnine.models.Image;
 
@@ -17,7 +16,7 @@ public class EstateDTO {
 	private String cityPart;
 	private String technicalEquipment;
 	private String heatingSystem;
-	private Advertiser owner;
+	private AdvertiserDTO owner;
 	private Set<Image> images;
 
 	
@@ -49,11 +48,11 @@ public class EstateDTO {
 		this.images = images;
 	}
 
-	public Advertiser getOwner() {
+	public AdvertiserDTO getOwner() {
 		return owner;
 	}
 
-	public void setOwner(Advertiser owner) {
+	public void setOwner(AdvertiserDTO owner) {
 		this.owner = owner;
 	}
 
@@ -69,6 +68,7 @@ public class EstateDTO {
 		this(estate.getId(),estate.getName(),estate.getPrice(),
 				estate.getArea(),estate.getAddress(),estate.getCity(),estate.getCityPart(),
 				estate.getTechnicalEquipment(),estate.getHeatingSystem());
+		this.owner = new AdvertiserDTO(estate.getOwner());
 	}
 
 	public String getCity() {
