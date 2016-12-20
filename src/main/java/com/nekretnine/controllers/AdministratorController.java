@@ -129,10 +129,12 @@ public class AdministratorController {
 		// modify onHold to false and save in database
 		companyService.setOnHold(false, companyDTO.getId());
 		
+		Advertiser owner = (Advertiser) userService.findByEmail(companyDTO.getOwner().getEmail());
+		
 		// send success notification to owner
 		Notification notification = new Notification();
 		notification.setnType("info");
-		notification.setToUser(companyDTO.getOwner());
+		notification.setToUser(owner);
 		notification.setMade(new Date());
 		notification.setStatus("NEW");
 		notification.setSeen(false);
@@ -155,14 +157,14 @@ public class AdministratorController {
 		}
 		
 		// set advertiser's company to null, and delete company (request)
-		Advertiser advertiser = companyDTO.getOwner();
-		advertiserService.setAdvertisersCompany(null, advertiser.getId());
+		Advertiser owner = (Advertiser) userService.findByEmail(companyDTO.getOwner().getEmail());
+		advertiserService.setAdvertisersCompany(null, owner.getId());
 		companyService.deleteCompanyById(companyDTO.getId());
 		
 		//send decline notification to owner
 		Notification notification = new Notification();
 		notification.setnType("info");
-		notification.setToUser(companyDTO.getOwner());
+		notification.setToUser(owner);
 		notification.setMade(new Date());
 		notification.setStatus("NEW");
 		notification.setSeen(false);

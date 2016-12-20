@@ -13,6 +13,7 @@ import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Company;
 import com.nekretnine.services.AdvertiserService;
 import com.nekretnine.services.CompanyService;
+import com.nekretnine.services.UserService;
 
 @RestController
 @RequestMapping(value="api/company")
@@ -20,6 +21,9 @@ public class CompanyController {
 	
 	@Autowired
 	private CompanyService service;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private AdvertiserService advertiserService;
@@ -32,7 +36,7 @@ public class CompanyController {
 	@RequestMapping(method=RequestMethod.POST, consumes="application/json")
 	public ResponseEntity<String> saveCompany(@RequestBody CompanyDTO companyDTO){
 	
-		Advertiser owner = advertiserService.findOne(companyDTO.getOwner().getId());		
+		Advertiser owner = (Advertiser)userService.findByEmail(companyDTO.getOwner().getEmail());		
 		if (owner == null) {
 			return new ResponseEntity<String>("Owner not found.", HttpStatus.NOT_FOUND);
 		}else if(owner.getCompany()!=null){

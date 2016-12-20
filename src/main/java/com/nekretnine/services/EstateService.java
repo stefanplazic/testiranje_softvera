@@ -16,5 +16,10 @@ public class EstateService {
 		return repository.save(e);
 		
 	}
+	
+	public Estate findOne(Long id){
+		return repository.findOne(id);
+		
+	}
 
 }

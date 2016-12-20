@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Advertiser extends User{
+public class Advertiser extends User {
 
 	@ManyToOne
 	@JoinColumn(name="company")
@@ -21,7 +21,7 @@ public class Advertiser extends User{
 	private Set<Advertisement> advertisements = new HashSet<Advertisement>();
 	
 	
-	@OneToMany(mappedBy="advertiserRate", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="advertiserRate", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<RateAdvertiser> rates  = new HashSet<RateAdvertiser>();
 	
 	@OneToMany(mappedBy="fromadvrt", fetch = FetchType.LAZY)

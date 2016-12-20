@@ -56,6 +56,9 @@ public class Estate {
 	@OneToMany(mappedBy="estate", fetch = FetchType.LAZY)
 	private Set<RateEstate> rates  = new HashSet<RateEstate>();
 	
+	@OneToMany(mappedBy="estate", fetch = FetchType.LAZY)
+	private Set<Favourites> advertiserFav  = new HashSet<Favourites>();
+	
 	
 	public Estate() {}
 
