@@ -18,14 +18,18 @@ import com.nekretnine.dto.AdvertiserDTO;
 import com.nekretnine.dto.CallToCompanyDTO;
 import com.nekretnine.dto.CompanyDTO;
 import com.nekretnine.dto.EstateDTO;
+import com.nekretnine.dto.RateDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertisement.State;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.CallToCompany;
 import com.nekretnine.models.Company;
+import com.nekretnine.models.Customer;
+import com.nekretnine.models.RateAdvertiser;
 import com.nekretnine.models.User;
 import com.nekretnine.services.AdvertiserService;
 import com.nekretnine.services.CallToCompanyService;
+import com.nekretnine.services.RateAdvertiserService;
 import com.nekretnine.services.UserService;
 
 @RestController
@@ -40,6 +44,9 @@ public class AdvertiserController {
 	
 	@Autowired
 	private CallToCompanyService callService;
+	
+	@Autowired
+	private RateAdvertiserService rateService;
 
 	/**
 	 * 
@@ -194,4 +201,26 @@ public class AdvertiserController {
 		}
 		return new ResponseEntity<List<EstateDTO>>(estateDTOs, HttpStatus.OK);
 	}
+	
+	//za kupca
+	@RequestMapping(value="/rate/{advertiser_id}",method=RequestMethod.POST)
+	public ResponseEntity<String> set_rate(Principal principal,@RequestBody RateDTO rateDTO,@PathVariable Long advertiser_id){
+		Advertiser a=(Advertiser) userService.findOne(advertiser_id); //oglasavac
+		Customer c=(Customer) userService.findByUsername(principal.getName());//kupac
+		
+		//da li oglasavac postoji
+		if(a==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
+		//kreiranje rate-advertiser objekta
+		RateAdvertiser ra= new RateAdvertiser();
+		ra.setAdvertRate(rateDTO.getRate());
+		ra.setAdvertiserRate(a);
+		ra.setCustomAdv(c);
+		
+		//sve to u bazu
+		rateService.save(ra);
+		
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+	
 }
