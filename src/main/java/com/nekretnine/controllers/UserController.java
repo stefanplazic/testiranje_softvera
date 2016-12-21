@@ -39,9 +39,6 @@ public class UserController {
 	private UserService service;
 
 	@Autowired
-	private CompanyService companyService;
-
-	@Autowired
 	AuthenticationManager authenticationManager;
 
 	@Autowired

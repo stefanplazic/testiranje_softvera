@@ -52,7 +52,6 @@ public class CompanyService {
 
 	public int setOnHold(boolean onHold, long id) {
 		return repository.setOnHold(onHold, id);
-		
 	}
 
 }

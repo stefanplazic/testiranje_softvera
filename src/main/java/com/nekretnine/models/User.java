@@ -38,7 +38,7 @@ public class User {
 	private String password;
 	
 	@JsonIgnore
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	private Set<Report> reports = new HashSet<Report>();
 	
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
@@ -50,7 +50,7 @@ public class User {
 	@Column(nullable = true)
 	private String verifyCode;
 	
-	 @OneToOne(fetch=FetchType.LAZY)
+	 @OneToOne(fetch=FetchType.EAGER)
 	 @JoinColumn(name="account")
 	 private Account account;
 

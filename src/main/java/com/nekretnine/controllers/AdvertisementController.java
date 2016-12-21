@@ -7,7 +7,6 @@ import java.util.List;
 
 import java.security.Principal;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +14,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nekretnine.dto.AdvertisementDTO;
 import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertiser;
+import com.nekretnine.models.Report;
+import com.nekretnine.models.User;
 import com.nekretnine.services.AdvertisementService;
+import com.nekretnine.services.ReportService;
 import com.nekretnine.services.UserService;
 
 @RestController
@@ -33,6 +36,9 @@ public class AdvertisementController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ReportService reportService;
 	
 	//za oglasivaca
 	@RequestMapping(value="/add",method=RequestMethod.POST,consumes="application/json")
@@ -146,6 +152,28 @@ public class AdvertisementController {
 		
 		
 		return new ResponseEntity<>(advertDTO,HttpStatus.OK);
+	}
+	
+	/**
+	 * Method used to report a specific Advertisement for inappropriate content by a User.
+	 * Moderator should receive a Notification of the Report and respond by removing the Advertisement or 
+	 * changing the Report State to CLOSED.
+	 * Call example:
+	 * localhost:8080/api/advertisement/1/report/?message=because its rude
+	 * @param principal Object containing User related data, parsed from token sent by User
+	 * @param advert Advertisement id of advertisement being reported by the User.
+	 * @param message Appropriate message explaining why specific Advertisement is being reported.
+	 * @return Message informing the Client that Report has been received.
+	 * @author Nemanja Zunic
+	 * @see Advertisement, User, Report, Notification
+	 */
+	@RequestMapping(value="{advert}/report/", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<String> reportAdvertisement(Principal principal, @PathVariable Long advert, @RequestParam String message){
+		User user = userService.findByUsername(principal.getName());
+		Advertisement advertisement = advertisementService.findOne(advert);
+		
+		reportService.save(new Report(user, advertisement, message, "NEW", true));
+		return new ResponseEntity<>("braobrao", HttpStatus.OK);
 	}
 	
 

@@ -2,8 +2,7 @@ package com.nekretnine.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -11,21 +10,17 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Report {
-
-	public enum State {
-		OPEN, CLOSED
-	}
 	
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
 	private Long id;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user")
 	private User user;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "advertisement")
 	private Advertisement advertisement;
 	
@@ -33,20 +28,22 @@ public class Report {
 	private String message;
 	
 	@Column
-	@Enumerated(EnumType.STRING)
-	private State state;
+	private String status;
+	
+	@Column
+	private boolean onHold;
 
 	public Report() {
 		super();
 	}
 
-	public Report(Long id, User user, Advertisement advertisement, String message, State state) {
+	public Report(User user, Advertisement advertisement, String message, String status, boolean onHold) {
 		super();
-		this.id = id;
 		this.user = user;
 		this.advertisement = advertisement;
 		this.message = message;
-		this.state = state;
+		this.status = status;
+		this.onHold = onHold;
 	}
 
 	public Long getId() {
@@ -81,12 +78,20 @@ public class Report {
 		this.message = message;
 	}
 
-	public State getState() {
-		return state;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setState(State state) {
-		this.state = state;
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public boolean isOnHold() {
+		return onHold;
+	}
+
+	public void setOnHold(boolean onHold) {
+		this.onHold = onHold;
 	}
 	
 }
