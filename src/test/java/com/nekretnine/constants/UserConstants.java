@@ -12,4 +12,8 @@ public class UserConstants {
 	public static final String USERNAME_SECOND = "tombola";
 	public static final String PASSWORD_SECOND = "mile";
 	public static final String EMAIL_SECOND = "mile@gmail.com";
+	
+	//this is for UserServiceTest
+	public static final int FIND_ALL_COUNT = 2;
+	public static final int PAGE_SIZE = 2;
 }
