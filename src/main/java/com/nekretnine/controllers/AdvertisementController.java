@@ -2,6 +2,7 @@ package com.nekretnine.controllers;
 
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import java.security.Principal;
@@ -14,11 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nekretnine.dto.AdvertEstateDTO;
 import com.nekretnine.dto.AdvertisementDTO;
+import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.services.AdvertisementService;
@@ -67,61 +67,39 @@ public class AdvertisementController {
 	}
 
 	/**
-	 * localhost:8080/api/advertisement?name=cone&price=123&area=55&address=sumadijska 62&city=uzice&cityPart=belo groblje&technicalEquipment&heatingSystem=podno grijanje&publicationDate=2016-12-12&expiryDate=2016-10-10
+	 * param example:
+	 * {
+		"state" : "OPEN",
+		"publicationDate" : "",
+		"expiryDate" : "",
+		"estate" : {
+			"name" : "s",
+			"price" : 3,
+			"area" : 3,
+			"address" : "sumadijska",
+			"city" : "s",
+			"cityPart" : "s",
+		 	"technicalEquipment" : "s",
+			"heatingSystem" : "s"
+		 }
+		}
 	 * @param search criteria provided by user which the method uses to find specific Advertisement / Estate
-	 * @return List of AdvertEstateDTOs that fit the search criteria provided by user 
+	 * @return List of AdvertisementDTOs that fit the search criteria provided by user 
 	 * @see AdvertEstateDTO, Advertisement, Estate
+	 * @author Nemanja Zunic
 	 */
-	@RequestMapping(method = RequestMethod.GET, consumes = "application/json")
-	public ResponseEntity<List<AdvertEstateDTO>> getAllAdvertisements(@RequestParam("name") String name,
-			@RequestParam("price") String price, @RequestParam("area") String area, 
-			@RequestParam("address") String address, @RequestParam("city") String city,
-			@RequestParam("cityPart") String cityPart, @RequestParam("technicalEquipment") String technicalEquipment,
-			@RequestParam("heatingSystem") String heatingSystem, @RequestParam("publicationDate") String publicationDate,
-			@RequestParam("expiryDate") String expiryDate) throws ParseException {
+	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<List<AdvertisementDTO>> searchAdvertisements(@RequestBody AdvertisementDTO advertisement) throws ParseException {
 
-		String query = "select a.id, a.estate, e.name, e.price, e.area, e.address, e.city, e.city_part, e.technical_equipment, "
-				+ "e.heating_system, a.publication_date, a.expiry_date from advertisement a join estate e on a.estate = e.id where";
-		
-		if(name != null && !name.equals("")) {
-			query += " name='"+name+"'";
+		EstateDTO est = advertisement.getEstate();
+		List<Advertisement> adv = advertisementService.findAdvertisements(advertisement.getPublicationDate(), advertisement.getExpiryDate(),
+				advertisement.getState(), est.getName(), est.getPrice(), est.getArea(), est.getAddress(), est.getCity(), est.getCityPart(), 
+				 est.getTechnicalEquipment(), est.getHeatingSystem());		
+		List<AdvertisementDTO> result = new ArrayList<AdvertisementDTO>();
+		for(Advertisement ad: adv) {
+			result.add(new AdvertisementDTO(ad));
 		}
-		if(price != null && !price.equals("")) {
-			query += " price='"+price+"'";
-		}
-		if(area != null && !area.equals("")) {
-			query += " area="+area+"'";
-		}
-		if(address != null && !address.equals("")) {
-			query += " address='"+address+"'";
-		}
-		if(city != null && !city.equals("")) {
-			query += " city='"+city+"'";
-		}
-		if(cityPart != null && !cityPart.equals("")) {
-			query += " city_part='"+cityPart+"'";
-		}
-		if(technicalEquipment != null && !technicalEquipment.equals("")) {
-			query += " technical_equipment=''"+technicalEquipment+"'";
-		}
-		if(heatingSystem != null && !heatingSystem.equals("")) {
-			query += " e.heating_system='"+heatingSystem+"'";
-		}
-		if(publicationDate != null && !publicationDate.equals("")) {
-			query += " publication_date='"+publicationDate+"'";
-		}
-		if(expiryDate != null && !expiryDate.equals("")) {
-			query += " expiry_date='"+expiryDate+"'";
-		}
-		
-		List<AdvertEstateDTO> adv = advertisementService.findAdvertisements(query);
-		
-		//if there are no advert-estate pairs that fit the search criteria
-		if(adv.size() == 0) {
-			return new ResponseEntity<List<AdvertEstateDTO>>(adv, HttpStatus.NO_CONTENT);
-		}
-		
-		return new ResponseEntity<List<AdvertEstateDTO>>(adv, HttpStatus.OK);
+		return new ResponseEntity<List<AdvertisementDTO>>(result, HttpStatus.OK);
 	}
 	
 	//za oglasivaca

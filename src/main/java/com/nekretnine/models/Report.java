@@ -2,6 +2,8 @@ package com.nekretnine.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -28,17 +30,22 @@ public class Report {
 	private Advertisement advertisement;
 	
 	@Column
+	private String message;
+	
+	@Column
+	@Enumerated(EnumType.STRING)
 	private State state;
 
 	public Report() {
 		super();
 	}
 
-	public Report(Long id, User user, Advertisement advertisement, State state) {
+	public Report(Long id, User user, Advertisement advertisement, String message, State state) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.advertisement = advertisement;
+		this.message = message;
 		this.state = state;
 	}
 
@@ -64,6 +71,14 @@ public class Report {
 
 	public void setAdvertisement(Advertisement advertisement) {
 		this.advertisement = advertisement;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public State getState() {

@@ -190,4 +190,14 @@ public class Estate {
 		this.rates = rates;
 	}
 
+	@Override
+	public String toString() {
+		return "Estate [id=" + id + ", name=" + name + ", price=" + price + ", area=" + area + ", address=" + address
+				+ ", city=" + city + ", cityPart=" + cityPart + ", technicalEquipment=" + technicalEquipment
+				+ ", heatingSystem=" + heatingSystem + ", owner=" + owner + ", images=" + images + ", rates=" + rates
+				+ ", advertiserFav=" + advertiserFav + "]";
+	}
+	
+	
+
 }

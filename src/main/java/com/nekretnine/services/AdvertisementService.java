@@ -1,11 +1,11 @@
 package com.nekretnine.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nekretnine.dto.AdvertEstateDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertisement.State;
 import com.nekretnine.repository.AdvertisementRepository;
@@ -18,7 +18,6 @@ public class AdvertisementService {
 	
 	public Advertisement save(Advertisement a){
 		return repository.save(a);
-		
 	}
 	
 	public Advertisement findOne(Long id){
@@ -33,8 +32,14 @@ public class AdvertisementService {
 		repository.deleteById(id);
 	}
 	
-	public List<AdvertEstateDTO> findAdvertisements(String query) {
+	/*public List<AdvertEstateDTO> findAdvertisements(String query) {
 		return repository.findAdvertisements(query);
+	}*/
+	
+	public List<Advertisement> findAdvertisements(Date publicationDate, Date expiryDate, State state, String name, Double price, 
+			Double area, String address, String city, String cityPart, String technicalEquipment, String heatingSystem) {
+		return repository.findAdvertisement(publicationDate, expiryDate, state, name, price, area, address, city, cityPart,
+				technicalEquipment, heatingSystem);
 	}
 	
 }

@@ -61,12 +61,12 @@ public class AdministratorController {
 	
 	/**
 	 * 
-	 * @author Nemanja Zunic
 	 * @param userType Type of User being registered. Can be 'Administrator' or 'Moderator'
 	 * @param userDTO Data for User being registered written in json, example:
-	 * 			{@{"firstName" : "", "lastName" : "", "email" : "", "username" : "", "password" : ""}}
+	 * 			@{"firstName" : "", "lastName" : "", "email" : "", "username" : "", "password" : ""}
 	 * @return If userType is invalid or User already exists, appropriate message is displayed and 
-	 * 			HttpStatus is being sent, otherwise email with verification link is sent to the User. 
+	 * 			HttpStatus is being sent, otherwise email with verification link is sent to the User.
+	 * @author Nemanja Zunic 
 	 */
 	@RequestMapping(value = "/register/{userType}", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> saveAdmin(@PathVariable String userType, @RequestBody UserDTO userDTO) {
@@ -86,7 +86,7 @@ public class AdministratorController {
 			userAuth.setUser(user);
 		}
 		else {
-			return new ResponseEntity<>(
+			return new ResponseEntity<String>(
 					String.format("Can't create %s type of user, ony Administrator and Moderator allowed.", userType),
 					HttpStatus.BAD_REQUEST);
 		}
@@ -100,13 +100,13 @@ public class AdministratorController {
 		
 		if(userService.findByEmail(user.getEmail())!=null || userService.findByUsername(user.getUsername())!=null)
 		{
-			return new ResponseEntity<>(String.format("%s with that username, or email already exists.", StringUtils.capitalize(userType)),
+			return new ResponseEntity<String>(String.format("%s with that username, or email already exists.", StringUtils.capitalize(userType)),
 					HttpStatus.BAD_REQUEST);
 		}
 		user = userService.save(user);
 		userAuthorityRepository.save(userAuth);
 		mailSender.sendMail(user.getEmail(), "Registration", "Click her to finish registration: <a href='http://localhost:8080/api/users/verify/"+user.getVerifyCode()+"'>Click</a>");
-		return new ResponseEntity<>(
+		return new ResponseEntity<String>(
 				String.format("%s has been created. Go to: %s to verify your account.", 
 						StringUtils.capitalize(userType), user.getEmail()),
 				HttpStatus.CREATED);	
@@ -123,7 +123,7 @@ public class AdministratorController {
 		// check if administrator exists
 		Administrator admin = adminService.findOne(adminId);
 		if(admin == null){
-			return new ResponseEntity<>("Admin not found. ", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("Admin not found. ", HttpStatus.NOT_FOUND);
 		}
 		
 		// modify onHold to false and save in database
@@ -142,7 +142,7 @@ public class AdministratorController {
 				+ "company "+companyDTO.getName());
 		notification.setFromUser(admin);
 		notificationService.saveNotification(notification);
-		return new ResponseEntity<>("Succes accept company", HttpStatus.OK);
+		return new ResponseEntity<String>("Success accept company", HttpStatus.OK);
 		
 		
 	}
@@ -153,7 +153,7 @@ public class AdministratorController {
 		// check if administrator exists
 		Administrator admin = adminService.findOne(adminId);
 		if(admin == null){
-			return new ResponseEntity<>("Admin not found. ", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("Admin not found. ", HttpStatus.NOT_FOUND);
 		}
 		
 		// set advertiser's company to null, and delete company (request)
@@ -172,7 +172,7 @@ public class AdministratorController {
 				+ "company "+companyDTO.getName());
 		notification.setFromUser(admin);
 		notificationService.saveNotification(notification);
-		return new ResponseEntity<>("Succes decline company", HttpStatus.OK);
+		return new ResponseEntity<String>("Succes decline company", HttpStatus.OK);
 		
 		
 	}
