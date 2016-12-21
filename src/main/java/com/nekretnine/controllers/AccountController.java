@@ -45,7 +45,7 @@ public class AccountController {
 		return new ResponseEntity<String>("Successufull account update",HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/config",method=RequestMethod.POST)
+	@RequestMapping(value="/config",method=RequestMethod.POST, consumes="application/json")
 	public ResponseEntity<String> configure(Principal principal, @RequestBody AccountDTO accountDTO){
 		
 		//get the user data

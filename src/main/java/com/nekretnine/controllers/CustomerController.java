@@ -25,6 +25,7 @@ import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Customer;
 import com.nekretnine.models.Estate;
 import com.nekretnine.models.Favourites;
+import com.nekretnine.models.Notification;
 import com.nekretnine.models.User;
 import com.nekretnine.services.AccountService;
 import com.nekretnine.services.AdvertisementService;
@@ -32,6 +33,7 @@ import com.nekretnine.services.AdvertiserService;
 import com.nekretnine.services.CustomerService;
 import com.nekretnine.services.EstateService;
 import com.nekretnine.services.FavouritesService;
+import com.nekretnine.services.NotificationService;
 import com.nekretnine.services.UserService;
 
 
@@ -61,6 +63,9 @@ public class CustomerController {
 	
 	@Autowired
 	private FavouritesService favouritesService;
+	
+	@Autowired
+	private NotificationService notificationService;
 
 	
 	@RequestMapping(value = "profile/{id}",method=RequestMethod.GET)
@@ -84,17 +89,13 @@ public class CustomerController {
 		//check if exists
 		if(advertisement == null)
 			return new ResponseEntity<>("Advertisement: doesn't exists" ,HttpStatus.NOT_FOUND);
-		
-		Estate estate = estateService.findOne(advertisement.getEstate().getId());
-		
 		//check if advertisment date is expired
 		if(advertisement.getExpiryDate().before(new Date()))
 			return new ResponseEntity<>("Advertisement has expired" ,HttpStatus.LOCKED);
 		/*if(advertisement.getState() != State.OPEN )
 			return new ResponseEntity<>("Advertisement is already bought,removed or sold" ,HttpStatus.LOCKED);*/
-		
 		if(me.getAccount() == null) 
-			return new ResponseEntity<>("You don't have account, configure it on /api/account/config" ,HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("You don't have account, configure it on http://localhost:8080/api/account/config" ,HttpStatus.NOT_FOUND);
 		else if(me.getAccount().getAmount() < advertisement.getEstate().getPrice())
 			return new ResponseEntity<>("You don't have enough money on your account, add money on /api/account/addMoney" ,HttpStatus.BAD_REQUEST);
 		
@@ -107,13 +108,23 @@ public class CustomerController {
 		cusAccount.setAmount(cusAccount.getAmount() - advertisement.getEstate().getPrice());
 		//save state
 		accountService.save(cusAccount);
-		
-		
+	
 		//buy this estate
 		State saveState = typeState.equalsIgnoreCase("buy")? State.SOLD: State.RENTED;
 		advertisement.setState(saveState);
 		advertisement.setSoldto(customer);
 		advertisementService.save(advertisement);
+		
+		//send the notification to advertiser
+		Notification notification = new Notification();
+		notification.setnType("info");
+		notification.setToUser(advertisement.getAdvertiser());
+		notification.setMade(new Date());
+		notification.setStatus("NEW");
+		notification.setSeen(false);
+		notification.setFromUser(customer);
+		notification.setText("Estate {"+advertisement.getEstate().getName()+"} is bought by "+customer.getUsername());
+		notificationService.saveNotification(notification);
 		
 		//remove estate from other advertisers
 		List<Advertiser> advertisers = advertiserService.findAll();
@@ -122,18 +133,15 @@ public class CustomerController {
 			//check if it is not given advertiser 
 			if(advrt.getId() != advertisement.getAdvertiser().getId()){
 				for(Advertisement advertis : advrt.getAdvertisements()){
-					
 					//if it have given estate,remove it from the list
 					if(advertis.getEstate().getId() == advertisement.getEstate().getId()){
 						advrt.getAdvertisements().remove(advertis);
 						//delete advertisment
 						advertisementService.delete(advertis.getId());
-					}
-						
+						}				
 				}
 			}
-		}
-		
+		}	
 		return new ResponseEntity<>("You succesfully bought/reserved real estate" ,HttpStatus.OK);
 	}
 	

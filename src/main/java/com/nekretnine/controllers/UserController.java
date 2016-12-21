@@ -68,7 +68,15 @@ public class UserController {
 		return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);
 	}
 
-	/* REGISTER CUSTOMER */
+	/**
+	 * 
+	 * @param userType Type of User being registered. Can be 'Customer' or 'Advertiser'
+	 * @param userDTO Data for User being registered written in json, example:
+	 * 			@{"firstName" : "", "lastName" : "", "email" : "", "username" : "", "password" : ""}
+	 * @return If userType is invalid or User already exists, appropriate message is displayed and 
+	 * 			HttpStatus is being sent, otherwise email with verification link is sent to the User.
+	 * @author Stefan Plazic 
+	 */
 	@RequestMapping(value = "/register/{userType}", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> saveCustomer(@PathVariable String userType,
 			@RequestBody UserDTO userDTO) {
@@ -153,17 +161,26 @@ public class UserController {
 	 * HttpStatus.OK); }
 	 */
 
-	/* verify email */
+	/**
+	 * @author Stefan Plazic
+	 * @param verifyCode is verification code sent to user email
+	 * @return if user doesn't exist returns NOT_FOUND status, else if user is already verified return message about that
+	 */
 	@RequestMapping(value = "/verify/{verifyCode}", method = RequestMethod.GET)
 	public ResponseEntity<String> verify(@PathVariable String verifyCode) {
 
 		User user = service.findByVerifyCode(verifyCode);
 		if (user != null) {
+			if(user.isVerified())
+				return new ResponseEntity<>("User already verified", HttpStatus.OK);
 			user.setVerified(true);
 			service.save(user);
+			
+			return new ResponseEntity<>("Succesfully verified user", HttpStatus.OK);
 		}
-
-		return new ResponseEntity<>("Succesfully verified user", HttpStatus.OK);
+			
+		return new ResponseEntity<>("User doesn't exists", HttpStatus.NOT_FOUND);
+		
 	}
 
 }
