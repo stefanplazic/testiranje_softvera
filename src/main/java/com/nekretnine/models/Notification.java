@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -27,6 +29,10 @@ public class Notification {
 	@OneToOne
 	private User fromUser;
 	
+	@ManyToOne
+	@JoinColumn(name="advertisement", nullable = true)
+	private Advertisement advertisement;
+	
 	@Column(nullable = true)
 	private Date made;
 	
@@ -36,7 +42,11 @@ public class Notification {
 	@Column(nullable = false)
 	private String status;// old or new
 	
-	public Notification(){}
+	public Notification(){
+		seen = false;
+		made = new Date();
+		status = "NEW";
+	}
 
 	public Notification(Long id, String text, String nType, User toUser,
 			User fromUser, Date made, boolean seen) {
@@ -114,6 +124,15 @@ public class Notification {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public Advertisement getAdvertisement() {
+		return advertisement;
+	}
+
+	public void setAdvertisement(Advertisement advertisement) {
+		this.advertisement = advertisement;
+	}
+	
 	
 	
 

@@ -58,16 +58,6 @@ public class UserController {
 	@Autowired
 	private UserAuthorityRepository userAuthorityRepository;
 
-	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO) {
-		User user = new Advertiser();
-		user.setFirstName(userDTO.getFirstName());
-		user.setLastName(userDTO.getLastName());
-		user.setEmail(userDTO.getEmail());
-		user = service.save(user);
-		return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);
-	}
-
 	/* REGISTER CUSTOMER */
 	@RequestMapping(value = "/register/{userType}", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> saveCustomer(@PathVariable String userType,

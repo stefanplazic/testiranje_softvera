@@ -1,6 +1,8 @@
 package com.nekretnine.models;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.nekretnine.dto.AdvertisementDTO;
 
@@ -34,11 +37,11 @@ public class Advertisement {
 	@Column(nullable = false)
 	private State state;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "advertiser")
 	private Advertiser advertiser;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "estate")
 	private Estate estate;
 	
@@ -46,6 +49,8 @@ public class Advertisement {
 	@JoinColumn(name = "soldto")
 	private Customer soldto;
 	
+	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER,mappedBy="advertisement")
+	private Set<Notification> notifications = new HashSet<Notification>();
 	
 	public Advertisement() {
 		super();
@@ -124,4 +129,13 @@ public class Advertisement {
 		this.soldto = soldto;
 	}
 
+	public Set<Notification> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(Set<Notification> notifications) {
+		this.notifications = notifications;
+	}
+
+	
 }
