@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.nekretnine.dto.EstateDTO;
+import com.nekretnine.dto.ImageDTO;
 
 @Entity
 public class Estate {
@@ -91,7 +92,10 @@ public class Estate {
 		this.cityPart = estate.getCityPart();
 		this.technicalEquipment = estate.getTechnicalEquipment();
 		this.heatingSystem = estate.getHeatingSystem();
-		this.images = null;
+		this.images = new HashSet<Image>();
+		for(ImageDTO i:estate.getImages()){
+			this.images.add(new Image(i));
+		}
 	}
 	
 	public Set<Image> getImages() {
