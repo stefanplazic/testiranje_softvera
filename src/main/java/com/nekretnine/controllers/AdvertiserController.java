@@ -229,6 +229,11 @@ public class AdvertiserController {
 		//da li oglasavac postoji
 		if(a==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
+		//da li je vec rejtovao
+		RateAdvertiser jel =rateService.already_rated(a, c);
+		if(jel!=null) return new ResponseEntity<String>("vec si rejtovao",HttpStatus.NOT_FOUND);
+		
+		
 		//kreiranje rate-advertiser objekta
 		RateAdvertiser ra= new RateAdvertiser();
 		ra.setAdvertRate(rateDTO.getRate());
