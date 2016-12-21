@@ -28,13 +28,13 @@ public class User {
 	@Column(nullable = true)
 	private String lastName;
 	
-	@Column(nullable = true, unique = true)
+	@Column(nullable = false, unique = true)
 	private String email;
 	
-	@Column(nullable = true, unique = true)
+	@Column(nullable = false, unique = true)
 	private String username;
 	
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String password;
 	
 	@JsonIgnore
