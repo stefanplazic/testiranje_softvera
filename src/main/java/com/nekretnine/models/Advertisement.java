@@ -41,7 +41,7 @@ public class Advertisement {
 	@JoinColumn(name = "advertiser")
 	private Advertiser advertiser;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "estate")
 	private Estate estate;
 	

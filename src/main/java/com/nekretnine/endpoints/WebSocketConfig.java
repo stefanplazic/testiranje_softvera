@@ -14,6 +14,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(notificationHandler(), "/notification").withSockJS();
 		registry.addHandler(adminDashboardHandler(), "/adminDashboard").withSockJS();
+		registry.addHandler(moderatorDashboardHandler(), "/moderatorDashboard").withSockJS();
     }
 
     @Bean
@@ -24,5 +25,10 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Bean
     public WebSocketHandler adminDashboardHandler() {
         return new AdminDashboardHandler();
+    }
+    
+    @Bean
+    public WebSocketHandler moderatorDashboardHandler() {
+    	return new ModeratorDashboardHandler();
     }
 }
