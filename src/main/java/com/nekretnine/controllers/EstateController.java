@@ -61,6 +61,11 @@ public class EstateController {
 			//da li nekretnina postoji
 			if(e==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			
+			//da li je vec rejtovao
+			RateEstate jel =rateService.findOneByEstateAndCustomer(e, c);
+			if(jel!=null) return new ResponseEntity<String>("vec si rejtovao",HttpStatus.NOT_FOUND);
+			
+			
 			//kreiranje rate-estate objekta
 			RateEstate re=new RateEstate();
 			re.setAdvertisementRate(rateDTO.getRate());
