@@ -65,7 +65,15 @@ public class UserControllerTest {
     			webAppContextSetup(webApplicationContext).build();
     }
     
-  
+  /**
+   * <p>
+   * This method will test saveCustomer method in UserController. First it will create user 
+   * with given username and passwrod nad save it as Advertiser. Result should be Created. After that
+   * it will try to save Customer , but with same email - wich will send Conflict HTTP status code.
+   * <p>
+   * @throws Exception
+   * @author stefan plazic
+   */
     @Test
     @Transactional
     @Rollback(false)
@@ -98,6 +106,14 @@ public class UserControllerTest {
     	
     }
     
+    /**
+     * <p>
+     * This method will test login method in UserController. First it will try to login with correct useraname and password,
+     * it will return OK http status code. Then we try to login with wrong credentionals - result Not found http status code.
+     * <p>
+     * @throws Exception
+     * @author stefan plazic
+     */
     @Test
     @Transactional
     @Rollback(true)
@@ -124,6 +140,15 @@ public class UserControllerTest {
                 .andExpect(status().isNotFound());
     }
     
+    /**
+     * <p>
+     * This method will test verify method in UserController.
+     * First it will get user from database and user his verify code to test the method. It will return OK status.
+     * After that will try to verify with incorrect code and result will be NOT FOUND.
+     * <p>
+     * @throws Exception
+     * @author stefan plazic
+     */
     @Test
     @Transactional
     @Rollback(true)
