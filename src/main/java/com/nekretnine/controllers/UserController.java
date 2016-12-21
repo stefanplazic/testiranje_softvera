@@ -83,9 +83,8 @@ public class UserController {
 					.findByName(("ADVERTISER")));
 			authority.setUser(user);
 		} else {
-			return new ResponseEntity<>(
-					"Cant create that type of user, ony Customer and Advertiser allowed",
-					HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>(
+					"Cant create that type of user, ony Customer and Advertiser allowed",HttpStatus.BAD_REQUEST);
 		}
 
 		user.setFirstName(userDTO.getFirstName());
@@ -100,7 +99,7 @@ public class UserController {
 				|| service.findByUsername(user.getUsername()) != null) {
 			return new ResponseEntity<>(
 					"User with that username, or email already exists",
-					HttpStatus.BAD_REQUEST);
+					HttpStatus.CONFLICT);
 		}
 
 		user = service.save(user);
@@ -135,7 +134,7 @@ public class UserController {
 					tokenUtils.generateToken(details), HttpStatus.OK);
 		} catch (Exception ex) {
 			return new ResponseEntity<String>("Invalid login",
-					HttpStatus.BAD_REQUEST);
+					HttpStatus.NOT_FOUND);
 		}
 	}
 
