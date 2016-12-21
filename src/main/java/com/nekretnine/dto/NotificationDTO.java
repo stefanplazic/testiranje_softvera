@@ -12,6 +12,7 @@ public class NotificationDTO {
 	private UserDTO fromUser;
 	private Date made;
 	private boolean seen;
+	private AdvertisementDTO advertisement;
 	
 	public NotificationDTO(){}
 
@@ -34,6 +35,10 @@ public class NotificationDTO {
 		this.fromUser = new UserDTO(notification.getFromUser());
 		this.made = notification.getMade();
 		this.seen = notification.isSeen();
+		
+		if(this.nType.equals("message"))
+			this.advertisement = new AdvertisementDTO(notification.getAdvertisement());
+		
 	}	
 
 	public Long getId() {
@@ -82,6 +87,14 @@ public class NotificationDTO {
 
 	public void setSeen(boolean seen) {
 		this.seen = seen;
+	}
+
+	public AdvertisementDTO getAdvertisement() {
+		return advertisement;
+	}
+
+	public void setAdvertisement(AdvertisementDTO advertisement) {
+		this.advertisement = advertisement;
 	}
 	
 	

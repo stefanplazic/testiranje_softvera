@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.nekretnine.dto.AdvertisementDTO;
 import com.nekretnine.dto.CustomerDTO;
+import com.nekretnine.dto.CustomerMessageDTO;
 import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.dto.PageableDTO;
 import com.nekretnine.models.Account;
@@ -89,6 +92,7 @@ public class CustomerController {
 		//check if exists
 		if(advertisement == null)
 			return new ResponseEntity<>("Advertisement: doesn't exists" ,HttpStatus.NOT_FOUND);
+
 		//check if advertisment date is expired
 		if(advertisement.getExpiryDate().before(new Date()))
 			return new ResponseEntity<>("Advertisement has expired" ,HttpStatus.LOCKED);
@@ -119,9 +123,6 @@ public class CustomerController {
 		Notification notification = new Notification();
 		notification.setnType("info");
 		notification.setToUser(advertisement.getAdvertiser());
-		notification.setMade(new Date());
-		notification.setStatus("NEW");
-		notification.setSeen(false);
 		notification.setFromUser(customer);
 		notification.setText("Estate {"+advertisement.getEstate().getName()+"} is bought by "+customer.getUsername());
 		notificationService.saveNotification(notification);
@@ -224,6 +225,23 @@ public class CustomerController {
 			estates.add(new EstateDTO(f.getEstate()));
 		}
 		return new ResponseEntity<>(estates ,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/sendMessageToAdvertiser", method=RequestMethod.POST, consumes="application/json")
+	public ResponseEntity<String> sendMessageToAdvertiser(Principal principal, @RequestBody CustomerMessageDTO messageDTO){
+		Customer fromUser = (Customer) userService.findByUsername(principal.getName());
+		Advertisement advertisement = advertisementService.findOne(messageDTO.getAdvertisementId());
+		if(advertisement == null){
+			return new ResponseEntity<>("Advertisement not found", HttpStatus.NOT_FOUND);
+		}
+		Notification notification = new Notification();
+		notification.setFromUser(fromUser);
+		notification.setToUser(advertisement.getAdvertiser());
+		notification.setnType("message");
+		notification.setText(messageDTO.getMessage());
+		notification.setAdvertisement(advertisement);
+		notificationService.saveNotification(notification);
+		return new ResponseEntity<>("Message is sent to advertiser", HttpStatus.OK);	
 	}
 
 }

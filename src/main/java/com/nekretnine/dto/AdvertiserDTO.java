@@ -5,7 +5,7 @@ import java.util.Set;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.RateAdvertiser;
 
-public class AdvertiserDTO {
+public class AdvertiserDTO{
 	
 	private Long id;
 	private String firstName;

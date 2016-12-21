@@ -55,16 +55,6 @@ public class UserController {
 	@Autowired
 	private UserAuthorityRepository userAuthorityRepository;
 
-	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO) {
-		User user = new Advertiser();
-		user.setFirstName(userDTO.getFirstName());
-		user.setLastName(userDTO.getLastName());
-		user.setEmail(userDTO.getEmail());
-		user = service.save(user);
-		return new ResponseEntity<>(new UserDTO(user), HttpStatus.CREATED);
-	}
-
 	/**
 	 * 
 	 * @param userType Type of User being registered. Can be 'Customer' or 'Advertiser'

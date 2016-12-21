@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nekretnine.dto.AdvertiserDTO;
+import com.nekretnine.dto.AdvertiserMessageDTO;
 import com.nekretnine.dto.CallToCompanyDTO;
 import com.nekretnine.dto.CompanyDTO;
 import com.nekretnine.dto.EstateDTO;
@@ -25,10 +26,15 @@ import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.CallToCompany;
 import com.nekretnine.models.Company;
 import com.nekretnine.models.Customer;
+import com.nekretnine.models.Notification;
 import com.nekretnine.models.RateAdvertiser;
 import com.nekretnine.models.User;
+import com.nekretnine.services.AdvertisementService;
 import com.nekretnine.services.AdvertiserService;
 import com.nekretnine.services.CallToCompanyService;
+import com.nekretnine.services.CompanyService;
+import com.nekretnine.services.CustomerService;
+import com.nekretnine.services.NotificationService;
 import com.nekretnine.services.RateAdvertiserService;
 import com.nekretnine.services.UserService;
 
@@ -43,10 +49,22 @@ public class AdvertiserController {
 	private UserService userService;
 	
 	@Autowired
+	private CompanyService companyService;
+	
+	@Autowired
 	private CallToCompanyService callService;
 	
 	@Autowired
 	private RateAdvertiserService rateService;
+
+	@Autowired
+	private AdvertisementService advertisementService;
+	
+	@Autowired
+	private NotificationService notificationService;
+	
+	@Autowired
+	private CustomerService customerService;
 
 	/**
 	 * 
@@ -223,4 +241,66 @@ public class AdvertiserController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
+	/**
+	 * @author Miodrag Vilotijević
+	 * @param principal
+	 * @param messageDTO
+	 * @return
+	 */
+	@RequestMapping(value="/sendMessageToCustomer", method=RequestMethod.POST, consumes="application/json")
+	public ResponseEntity<String> sendMessageToCustomer(Principal principal, @RequestBody AdvertiserMessageDTO messageDTO){
+		Advertiser fromUser = (Advertiser) userService.findByUsername(principal.getName());
+		Advertisement advertisement = advertisementService.findOne(messageDTO.getAdvertisementId());
+		
+		if(advertisement == null){
+			return new ResponseEntity<>("Advertisement not found", HttpStatus.NOT_FOUND);
+		}
+		
+		if(fromUser.getId()!=advertisement.getAdvertiser().getId()){
+			return new ResponseEntity<>("You are not advertiser on passed advertisement", HttpStatus.CONFLICT);
+		}
+		
+		Customer toUser = customerService.findOne(messageDTO.getToUserId());
+		if(toUser == null){
+			return new ResponseEntity<>("Customer not found", HttpStatus.NOT_FOUND);
+		}
+		
+		Notification notification = new Notification();
+		notification.setFromUser(fromUser);
+		notification.setToUser(toUser);
+		notification.setnType("message");
+		notification.setText(messageDTO.getMessage());
+		notification.setAdvertisement(advertisement);
+		notificationService.saveNotification(notification);
+		return new ResponseEntity<>("Message is sent to customer", HttpStatus.OK);	
+	}
+	
+	/**
+	 * @author Miodrag Vilotijević
+	 * @param companyDTO
+	 * @return
+	 */
+	@RequestMapping(value="/sendRequestForCompany", method=RequestMethod.POST, consumes="application/json")
+	public ResponseEntity<String> sendRequestForCompany(Principal principal, @RequestBody CompanyDTO companyDTO){
+		
+		Advertiser owner = (Advertiser) userService.findByUsername(principal.getName());
+		
+		if(owner.getCompany()!=null){
+			return new ResponseEntity<String>("Owner is already employee.", HttpStatus.CONFLICT);
+		}
+	
+		Company company = companyService.findOneByNameAndAddress(companyDTO.getName(), 
+				companyDTO.getAddress());
+		
+		if(company == null){
+			Company com = new Company(companyDTO);
+			com.setOwner(new Advertiser(owner));
+			com = companyService.saveCompany(com);
+			service.setAdvertisersCompany(com, owner.getId());
+			return new ResponseEntity<String>("The request for company has successfully added.", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("The company with entered name and address already exists.", HttpStatus.CONFLICT);
+			
+	}
+
 }

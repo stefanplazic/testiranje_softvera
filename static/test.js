@@ -9,7 +9,7 @@ function openSocket(){
 	
 	sock.onopen = function() {
 	     console.log('open');
-	     sock.send('2');
+	     sock.send('3');
 	     alert("open")
 	 };
 	sock.onmessage = function(e) {
