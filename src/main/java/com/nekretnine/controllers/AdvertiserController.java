@@ -18,6 +18,7 @@ import com.nekretnine.dto.AdvertiserDTO;
 import com.nekretnine.dto.AdvertiserMessageDTO;
 import com.nekretnine.dto.CallToCompanyDTO;
 import com.nekretnine.dto.CompanyDTO;
+import com.nekretnine.dto.CustomerMessageDTO;
 import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.dto.RateDTO;
 import com.nekretnine.models.Advertisement;
@@ -119,10 +120,12 @@ public class AdvertiserController {
 	}
 	
 	/**
-	 * @author Miodrag Vilotijević
-	 * @param  principal - current logged user
-	 * @return If logged user is employed for any company, return true. 
-	 * 		   Otherwise, return false.
+	 * Method check is the advertiser employed at company.
+	 * 
+	 * @param  principal Current logged user (advertiser), created by Spring Security.
+	 * @return 			 If advertiser is employed for any company, return true with HttpStatus OK. 
+	 * 		   			 Otherwise, return false with HttpStatus OK.
+	 * @author 			 Miodrag Vilotijević
 	 */
 	@RequestMapping(value="/isEmployee",method=RequestMethod.GET)
 	public ResponseEntity<Boolean> isEmployee(Principal principal){
@@ -134,9 +137,13 @@ public class AdvertiserController {
 	}
 	
 	/**
+	 * Method return the company in which advertiser is employed.
+	 * 
+	 * @param  principal Current logged user (advertiser), created by Spring Security.
+	 * @return If advertiser is employed return JSON object which represent advertiser's company
+	 * 		   with HttpStatus OK. Otherwise, return HttpStatus NOT_FOUND.
+	 * @see	   CompanyDTO
 	 * @author Miodrag Vilotijević
-	 * @param  principal - current logged user
-	 * @return
 	 */
 	@RequestMapping(value="/getCompany",method=RequestMethod.GET)
 	public ResponseEntity<CompanyDTO> getCompany(Principal principal){
@@ -242,10 +249,15 @@ public class AdvertiserController {
 	}
 	
 	/**
-	 * @author Miodrag Vilotijević
-	 * @param principal
-	 * @param messageDTO
-	 * @return
+	 * Method send message(response about advertisement) to customer.
+	 * 
+	 * @param principal  Current logged user (advertiser), created by Spring Security.
+	 * @param messageDTO JSON object which contains data for sending message to customer.
+	 * 					 Example: @{"message":"Hello", "advertisementId":2, "toUserId":1}
+	 * @return			 If advertisement or customer doesn't exists, return appropriate failed message 
+	 * 					 and HttpStatus code, otherwise return success message and HttpStatus OK.
+	 * @see				 CustomerMessageDTO
+	 * @author 			 Miodrag Vilotijević
 	 */
 	@RequestMapping(value="/sendMessageToCustomer", method=RequestMethod.POST, consumes="application/json")
 	public ResponseEntity<String> sendMessageToCustomer(Principal principal, @RequestBody AdvertiserMessageDTO messageDTO){
@@ -276,9 +288,15 @@ public class AdvertiserController {
 	}
 	
 	/**
+	 * Method send request for company to administrators for approval.
+	 * 
+	 * @param  principal  Current logged user (advertiser), created by Spring Security.
+	 * @param  companyDTO JSON object which contains data about company.
+	 * @return If owner of the company which is passed in companyDTO is already employee
+	 * 		   or company already exists, return appropriate message and HttpStatus CONFLICT.
+	 * 		   Otherwise, return success message and HttpStatus OK.
+	 * @see    CompanyDTO
 	 * @author Miodrag Vilotijević
-	 * @param companyDTO
-	 * @return
 	 */
 	@RequestMapping(value="/sendRequestForCompany", method=RequestMethod.POST, consumes="application/json")
 	public ResponseEntity<String> sendRequestForCompany(Principal principal, @RequestBody CompanyDTO companyDTO){

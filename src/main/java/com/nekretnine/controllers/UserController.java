@@ -27,7 +27,6 @@ import com.nekretnine.models.UserAuthority;
 import com.nekretnine.repository.AuthorityRepository;
 import com.nekretnine.repository.UserAuthorityRepository;
 import com.nekretnine.security.TokenUtils;
-import com.nekretnine.services.CompanyService;
 import com.nekretnine.services.MyMailSenderService;
 import com.nekretnine.services.UserService;
 

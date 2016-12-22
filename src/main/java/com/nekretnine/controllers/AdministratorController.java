@@ -1,5 +1,6 @@
 package com.nekretnine.controllers;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nekretnine.dto.CompanyDTO;
 import com.nekretnine.dto.UserDTO;
 import com.nekretnine.models.Administrator;
 import com.nekretnine.models.Advertiser;
+import com.nekretnine.models.Company;
 import com.nekretnine.models.Moderator;
 import com.nekretnine.models.Notification;
 import com.nekretnine.models.User;
@@ -113,23 +114,32 @@ public class AdministratorController {
 	}
 	
 	/**
-	 * mile
-	 * @param adminId
-	 * @param companyDTO
-	 * @return
+	 * Method allows administrators to approve registration of company and send
+	 * success message to owner of company.
+	 * 
+	 * @param  principal  Current logged user (administrator), created by Spring Security.
+	 * @param  companyId  Id(Long) of company.
+	 * @return			  If company doesn't exists or company already was registered, 
+	 * 					  return error message and appropriate HttpStatus code.
+	 * 					  Otherwise, return string "Company is accepted." and HttpStatus OK.
+	 * @author Miodrag Vilotijević
 	 */
-	@RequestMapping(value = "/acceptCompany/{adminId}", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> acceptCompany(@PathVariable Long adminId, @RequestBody CompanyDTO companyDTO){
-		// check if administrator exists
-		Administrator admin = adminService.findOne(adminId);
-		if(admin == null){
-			return new ResponseEntity<String>("Admin not found. ", HttpStatus.NOT_FOUND);
+	@RequestMapping(value = "/acceptCompany/{companyId}", method = RequestMethod.POST)
+	public ResponseEntity<String> acceptCompany(Principal principal, @PathVariable Long companyId){
+		
+		Administrator admin = (Administrator) userService.findByUsername(principal.getName());
+		Company company = companyService.findOne(companyId);
+		if(company == null){
+			return new ResponseEntity<String>("Company not found", HttpStatus.NOT_FOUND);
+		}
+		if(!company.isonHold()){
+			return new ResponseEntity<String>(HttpStatus.CONFLICT);
 		}
 		
 		// modify onHold to false and save in database
-		companyService.setOnHold(false, companyDTO.getId());
+		companyService.setOnHold(false, companyId);
 		
-		Advertiser owner = (Advertiser) userService.findByEmail(companyDTO.getOwner().getEmail());
+		Advertiser owner = (Advertiser) userService.findByEmail(company.getOwner().getEmail());
 		
 		// send success notification to owner
 		Notification notification = new Notification();
@@ -139,27 +149,40 @@ public class AdministratorController {
 		notification.setStatus("NEW");
 		notification.setSeen(false);
 		notification.setText("Administrator confirm registration of "
-				+ "company "+companyDTO.getName());
+				+ "company "+company.getName());
 		notification.setFromUser(admin);
 		notificationService.saveNotification(notification);
-		return new ResponseEntity<String>("Success accept company", HttpStatus.OK);
+		return new ResponseEntity<String>("Company is accepted.", HttpStatus.OK);
 		
 		
 	}
 	
-	@RequestMapping(value = "/declineCompany/{adminId}", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> declineCompany(@PathVariable Long adminId, @RequestBody CompanyDTO companyDTO){
+	/**
+	 * Method allows administrators to decline registration of company and send
+	 * message about that to owner of company.
+	 * 
+	 * @param  principal Current logged user (administrator), created by Spring Security.
+	 * @param  companyId Id(Long) of company.
+	 * @return 			 If company doesn't exists or company already was registered, 
+	 * 					 return error message and appropriate HttpStatus code.
+	 * 					 Otherwise, return string "Company is not accepted." and HttpStatus OK.
+	 * @author Miodrag Vilotijević
+	 */
+	@RequestMapping(value = "/declineCompany/{companyId}", method = RequestMethod.POST)
+	public ResponseEntity<String> declineCompany(Principal principal, @PathVariable Long companyId){
 		
-		// check if administrator exists
-		Administrator admin = adminService.findOne(adminId);
-		if(admin == null){
-			return new ResponseEntity<String>("Admin not found. ", HttpStatus.NOT_FOUND);
+		Administrator admin = (Administrator) userService.findByUsername(principal.getName());
+		Company company = companyService.findOne(companyId);
+		if(company == null){
+			return new ResponseEntity<String>("Company not found", HttpStatus.NOT_FOUND);
 		}
-		
+		if(!company.isonHold()){
+			return new ResponseEntity<String>(HttpStatus.CONFLICT);
+		}
 		// set advertiser's company to null, and delete company (request)
-		Advertiser owner = (Advertiser) userService.findByEmail(companyDTO.getOwner().getEmail());
+		Advertiser owner = (Advertiser) userService.findByEmail(company.getOwner().getEmail());
 		advertiserService.setAdvertisersCompany(null, owner.getId());
-		companyService.deleteCompanyById(companyDTO.getId());
+		companyService.deleteCompanyById(companyId);
 		
 		//send decline notification to owner
 		Notification notification = new Notification();
@@ -169,10 +192,10 @@ public class AdministratorController {
 		notification.setStatus("NEW");
 		notification.setSeen(false);
 		notification.setText("Administrator decline registration of "
-				+ "company "+companyDTO.getName());
+				+ "company "+company.getName());
 		notification.setFromUser(admin);
 		notificationService.saveNotification(notification);
-		return new ResponseEntity<String>("Succes decline company", HttpStatus.OK);
+		return new ResponseEntity<String>("Company is not accepted.", HttpStatus.OK);
 		
 		
 	}

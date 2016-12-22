@@ -55,8 +55,6 @@ public class Company {
 		this.owner = owner;
 	}
 
-
-
 	public Company(CompanyDTO companyDTO) {
 		id = companyDTO.getId();
 		name = companyDTO.getName();

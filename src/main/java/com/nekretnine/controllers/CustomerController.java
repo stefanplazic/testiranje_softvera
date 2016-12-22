@@ -39,13 +39,10 @@ import com.nekretnine.services.FavouritesService;
 import com.nekretnine.services.NotificationService;
 import com.nekretnine.services.UserService;
 
-
-
 @RestController
 @RequestMapping(value = "/api/customer")
 public class CustomerController {
 
-	
 	@Autowired
 	private CustomerService service;
 	
@@ -172,16 +169,20 @@ public class CustomerController {
 	}
 	
 	/**
-	 * mile
-	 * @param principal
-	 * @param estate_id
-	 * @return
+	 * Method add estate to customer favorites
+	 * 
+	 * @param  principal Current logged user (customer) created by Spring Security.
+	 * @param  estate_id The id of estate which will add to customer's favorites
+	 * @return 			 if estate with passed id doesn't exists return string "Estate not found"
+	 * 		   			 and HttpStatus NOT_FOUND. Otherwise, return string "Favorite estate is saved"
+	 * 		   			 and HttpStatus OK.
+	 * @author 			 Miodrag Vilotijević
 	 */
-	@RequestMapping(value="/addFavourite/{estate_id}",method=RequestMethod.POST)
-	public ResponseEntity<String> addFavourite(Principal principal, @PathVariable Long estate_id){
+	@RequestMapping(value="/addFavourite/{estateId}",method=RequestMethod.POST)
+	public ResponseEntity<String> addFavourite(Principal principal, @PathVariable Long estateId){
 		
 		Customer customer = (Customer) userService.findByUsername(principal.getName());	
-		Estate estate = estateService.findOne(estate_id);
+		Estate estate = estateService.findOne(estateId);
 		if(estate == null){
 			return new ResponseEntity<>("Estate not found" ,HttpStatus.NOT_FOUND);
 		}
@@ -192,11 +193,21 @@ public class CustomerController {
 		return new ResponseEntity<>("Favourite Estate is saved" ,HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/unmarkFavourite/{estate_id}",method=RequestMethod.POST)
-	public ResponseEntity<String> unmarkFavourite(Principal principal, @PathVariable Long estate_id){
+	/**
+	 * Method remove estate from customer favorites
+	 * 
+	 * @param  principal  Current logged user (customer), created by Spring Security. 
+	 * @param  estate_id  The id of estate which will remove from customer's favorites
+	 * @return            If estate with passed id doesn't exists or isn't in customers favorites
+	 * 					  method return HttpStatus NOT_FOUND with appropriate message. 
+	 * 					  Otherwise, return string "Estate is unmarked" and HttpStatus OK.           
+	 * @author 			  Miodrag Vilotijević
+	 */
+	@RequestMapping(value="/unmarkFavourite/{estateId}", method=RequestMethod.POST)
+	public ResponseEntity<String> unmarkFavourite(Principal principal, @PathVariable Long estateId){
 		
 		Customer customer = (Customer) userService.findByUsername(principal.getName());	
-		Estate estate = estateService.findOne(estate_id);
+		Estate estate = estateService.findOne(estateId);
 		if(estate == null){
 			return new ResponseEntity<>("Estate not found" ,HttpStatus.NOT_FOUND);
 		}
@@ -208,13 +219,18 @@ public class CustomerController {
 		favouritesService.delete(favourite.getId());
 		return new ResponseEntity<>("Estate is unmarked" ,HttpStatus.OK);
 	}
+	
 	/**
-	 * mile
-	 * @param principal
-	 * @param pageableDTO
-	 * @return
+	 * Method return customer's favorites estates for concrete page.
+	 * 
+	 * @param principal   Current logged user (customer), created by Spring Security.
+	 * @param pageableDTO JSON object which contains data for paging customer's favorites estates.
+	 * 					  Example: @{"page"=1, count="10"}
+	 * @return			  List of EstateDTO objects which represent customer's favorites estates and HttpStatus OK.
+	 * @see				  PageableDTO, EstateDTO
+	 * @author 			  Miodrag Vilotijević
 	 */
-	@RequestMapping(value="/getFavourites",method=RequestMethod.POST)
+	@RequestMapping(value="/getFavourites", method=RequestMethod.POST, consumes="application/json")
 	public ResponseEntity<List<EstateDTO>> getFavourites(Principal principal, @RequestBody PageableDTO pageableDTO){
 		
 		Customer customer = (Customer) userService.findByUsername(principal.getName());	
@@ -227,6 +243,18 @@ public class CustomerController {
 		return new ResponseEntity<>(estates ,HttpStatus.OK);
 	}
 	
+	/**
+	 * Method send message to advertiser for concrete advertisement.
+	 * 
+	 * @param principal  Current logged user (customer), created by Spring Security.
+	 * @param messageDTO JSON object which contains data for sending message to advertiser
+	 * 					 Example: @{"message":"Hello", "advertisementId":2}
+	 * @return			 If advertisement with passed id doesn't exists method return string 
+	 * 					 "Advertisement not found" and HttpStatus NOT_FOUND. 
+	 * 					 Otherwise, return string "Message is sent to advertiser" and HttpStatus OK.
+	 * @see				 CustomerMessageDTO
+	 * @author 			 Miodrag Vilotijević
+	 */
 	@RequestMapping(value="/sendMessageToAdvertiser", method=RequestMethod.POST, consumes="application/json")
 	public ResponseEntity<String> sendMessageToAdvertiser(Principal principal, @RequestBody CustomerMessageDTO messageDTO){
 		Customer fromUser = (Customer) userService.findByUsername(principal.getName());
