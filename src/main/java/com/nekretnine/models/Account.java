@@ -15,7 +15,7 @@ public class Account {
 	@Column(nullable=false)
 	private double amount;
 	
-	@Column(nullable=false)
+	@Column(nullable=false,unique=true)
 	private String acountNumber;
 	
 	public Account() {}
