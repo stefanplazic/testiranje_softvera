@@ -70,7 +70,8 @@ public class AdvertiserController {
 	/**
 	 * 
 	 * @param id of advertiser who's profile we want to get data about
-	 * @return
+	 * @return returns AdvertiserDTO 
+	 * @author stefan plazic
 	 */
 	@RequestMapping(value="/profile/{id}",method=RequestMethod.GET)
 	public ResponseEntity<AdvertiserDTO> getAdvertiserProfile(@PathVariable Long id){
@@ -81,7 +82,12 @@ public class AdvertiserController {
 		
 		return new ResponseEntity<>(advertiserDTO ,HttpStatus.OK);
 	}
-	
+	/**
+	 * 
+	 * @param principal  contains user credentials (part of Spring security)
+	 * @return returns AdvertiserDTO contains user data
+	 * @author stefan plazic
+	 */
 	@RequestMapping(value="/myprofile",method=RequestMethod.GET)
 	public ResponseEntity<AdvertiserDTO> getMyProfile(Principal principal){
 		
@@ -93,7 +99,7 @@ public class AdvertiserController {
 	}
 	
 	/**
-	 * 
+	 * This method shall call  advertiser to stark working into company
 	 * @param advertiserDTO potencional worker for our company
 	 * @param principal
 	 * @return
@@ -155,7 +161,16 @@ public class AdvertiserController {
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-	
+	/**
+	 * <p>
+	 * 	This method allows advetiser to accept company Call - to start working in some company.
+	 * <p>
+	 * @param callToCompanyDTO type of CallToCompanyDTO  -  represents companyCall in which user wants to work
+	 * @param principal principal contains user credentials (part of Spring security)
+	 * @author stefan plazic
+	 * @see CallToCompanyDTO
+	 * @return
+	 */
 	@RequestMapping(value="/acceptCall",method=RequestMethod.POST,consumes="application/json")
 	public ResponseEntity<String> acceptCallTOCompany(@RequestBody CallToCompanyDTO callToCompanyDTO,Principal principal){
 		
@@ -179,7 +194,15 @@ public class AdvertiserController {
 		}
 		return new ResponseEntity<>("Congretulate you are company employee!!" ,HttpStatus.OK);
 	}
-	
+	/**
+	 * <p>
+	 * 	Allows advertiser to get all offers for company working.
+	 * <p>
+	 * @param principal contains user credentials (part of Spring security)
+	 * @return List of CallToCompanyDTO
+	 * @author stefan plazic
+	 * @see CallToCompanyDTO
+	 */
 	@RequestMapping(value="/allCalls",method=RequestMethod.GET)
 	public ResponseEntity<List<CallToCompanyDTO>> acceptCallTOCompany(Principal principal){
 		
@@ -194,7 +217,15 @@ public class AdvertiserController {
 		}
 		return new ResponseEntity<List<CallToCompanyDTO>>(callToCompaniesDTO ,HttpStatus.FOUND);
 	}
-	
+	/**
+	 * <p>
+	 * This method will return a list of all advertisers which currently doesn't work in any
+	 * company.
+	 * <p>
+	 * @return returns List of AdvertiserDTO
+	 * @see AdvertiserDTO
+	 * @author stefan plazic
+	 */
 	@RequestMapping(value="/unemployed",method=RequestMethod.GET)
 	public ResponseEntity<List<AdvertiserDTO>> getUnemployed(){
 		
@@ -211,6 +242,15 @@ public class AdvertiserController {
 		
 		return new ResponseEntity<List<AdvertiserDTO>>(advertiserDTOs ,HttpStatus.FOUND);
 	}
+	/**
+	 * <p>
+	 * Allows advertiser to search all estates that he had sold
+	 * <p>
+	 * @param principal contains user credentials (part of Spring security)
+	 * @return returns list of sold estates
+	 * @see EstateDTO
+	 * @author stefan plazic
+	 */
 	@RequestMapping(value="/soldEstates",method=RequestMethod.GET)
 	public ResponseEntity<List<EstateDTO>> getSoldEstates(Principal principal){
 		

@@ -56,8 +56,6 @@ public class AccountControllerTest {
 	@Transactional
 	@Rollback(false)
 	public void testConfig() throws Exception {
-		// SecurityContextHolder.getContext().setAuthentication(new
-		// UsernamePasswordAuthenticationToken("admin", "admin"));
 
 		Account account = new Account();
 		account.setAcountNumber(AccountConstants.FIRST_ACCOUNT_NUMBER);
@@ -85,13 +83,14 @@ public class AccountControllerTest {
 
 		mockMvc.perform(get(URL_PREFIX + "/get").principal(new UserPrincipal("tombola"))).andExpect(status().isFound());
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
 	public void testAddMoney() throws Exception {
 
-		
-		mockMvc.perform(put(URL_PREFIX + "/addMoney/"+AccountConstants.ADD_MONEY).principal(new UserPrincipal("tombola"))).andExpect(status().isOk());
+		mockMvc.perform(
+				put(URL_PREFIX + "/addMoney/" + AccountConstants.ADD_MONEY).principal(new UserPrincipal("tombola")))
+				.andExpect(status().isOk());
 	}
 }
