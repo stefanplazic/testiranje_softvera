@@ -236,6 +236,11 @@ public class AdvertiserController {
 		//da li oglasavac postoji
 		if(a==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
+		//da li je vec rejtovao
+		RateAdvertiser jel =rateService.already_rated(a, c);
+		if(jel!=null) return new ResponseEntity<String>("vec si rejtovao",HttpStatus.NOT_FOUND);
+		
+		
 		//kreiranje rate-advertiser objekta
 		RateAdvertiser ra= new RateAdvertiser();
 		ra.setAdvertRate(rateDTO.getRate());
@@ -321,4 +326,26 @@ public class AdvertiserController {
 			
 	}
 
+	@RequestMapping(value="/removeFromCompany/{advertiser_id}/{company_id}",method=RequestMethod.DELETE)
+	public ResponseEntity<String> fire_from_company(Principal principal,@PathVariable Long advertiser_id,@PathVariable Long company_id){
+		
+		Advertiser a=(Advertiser) userService.findOne(advertiser_id);
+		Company c=companyService.findOne(company_id);
+		Advertiser ma=(Advertiser) userService.findByUsername(principal.getName());
+		
+		if(a==null) return new ResponseEntity<String>("oglasivac ne postoji",HttpStatus.NOT_FOUND);
+		if(c==null) return new ResponseEntity<String>("kompanija ne postoji",HttpStatus.NOT_FOUND);
+		
+		//ako nije menadzer
+		if(ma.getId()!=c.getOwner().getId()) return new ResponseEntity<String>("nisi menadzer kompanije",HttpStatus.I_AM_A_TEAPOT);
+		
+		//ako ne radi u toj kompaniji
+		if(a.getCompany().getId()!=c.getId()) return new ResponseEntity<String>("nemoze",HttpStatus.I_AM_A_TEAPOT);
+		
+		//brisi ga
+		service.fire(advertiser_id);
+		
+		return new ResponseEntity<String>("sve kul",HttpStatus.OK);
+	}
+	
 }

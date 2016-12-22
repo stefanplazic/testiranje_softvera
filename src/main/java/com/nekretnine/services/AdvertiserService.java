@@ -40,4 +40,9 @@ public class AdvertiserService {
 	public void remove(Long id) {
 		repository.delete(id);
 	}
+	
+	public void fire(Long id){
+		repository.fire(id);
+	}
+	
 }
