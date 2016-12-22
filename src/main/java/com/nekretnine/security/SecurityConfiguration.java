@@ -61,8 +61,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
 				.antMatchers( "/api/users/login", "/api/users/register/**","/api/users/verify/**").
-					permitAll();
-					/*.and()
+					permitAll()
+					.and()
 				.authorizeRequests()
 				.antMatchers( "/api/advertiser/profile/","/api/customer/profile/","api/account/addMoney/**","api/account/config","api/account/get"). 
 				hasAuthority("CUSTOMER|ADVERTISER")			
@@ -83,7 +83,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.antMatchers( "/api/administrator/register")
 				.hasAuthority("ADMINISTRATOR")
-				.anyRequest().authenticated();*/
+				.anyRequest().authenticated();
 				
 		
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(),

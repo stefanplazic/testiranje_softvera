@@ -11,15 +11,16 @@ public class Account {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private double amount;
-	
-	@Column(nullable=false,unique=true)
+
+	@Column(nullable = false, unique = true)
 	private String acountNumber;
-	
-	public Account() {}
-	
+
+	public Account() {
+	}
+
 	public Account(Long id, double amount, String acountNumber) {
 		super();
 		this.id = id;
@@ -51,5 +52,4 @@ public class Account {
 		this.acountNumber = acountNumber;
 	}
 
-	
 }
