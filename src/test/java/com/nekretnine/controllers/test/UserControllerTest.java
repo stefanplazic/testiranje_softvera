@@ -70,14 +70,14 @@ public class UserControllerTest {
 	 */
 	@Test
 	@Transactional
-	@Rollback(false)
+	@Rollback(true)
 	public void testSaveUser() throws Exception {
 		User user = new Advertiser();
-		user.setFirstName(UserConstants.FIRST_NAME_SECOND);
-		user.setLastName(UserConstants.LAST_NAME_SECOND);
-		user.setUsername(UserConstants.USERNAME_SECOND);
-		user.setEmail(UserConstants.EMAIL_SECOND);
-		user.setPassword(UserConstants.PASSWORD_SECOND);
+		user.setFirstName(UserConstants.FIRST_NAME);
+		user.setLastName(UserConstants.LAST_NAME);
+		user.setUsername(UserConstants.USERNAME);
+		user.setEmail(UserConstants.EMAIL);
+		user.setPassword(UserConstants.PASSWORD);
 
 		String json = TestUtil.json(user);
 		mockMvc.perform(post(URL_PREFIX + "/register/advertiser").contentType(contentType).content(json))
@@ -114,14 +114,14 @@ public class UserControllerTest {
 		// login with first user creditionals
 		LoginDTO user = new LoginDTO();
 		user.setUsername(UserConstants.USERNAME_SECOND);
-		user.setPassword(UserConstants.PASSWORD_SECOND);
+		user.setPassword(UserConstants.PASSWORD_SECOND_TRUE);
 
 		String json = TestUtil.json(user);
 		mockMvc.perform(post(URL_PREFIX + "/login").contentType(contentType).content(json)).andExpect(status().isOk());
 
 		// this needs to fail
-		user.setUsername(UserConstants.USERNAME_SECOND);
-		user.setPassword(UserConstants.PASSWORD);
+		user.setUsername(UserConstants.FIRST_NAME_THIRD);
+		user.setPassword(UserConstants.PASSWORD_THIRD);
 
 		json = TestUtil.json(user);
 		mockMvc.perform(post(URL_PREFIX + "/login").contentType(contentType).content(json))
