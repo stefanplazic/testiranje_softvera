@@ -10,7 +10,7 @@ import com.nekretnine.models.Favourites;
 
 public interface FavouritesRepository extends JpaRepository<Favourites, Long>{
 
-	Page<Favourites> findAllByCustomer(Pageable pageable, Customer customer);
+	Page<Favourites> findAllByCustomer(Customer customer, Pageable pageable);
 
 	Favourites findByEstateAndCustomer(Estate estate, Customer customer);
 

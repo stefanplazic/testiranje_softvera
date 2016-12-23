@@ -2,7 +2,6 @@ package com.nekretnine.controllers;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nekretnine.dto.AdvertisementDTO;
 import com.nekretnine.dto.CustomerDTO;
 import com.nekretnine.dto.CustomerMessageDTO;
 import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.dto.PageableDTO;
-import com.nekretnine.models.Account;
 import com.nekretnine.models.Advertisement;
-import com.nekretnine.models.Advertisement.State;
-import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Customer;
 import com.nekretnine.models.Estate;
 import com.nekretnine.models.Favourites;
@@ -45,222 +40,196 @@ public class CustomerController {
 
 	@Autowired
 	private CustomerService service;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private EstateService estateService;
-	
+
 	@Autowired
 	private AdvertisementService advertisementService;
-	
+
 	@Autowired
 	private AdvertiserService advertiserService;
-	
+
 	@Autowired
 	private AccountService accountService;
-	
+
 	@Autowired
 	private FavouritesService favouritesService;
-	
+
 	@Autowired
 	private NotificationService notificationService;
 
-	
-	@RequestMapping(value = "profile/{id}",method=RequestMethod.GET)
-	public ResponseEntity<CustomerDTO> saveEstate(@PathVariable Long id){
+	@RequestMapping(value = "customerProfile/{id}", method = RequestMethod.GET)
+	public ResponseEntity<CustomerDTO> customerProfile(@PathVariable Long id) {
 		Customer customer = service.findOne(id);
-		if(customer == null)
+		if (customer == null)
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		
-		
-		return new ResponseEntity<>(new CustomerDTO(customer),HttpStatus.OK);
-	}
-	
-	@RequestMapping(value="/buyestate/{typeState}",method=RequestMethod.PUT, consumes="application/json")
-	public ResponseEntity<String> buyEstae(Principal principal, @RequestBody AdvertisementDTO advertisementDTO, @PathVariable String typeState){
-		
-		//get my user credentials
-		User me = userService.findByUsername(principal.getName());	
-		Customer customer = (Customer) me;
-		Advertisement advertisement = advertisementService.findOne(advertisementDTO.getId());
-		
-		//check if exists
-		if(advertisement == null)
-			return new ResponseEntity<>("Advertisement: doesn't exists" ,HttpStatus.NOT_FOUND);
 
-		//check if advertisment date is expired
-		if(advertisement.getExpiryDate().before(new Date()))
-			return new ResponseEntity<>("Advertisement has expired" ,HttpStatus.LOCKED);
-		/*if(advertisement.getState() != State.OPEN )
-			return new ResponseEntity<>("Advertisement is already bought,removed or sold" ,HttpStatus.LOCKED);*/
-		if(me.getAccount() == null) 
-			return new ResponseEntity<>("You don't have account, configure it on http://localhost:8080/api/account/config" ,HttpStatus.NOT_FOUND);
-		else if(me.getAccount().getAmount() < advertisement.getEstate().getPrice())
-			return new ResponseEntity<>("You don't have enough money on your account, add money on /api/account/addMoney" ,HttpStatus.BAD_REQUEST);
-		
-		if(advertisement.getAdvertiser().getAccount() == null)
-			return new ResponseEntity<>("You can't make payments, advertiser didn't configured his money account" ,HttpStatus.NOT_FOUND);
-		//put money on advertiser account
-		accountService.addMoney(advertisement.getAdvertiser().getAccount().getId(), advertisement.getEstate().getPrice());
-		//take that money from customer account
-		Account cusAccount = me.getAccount();
-		cusAccount.setAmount(cusAccount.getAmount() - advertisement.getEstate().getPrice());
-		//save state
-		accountService.save(cusAccount);
-	
-		//buy this estate
-		State saveState = typeState.equalsIgnoreCase("buy")? State.SOLD: State.RENTED;
-		advertisement.setState(saveState);
-		advertisement.setSoldto(customer);
-		advertisementService.save(advertisement);
-		
-		//send the notification to advertiser
-		Notification notification = new Notification();
-		notification.setnType("info");
-		notification.setToUser(advertisement.getAdvertiser());
-		notification.setFromUser(customer);
-		notification.setText("Estate {"+advertisement.getEstate().getName()+"} is bought by "+customer.getUsername());
-		notificationService.saveNotification(notification);
-		
-		//remove estate from other advertisers
-		List<Advertiser> advertisers = advertiserService.findAll();
-		for(Advertiser advrt : advertisers){
-			
-			//check if it is not given advertiser 
-			if(advrt.getId() != advertisement.getAdvertiser().getId()){
-				for(Advertisement advertis : advrt.getAdvertisements()){
-					//if it have given estate,remove it from the list
-					if(advertis.getEstate().getId() == advertisement.getEstate().getId()){
-						advrt.getAdvertisements().remove(advertis);
-						//delete advertisment
-						advertisementService.delete(advertis.getId());
-						}				
-				}
-			}
-		}	
-		return new ResponseEntity<>("You succesfully bought/reserved real estate" ,HttpStatus.OK);
+		return new ResponseEntity<>(new CustomerDTO(customer), HttpStatus.OK);
 	}
-	
-	@RequestMapping(value="/myprofile",method=RequestMethod.GET)
-	public ResponseEntity<CustomerDTO> getMyProfile(Principal principal){
-		
-		//get my user credentials
-		User me = userService.findByUsername(principal.getName());	
-		CustomerDTO customerDTO = new CustomerDTO((Customer)me);
-		
-		return new ResponseEntity<>(customerDTO ,HttpStatus.OK);
+
+	@RequestMapping(value = "/myProfile", method = RequestMethod.GET)
+	public ResponseEntity<CustomerDTO> myProfile(Principal principal) {
+
+		// get my user credentials
+		User me = userService.findByUsername(principal.getName());
+		CustomerDTO customerDTO = new CustomerDTO((Customer) me);
+
+		return new ResponseEntity<>(customerDTO, HttpStatus.OK);
 	}
-	
-	@RequestMapping(value="/myEstates",method=RequestMethod.GET)
-	public ResponseEntity<List<EstateDTO>> getMyEstates(Principal principal){
-		
-		//get my user credentials
-		User me = userService.findByUsername(principal.getName());	
-		Customer customer = (Customer)me;
-		
-		List<EstateDTO> estateDTOs = new ArrayList<EstateDTO>();
-		//get estates from advertisement and convert them to DTOs
-		for(Advertisement advertisement : customer.getBoughtAdvertisement()){
-			estateDTOs.add(new EstateDTO(advertisement.getEstate()));
+
+	@RequestMapping(value = "/myEstates", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<List<EstateDTO>> myEstates(Principal principal,
+			@RequestBody PageableDTO pageableDTO) {
+
+		Customer customer = (Customer) userService.findByUsername(principal
+				.getName());
+
+		Page<Advertisement> page = advertisementService.findAllBySoldto(
+				customer,
+				new PageRequest(pageableDTO.getPage(), pageableDTO.getCount()));
+		List<Advertisement> adv = page.getContent();
+		List<EstateDTO> estates = new ArrayList<EstateDTO>();
+		for (Advertisement a : adv) {
+			estates.add(new EstateDTO(a.getEstate()));
 		}
-		return new ResponseEntity<List<EstateDTO>>(estateDTOs, HttpStatus.OK);
+		return new ResponseEntity<>(estates, HttpStatus.OK);
 	}
-	
+
 	/**
 	 * Method add estate to customer favorites
 	 * 
-	 * @param  principal Current logged user (customer) created by Spring Security.
-	 * @param  estate_id The id of estate which will add to customer's favorites
-	 * @return 			 if estate with passed id doesn't exists return string "Estate not found"
-	 * 		   			 and HttpStatus NOT_FOUND. Otherwise, return string "Favorite estate is saved"
-	 * 		   			 and HttpStatus OK.
-	 * @author 			 Miodrag Vilotijević
+	 * @param principal
+	 *            Current logged user (customer) created by Spring Security.
+	 * @param estate_id
+	 *            The id of estate which will add to customer's favorites
+	 * @return If estate with passed id doesn't exists return string
+	 *         "Estate not found" and HttpStatus NOT_FOUND. If estate already in
+	 *         customer favorites return appropriate message and HttpStatus
+	 *         CONFLICT. Otherwise, return string "Favorite estate is saved" and
+	 *         HttpStatus OK.
+	 * @author Miodrag Vilotijević
 	 */
-	@RequestMapping(value="/addFavourite/{estateId}",method=RequestMethod.POST)
-	public ResponseEntity<String> addFavourite(Principal principal, @PathVariable Long estateId){
-		
-		Customer customer = (Customer) userService.findByUsername(principal.getName());	
+	@RequestMapping(value = "/addFavourite/{estateId}", method = RequestMethod.POST)
+	public ResponseEntity<String> addFavourite(Principal principal,
+			@PathVariable Long estateId) {
+
+		Customer customer = (Customer) userService.findByUsername(principal
+				.getName());
 		Estate estate = estateService.findOne(estateId);
-		if(estate == null){
-			return new ResponseEntity<>("Estate not found" ,HttpStatus.NOT_FOUND);
+		if (estate == null) {
+			return new ResponseEntity<>("Estate not found",
+					HttpStatus.NOT_FOUND);
 		}
-		Favourites favourite = new Favourites();
+
+		Favourites favourite = favouritesService.findByEstateAndCustomer(
+				estate, customer);
+		if (favourite != null) {
+			return new ResponseEntity<>(
+					"Estate is already in customers favourites",
+					HttpStatus.CONFLICT);
+		}
+
+		favourite = new Favourites();
 		favourite.setCustomer(customer);
 		favourite.setEstate(estate);
 		favouritesService.save(favourite);
-		return new ResponseEntity<>("Favourite Estate is saved" ,HttpStatus.OK);
+		return new ResponseEntity<>("Favourite Estate is saved", HttpStatus.OK);
 	}
-	
+
 	/**
 	 * Method remove estate from customer favorites
 	 * 
-	 * @param  principal  Current logged user (customer), created by Spring Security. 
-	 * @param  estate_id  The id of estate which will remove from customer's favorites
-	 * @return            If estate with passed id doesn't exists or isn't in customers favorites
-	 * 					  method return HttpStatus NOT_FOUND with appropriate message. 
-	 * 					  Otherwise, return string "Estate is unmarked" and HttpStatus OK.           
-	 * @author 			  Miodrag Vilotijević
+	 * @param principal
+	 *            Current logged user (customer), created by Spring Security.
+	 * @param estate_id
+	 *            The id of estate which will remove from customer's favorites
+	 * @return If estate with passed id doesn't exists or isn't in customers
+	 *         favorites method return HttpStatus NOT_FOUND with appropriate
+	 *         message. Otherwise, return string "Estate is unmarked" and
+	 *         HttpStatus OK.
+	 * @author Miodrag Vilotijević
 	 */
-	@RequestMapping(value="/unmarkFavourite/{estateId}", method=RequestMethod.POST)
-	public ResponseEntity<String> unmarkFavourite(Principal principal, @PathVariable Long estateId){
-		
-		Customer customer = (Customer) userService.findByUsername(principal.getName());	
+	@RequestMapping(value = "/unmarkFavourite/{estateId}", method = RequestMethod.POST)
+	public ResponseEntity<String> unmarkFavourite(Principal principal,
+			@PathVariable Long estateId) {
+
+		Customer customer = (Customer) userService.findByUsername(principal
+				.getName());
 		Estate estate = estateService.findOne(estateId);
-		if(estate == null){
-			return new ResponseEntity<>("Estate not found" ,HttpStatus.NOT_FOUND);
+		if (estate == null) {
+			return new ResponseEntity<>("Estate not found",
+					HttpStatus.NOT_FOUND);
 		}
-		
-		Favourites favourite = favouritesService.findByEstateAndCustomer(estate, customer);
-		if(favourite == null){
-			return new ResponseEntity<>("This estate isn't in customers favourites" ,HttpStatus.NOT_FOUND);
+
+		Favourites favourite = favouritesService.findByEstateAndCustomer(
+				estate, customer);
+		if (favourite == null) {
+			return new ResponseEntity<>(
+					"This estate isn't in customers favourites",
+					HttpStatus.NOT_FOUND);
 		}
 		favouritesService.delete(favourite.getId());
-		return new ResponseEntity<>("Estate is unmarked" ,HttpStatus.OK);
+		return new ResponseEntity<>("Estate is unmarked", HttpStatus.OK);
 	}
-	
+
 	/**
 	 * Method return customer's favorites estates for concrete page.
 	 * 
-	 * @param principal   Current logged user (customer), created by Spring Security.
-	 * @param pageableDTO JSON object which contains data for paging customer's favorites estates.
-	 * 					  Example: @{"page"=1, count="10"}
-	 * @return			  List of EstateDTO objects which represent customer's favorites estates and HttpStatus OK.
-	 * @see				  PageableDTO, EstateDTO
-	 * @author 			  Miodrag Vilotijević
+	 * @param principal
+	 *            Current logged user (customer), created by Spring Security.
+	 * @param pageableDTO
+	 *            JSON object which contains data for paging customer's
+	 *            favorites estates. Example: @{"page"=1, count="10"}
+	 * @return List of EstateDTO objects which represent customer's favorites
+	 *         estates and HttpStatus OK.
+	 * @see PageableDTO, EstateDTO
+	 * @author Miodrag Vilotijević
 	 */
-	@RequestMapping(value="/getFavourites", method=RequestMethod.POST, consumes="application/json")
-	public ResponseEntity<List<EstateDTO>> getFavourites(Principal principal, @RequestBody PageableDTO pageableDTO){
-		
-		Customer customer = (Customer) userService.findByUsername(principal.getName());	
-		Page<Favourites> page = favouritesService.findAllByCustomer(new PageRequest(pageableDTO.getPage(),pageableDTO.getCount()), customer);
+	@RequestMapping(value = "/getFavourites", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<List<EstateDTO>> getFavourites(Principal principal,
+			@RequestBody PageableDTO pageableDTO) {
+
+		Customer customer = (Customer) userService.findByUsername(principal
+				.getName());
+		Page<Favourites> page = favouritesService.findAllByCustomer(customer,
+				new PageRequest(pageableDTO.getPage(), pageableDTO.getCount()));
 		List<Favourites> favourites = page.getContent();
 		List<EstateDTO> estates = new ArrayList<EstateDTO>();
-		for (Favourites f: favourites){
+		for (Favourites f : favourites) {
 			estates.add(new EstateDTO(f.getEstate()));
 		}
-		return new ResponseEntity<>(estates ,HttpStatus.OK);
+		return new ResponseEntity<>(estates, HttpStatus.OK);
 	}
-	
+
 	/**
 	 * Method send message to advertiser for concrete advertisement.
 	 * 
-	 * @param principal  Current logged user (customer), created by Spring Security.
-	 * @param messageDTO JSON object which contains data for sending message to advertiser
-	 * 					 Example: @{"message":"Hello", "advertisementId":2}
-	 * @return			 If advertisement with passed id doesn't exists method return string 
-	 * 					 "Advertisement not found" and HttpStatus NOT_FOUND. 
-	 * 					 Otherwise, return string "Message is sent to advertiser" and HttpStatus OK.
-	 * @see				 CustomerMessageDTO
-	 * @author 			 Miodrag Vilotijević
+	 * @param principal
+	 *            Current logged user (customer), created by Spring Security.
+	 * @param messageDTO
+	 *            JSON object which contains data for sending message to
+	 *            advertiser Example: @{"message":"Hello", "advertisementId":2}
+	 * @return If advertisement with passed id doesn't exists method return
+	 *         string "Advertisement not found" and HttpStatus NOT_FOUND.
+	 *         Otherwise, return string "Message is sent to advertiser" and
+	 *         HttpStatus OK.
+	 * @see CustomerMessageDTO
+	 * @author Miodrag Vilotijević
 	 */
-	@RequestMapping(value="/sendMessageToAdvertiser", method=RequestMethod.POST, consumes="application/json")
-	public ResponseEntity<String> sendMessageToAdvertiser(Principal principal, @RequestBody CustomerMessageDTO messageDTO){
-		Customer fromUser = (Customer) userService.findByUsername(principal.getName());
-		Advertisement advertisement = advertisementService.findOne(messageDTO.getAdvertisementId());
-		if(advertisement == null){
-			return new ResponseEntity<>("Advertisement not found", HttpStatus.NOT_FOUND);
+	@RequestMapping(value = "/sendMessageToAdvertiser", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<String> sendMessageToAdvertiser(Principal principal,
+			@RequestBody CustomerMessageDTO messageDTO) {
+		Customer fromUser = (Customer) userService.findByUsername(principal
+				.getName());
+		Advertisement advertisement = advertisementService.findOne(messageDTO
+				.getAdvertisementId());
+		if (advertisement == null) {
+			return new ResponseEntity<>("Advertisement not found",
+					HttpStatus.NOT_FOUND);
 		}
 		Notification notification = new Notification();
 		notification.setFromUser(fromUser);
@@ -269,7 +238,8 @@ public class CustomerController {
 		notification.setText(messageDTO.getMessage());
 		notification.setAdvertisement(advertisement);
 		notificationService.saveNotification(notification);
-		return new ResponseEntity<>("Message is sent to advertiser", HttpStatus.OK);	
+		return new ResponseEntity<>("Message is sent to advertiser",
+				HttpStatus.OK);
 	}
 
 }

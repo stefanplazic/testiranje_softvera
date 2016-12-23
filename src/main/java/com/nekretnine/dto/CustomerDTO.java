@@ -29,8 +29,8 @@ public class CustomerDTO {
 
 	public CustomerDTO(Customer customer) {
 		this.firstName = customer.getFirstName();
-		this.lastName = customer.getFirstName();
-		this.username = customer.getFirstName();
+		this.lastName = customer.getLastName();
+		this.username = customer.getUsername();
 		this.email = customer.getEmail();
 		this.commentDTOs = new HashSet<CommentDTO>();
 		for(Comment comment: customer.getComments()){
