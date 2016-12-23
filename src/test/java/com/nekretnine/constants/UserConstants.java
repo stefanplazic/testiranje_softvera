@@ -40,4 +40,11 @@ public class UserConstants {
 	public static final String USERNAME_ADVETISER  = "mile";
 	public static final String USERNAME_ADVETISER_TWO  = "stefi";
 	
+	//-------------------------------------------------------------
+	
+	public static final String USERNAME_CUSTOMER_STEFI  = "stefi";
+	public static final Long ADVERT_FIRST = 2L;
+	public static final Long ADVERT_SECOND= 6L;
+	public static final String UN_EXISTING_ADVERTISER_USERNAME= "budala";
+	
 }

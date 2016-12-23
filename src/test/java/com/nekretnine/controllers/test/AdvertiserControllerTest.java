@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.lang.Thread.State;
 import java.nio.charset.Charset;
 
 import javax.annotation.PostConstruct;
@@ -29,12 +30,16 @@ import org.springframework.web.context.WebApplicationContext;
 import com.nekretnine.MyprojectApplication;
 import com.nekretnine.TestUtil;
 import com.nekretnine.constants.CallToCompanyConstants;
+import com.nekretnine.constants.RateConstants;
 import com.nekretnine.constants.UserConstants;
+import com.nekretnine.dto.AdvertiserDTO;
 import com.nekretnine.dto.CallToCompanyDTO;
+import com.nekretnine.dto.RateDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.CallToCompany;
 import com.nekretnine.models.Company;
+import com.nekretnine.models.RateAdvertiser;
 import com.nekretnine.models.User;
 import com.nekretnine.services.AdvertisementService;
 import com.nekretnine.services.CallToCompanyService;
@@ -119,11 +124,20 @@ public class AdvertiserControllerTest {
 	@Rollback(true)
 	public void testAddToCompany() throws Exception {
 		Advertiser user = (Advertiser) service.findByUsername(UserConstants.USERNAME_ADVETISER);
-		String json = TestUtil.json(user);
+		String json = TestUtil.json(new AdvertiserDTO(user));
 		mockMvc.perform(post(URL_PREFIX + "/callToCompany").principal(new UserPrincipal(UserConstants.USERNAME_SECOND))
 				.contentType(contentType).content(json)).andExpect(status().isOk());
-		// test call to for already employed advertiser
-		// NE RADI
+		// unemployed adveriser send call to company, it should return NOT_FOUND status code
+		user = (Advertiser) service.findByUsername(UserConstants.USERNAME_SECOND);
+		json = TestUtil.json(new AdvertiserDTO(user));
+		mockMvc.perform(post(URL_PREFIX + "/callToCompany").principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER))
+				.contentType(contentType).content(json)).andExpect(status().isNotFound());
+		//send not existing Advertiser to method, it should return NOT_FOUND status code
+		AdvertiserDTO advertiserDTO = new AdvertiserDTO();
+		advertiserDTO.setUsername(UserConstants.UN_EXISTING_ADVERTISER_USERNAME);
+		json = TestUtil.json(advertiserDTO);
+		mockMvc.perform(post(URL_PREFIX + "/callToCompany").principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER))
+				.contentType(contentType).content(json)).andExpect(status().isNotFound());
 	}
 
 	@SuppressWarnings("restriction")
@@ -193,7 +207,14 @@ public class AdvertiserControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void testGetSoldEstates() throws Exception {
+		//change the status advertisment
+		Advertisement advertisement = advertisementService.findOne(CallToCompanyConstants.ADVERISMENT_ID_FIRST);
+		advertisement.setState(Advertisement.State.SOLD);
+		advertisementService.save(advertisement);
 		
+		advertisement = advertisementService.findOne(CallToCompanyConstants.ADVERISMENT_ID_SECOND);
+		advertisement.setState(Advertisement.State.SOLD);
+		advertisementService.save(advertisement);
 		
 		mockMvc.perform(get(URL_PREFIX + "/soldEstates").principal(new UserPrincipal(UserConstants.USERNAME_SECOND)))
 				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
@@ -204,4 +225,20 @@ public class AdvertiserControllerTest {
 		.andExpect(jsonPath("$", hasSize(CallToCompanyConstants.SOLD_ESTATES_STEFI)));
 
 	}
+	
+	@SuppressWarnings("restriction")
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSet_rate() throws Exception {
+		
+		RateDTO rate = new RateDTO();
+		rate.setRate(RateConstants.RATE_ONE);
+		String json = TestUtil.json(rate);
+		//testing for user with id 2
+		mockMvc.perform(post(URL_PREFIX + "/rate/"+ UserConstants.ADVERT_FIRST).principal(new UserPrincipal(UserConstants.USERNAME_CUSTOMER_STEFI))
+				.content(json))
+		.andExpect(status().isCreated());
+	}
+	
 }
