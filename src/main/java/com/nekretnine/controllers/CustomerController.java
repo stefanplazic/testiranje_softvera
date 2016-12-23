@@ -62,6 +62,15 @@ public class CustomerController {
 	@Autowired
 	private NotificationService notificationService;
 
+	/**
+	 * <p>
+	 * get data about given custemer , return Ok status if exista,otherwise it returns not found
+	 * <p>
+	 * @author stefan
+	 * @param id id of Customer you want to get data about
+	 * @return  CustomerDTO
+	 * @see CustomerDTO
+	 */
 	@RequestMapping(value = "customerProfile/{id}", method = RequestMethod.GET)
 	public ResponseEntity<CustomerDTO> customerProfile(@PathVariable Long id) {
 		Customer customer = service.findOne(id);
@@ -71,6 +80,13 @@ public class CustomerController {
 		return new ResponseEntity<>(new CustomerDTO(customer), HttpStatus.OK);
 	}
 
+	/**
+	 * this method is only for customer to seee his own profile, username is take from principal
+	 * @param principal user data
+	 * @return CustomerDTOC
+	 * @author stefan
+	 * @see CustomerDTO
+	 */
 	@RequestMapping(value = "/myProfile", method = RequestMethod.GET)
 	public ResponseEntity<CustomerDTO> myProfile(Principal principal) {
 
@@ -81,6 +97,15 @@ public class CustomerController {
 		return new ResponseEntity<>(customerDTO, HttpStatus.OK);
 	}
 
+	/**
+	 * return list of estates witch custemer had bought. It uses pagination
+	 * @param principal
+	 * @param pageableDTO
+	 * @return List of EsateDto
+	 * @see EstateDTO
+	 * @see PageableDTO
+	 * @author stefan
+	 */
 	@RequestMapping(value = "/myEstates", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<List<EstateDTO>> myEstates(Principal principal,
 			@RequestBody PageableDTO pageableDTO) {
