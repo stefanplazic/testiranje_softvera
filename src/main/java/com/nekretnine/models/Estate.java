@@ -53,10 +53,10 @@ public class Estate {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy="estate")
 	private Set<Image> images = new HashSet<Image>();
 	
-	@OneToMany(mappedBy="estate", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="estate", fetch = FetchType.EAGER)
 	private Set<RateEstate> rates  = new HashSet<RateEstate>();
 	
-	@OneToMany(mappedBy="estate", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="estate", fetch = FetchType.EAGER)
 	private Set<Favourites> advertiserFav  = new HashSet<Favourites>();
 	
 	public Estate() {}

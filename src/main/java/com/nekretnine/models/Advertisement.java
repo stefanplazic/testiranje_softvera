@@ -140,5 +140,11 @@ public class Advertisement {
 		this.notifications = notifications;
 	}
 
+	@Override
+	public String toString() {
+		return "Advertisement [id=" + id + ", publicationDate=" + publicationDate + ", expiryDate=" + expiryDate
+				+ ", state=" + state + ", advertiser=" + advertiser + ", estate=" + estate + ", soldto=" + soldto
+				+ ", notifications=" + notifications + "]";
+	}
 	
 }
