@@ -1,8 +1,9 @@
 package com.nekretnine.repository;
 
 import java.util.Date;
-import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -34,15 +35,17 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 			+ "(:expiryDate is null or a.expiryDate = :expiryDate) AND "
 			+ "(:state is null or a.state = :state) AND "
 			+ "(:name is null or e.name = :name) AND "
-			+ "(:price is null or e.price = :price) AND "
-			+ "(:area is null or e.area = :area) AND "
+			+ "(:minPrice = 0.0 or e.price > :minPrice) AND "
+			+ "(:maxPrice = 0.0 or e.price < :maxPrice) AND "
+			+ "(:minArea = 0.0 or e.area > :minArea) AND "
+			+ "(:maxArea = 0.0 or e.area < :maxArea) AND "
 			+ "(:address is null or e.address = :address) AND "
 			+ "(:city is null or e.city = :city) AND "
 			+ "(:cityPart is null or e.cityPart = :cityPart) AND "
 			+ "(:technicalEquipment is null or e.technicalEquipment = :technicalEquipment) AND "
 			+ "(:heatingSystem is null or e.heatingSystem = :heatingSystem)")
-	List<Advertisement> findAdvertisement(@Param("publicationDate") Date publicationDate, @Param("expiryDate") Date expiryDate,
-			@Param("state") State state, @Param("name") String name, @Param("price") Double price, @Param("area") Double area,
-			@Param("address") String address, @Param("city") String city, @Param("cityPart") String cityPart,
-			@Param("technicalEquipment") String technicalEquipment, @Param("heatingSystem") String heatingSystem);
+	Page<Advertisement> findAdvertisement(@Param("publicationDate") Date publicationDate, @Param("expiryDate") Date expiryDate,
+			@Param("state") State state, @Param("name") String name, @Param("minPrice") Double minPrice, @Param("maxPrice") Double maxPrice,
+			@Param("minArea") Double minArea, @Param("maxArea") Double maxArea, @Param("address") String address, @Param("city") String city, @Param("cityPart") String cityPart,
+			@Param("technicalEquipment") String technicalEquipment, @Param("heatingSystem") String heatingSystem, Pageable pageable);
 }

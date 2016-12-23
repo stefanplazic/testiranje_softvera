@@ -87,7 +87,7 @@ public class EstateController {
 			
 			//da li je vec rejtovao
 			RateEstate jel =rateService.findOneByEstateAndCustomer(e, c);
-			if(jel!=null) return new ResponseEntity<String>("vec si rejtovao",HttpStatus.NOT_FOUND);
+			if(jel!=null) return new ResponseEntity<String>("vec si rejtovao",HttpStatus.CONFLICT);
 			
 			
 			//kreiranje rate-estate objekta
