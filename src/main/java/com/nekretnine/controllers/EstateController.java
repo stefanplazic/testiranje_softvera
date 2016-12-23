@@ -50,6 +50,9 @@ public class EstateController {
 	public ResponseEntity<String> saveEstate(Principal principal,@RequestBody EstateDTO estateDTO){
 		
 		Advertiser owner=(Advertiser) userService.findByUsername(principal.getName());
+		Estate e = estateService.findOneByName(estateDTO.getName());
+		
+		if(e!=null) return new ResponseEntity<String>("vecima",HttpStatus.CONFLICT);
 		
 		Estate estate= new Estate(estateDTO);
 		estate.setOwner(owner);

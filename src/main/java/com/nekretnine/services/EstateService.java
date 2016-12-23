@@ -35,4 +35,8 @@ public class EstateService {
 	public void remove(Long id) {
 		repository.delete(id);
 	}
+	
+	public Estate findOneByName(String name){
+		return repository.findOneByName(name);
+	}
 }

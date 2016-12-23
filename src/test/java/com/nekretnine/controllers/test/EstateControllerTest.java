@@ -12,6 +12,8 @@ import javax.annotation.PostConstruct;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
@@ -21,12 +23,17 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.nekretnine.MyprojectApplication;
 import com.nekretnine.TestUtil;
 import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.dto.ImageDTO;
+import com.nekretnine.dto.RateDTO;
+import com.sun.security.auth.UserPrincipal;
 
-//@SuppressWarnings("deprecation")
+@SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = MyprojectApplication.class)
+@WebIntegrationTest
 @TestPropertySource(locations = "classpath:test.properties")
 public class EstateControllerTest {
 	
@@ -81,21 +88,59 @@ public class EstateControllerTest {
 		
 		//proveri dodavanje u bazu
 		mockMvc.perform(post(URL_PREFIX + "/add")
-				
+				.principal(new UserPrincipal("mile"))
 				.contentType(contentType)
 				.content(json_data))
 			.andExpect(status().isCreated());
 		
-		//dodavanje ako vec postoji korisnik
-		
-		
-		
+		//dodavanje ako vec postoji nekretnina
+		mockMvc.perform(post(URL_PREFIX + "/add")
+				.principal(new UserPrincipal("mile"))
+				.contentType(contentType)
+				.content(json_data))
+			.andExpect(status().isConflict());	
 		
 		
 		
 		
 	}
 	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testRateEstate() throws Exception {
+		
+		RateDTO r=new RateDTO();
+		r.setRate(3);
+		
+		String json_data =TestUtil.json(r);
+		
+		//dodavanje ako vec postoji nekretnina
+		mockMvc.perform(post(URL_PREFIX + "/rate/1")
+				.principal(new UserPrincipal("cone"))
+				.contentType(contentType)
+				.content(json_data))
+			.andExpect(status().isCreated());	
+		
+		//ocena na prethodno ocenjenu nekretninu
+		mockMvc.perform(post(URL_PREFIX + "/rate/1")
+				.principal(new UserPrincipal("cone"))
+				.contentType(contentType)
+				.content(json_data))
+			.andExpect(status().isNotFound());	
+		
+		
+		//ocena na nepostojecu nekretninu
+		mockMvc.perform(post(URL_PREFIX + "/rate/14523")
+				.principal(new UserPrincipal("cone"))
+				.contentType(contentType)
+				.content(json_data))
+			.andExpect(status().isNotFound());	
+		
+				
+		
 	
+	}
+		
 
 }
