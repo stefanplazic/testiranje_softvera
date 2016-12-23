@@ -92,6 +92,14 @@ public class AdvertiserControllerTest {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * <p>
+	 * test the method for  geting data about adveriser. If correct id is send, it return OK status,
+	 * otherwise it returns NOT_FOUND.
+	 * <p>
+	 * @throws Exception
+	 * @author stefan plazic
+	 */
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
@@ -112,6 +120,14 @@ public class AdvertiserControllerTest {
 				.andExpect(status().isNotFound());
 	}
 
+	/**
+	 * <p>
+	 * returns advertiser profile, here you need to send just prinicipal, and using this it returns
+	 * user data and OK status.
+	 * <p>
+	 * @throws Exception
+	 * @author stefan plazic
+	 */
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
@@ -122,7 +138,16 @@ public class AdvertiserControllerTest {
 		mockMvc.perform(get(URL_PREFIX + "/myprofile").principal(new UserPrincipal(UserConstants.USERNAME_SECOND)))
 				.andExpect(status().isOk());
 	}
-
+	/**
+	 * test the method for calling advertiser to work in the company
+	 * it uses AdvertiserDTO to to call advertiser to company.
+	 * 1. first we give all correct parameters and OK status is returned.
+	 * 2. advertiser is not company empoyer , it returns NOT FOund
+	 * 3. sending of none existing advertiser , returns NOt FOund
+	 * @throws Exception
+	 * @author stefan plazic
+	 * @see AdvertiserDTO
+	 */
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
@@ -149,6 +174,12 @@ public class AdvertiserControllerTest {
 				.andExpect(status().isNotFound());
 	}
 
+	/**
+	 * if user does work in company will return ok status,
+	 * otherwise it will return NOT FOUND status
+	 * @throws Exception
+	 * @author stefan plazic
+	 */
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
@@ -163,6 +194,14 @@ public class AdvertiserControllerTest {
 
 	}
 
+	/**
+	 * <p>
+	 * 1. in this case user can acceptCall to work in company in which is invited
+	 * 2. in this case user tries to accept company even if he is working in some other company, returns CONFLICT
+	 * <p>
+	 * @throws Exception
+	 * @author stefan plazic
+	 */
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
@@ -185,6 +224,14 @@ public class AdvertiserControllerTest {
 
 	}
 
+	/**
+	 * <p>
+	 * test method for returning all company call for some user.
+	 * in first case he has list with company call with size of CALL_SIZE
+	 * in second case he has no company calls
+	 * <p>
+	 * @author stefan plazic
+	 */
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
@@ -199,7 +246,11 @@ public class AdvertiserControllerTest {
 				.andExpect(status().isFound()).andExpect(content().contentType(contentType))
 				.andExpect(jsonPath("$", hasSize(CallToCompanyConstants.NONE_CALL_SIZE)));
 	}
-
+	/**
+	 * test does the size of unemployed users equals to ADVERT_SIZE constant
+	 * @author stefan plazic
+	 * @throws Exception
+	 */
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
@@ -210,7 +261,12 @@ public class AdvertiserControllerTest {
 				.andExpect(jsonPath("$", hasSize(CallToCompanyConstants.ADVERT_SIZE)));
 
 	}
-
+	/**test method for showing advertiser list of all advertisments he has sold
+	 * first the two advertisment are saved with SOLD state to database, after that we call the API "api/advertiser/soldEstates"
+	 * to check does the list of sold estates contains previusly sold states 
+	 * @author stefan plazic
+	 * @throws Exception
+	 */
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
@@ -236,6 +292,11 @@ public class AdvertiserControllerTest {
 
 	}
 
+	/**
+	 * test the rating of adveriser 
+	 * @throws Exception
+	 * @author stefan
+	 */
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
@@ -251,14 +312,21 @@ public class AdvertiserControllerTest {
 				.content(json))
 				.andExpect(status().isCreated());
 	}
-
+	/**
+	 * <p>
+	 * 1. returns NOt FOUnd because given customer doesn't exists
+	 * 2.returns NOt FOUnd given advertisement doesn't exists
+	 * 3. return OK 
+	 * <p>
+	 * @throws Exception
+	 * @author stefan
+	 */
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
 	@Rollback(true)
 	public void testSendMessageToCustomer() throws Exception {
-		// USERNAME_ADVETISER_TWO
-		// customer USERNAME_CUSTOMER_MILOS
+	
 		// this test should return NOT_FOUND because user doesn't exists
 		AdvertiserMessageDTO dto = new AdvertiserMessageDTO();
 		dto.setAdvertisementId(AdvertismentConstants.ADVERTISMENT_ID);
@@ -290,7 +358,14 @@ public class AdvertiserControllerTest {
 				)//stefi
 				.andExpect(status().isOk());
 	}
-	
+	/**
+	 * <p>
+	 * sending request for company in case where  requester is already a emploied in other company
+	 * returns Conlfict
+	 * <p>
+	 * @author stefan
+	 * @throws Exception
+	 */
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
@@ -307,7 +382,17 @@ public class AdvertiserControllerTest {
 				.andExpect(status().isConflict());
 		
 	}
-	
+	/**
+	 * <p>
+	 * testing removing user from company
+	 * 1 everytin is good- returns OK
+	 * 2 advetier to be remove doesn't exists - returns NOT FOUND
+	 * 3 company from to be removed doesn't exists - returns NOT FOUND
+	 * 4 a none owner of company trying to delete someone - returns I am a teapot.
+	 * <p>
+	 * @author stefan
+	 * @throws Exception
+	 */
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
