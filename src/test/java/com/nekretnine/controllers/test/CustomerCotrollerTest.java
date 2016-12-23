@@ -189,7 +189,7 @@ public class CustomerCotrollerTest {
 	 * 2) When estate exists and not in customer's favorites
 	 * <p>
 	 * 3) When estate is already in customer's favorites
-	 * 
+	 * c
 	 * @throws Exception
 	 * @see unmarkFavourite()
 	 * @author Miodrag Vilotijević

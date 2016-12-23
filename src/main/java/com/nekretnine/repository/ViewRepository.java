@@ -9,5 +9,5 @@ import com.nekretnine.models.View;
 
 public interface ViewRepository extends JpaRepository<View, Long> {
 	
-	public List<View> findViewsByViewer(Customer viewer);
+	public List<View> findTop10ViewsByViewerOrderByTimeDesc(Customer viewer);
 }

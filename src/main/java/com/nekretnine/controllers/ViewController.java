@@ -10,8 +10,10 @@ import javax.ws.rs.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.nekretnine.dto.AdvertisementDTO;
 import com.nekretnine.models.Advertisement;
@@ -36,20 +38,24 @@ public class ViewController {
 	private AdvertisementService advertisementService;
 	
 	/**
-	 * Method used to record every user - advertisement view
-	 * @param principal Object filled with User data on login
-	 * @param advert id of advertisement a user decided to look at
-	 * @return ResponseEntity with a fitting message
+	 * Method used to record every user's advertisement view.
+	 * @param principal Object filled with User data on login.
+	 * @param advert Id of advertisement a user decided to view.
+	 * @return ResponseEntity with a fitting message.
 	 * @see UserDetails
+	 * @author Nemanja Zunic
 	 */
-	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> saveView(Principal principal, @QueryParam("advert") String advert) {
+	@RequestMapping(value = "/{advert}", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<String> saveView(Principal principal, @PathVariable Long advert) {
 		
 		Customer customer = (Customer) userService.findByUsername(principal.getName());
-		Advertisement advertisement = advertisementService.findOne(Long.parseLong(advert));
+		Advertisement advertisement = advertisementService.findOne(advert);
+		if(advertisement == null) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 		Date date = new Date();
 		viewService.save(new View(customer, advertisement, date));
-		return new ResponseEntity<>("is oke", HttpStatus.CREATED);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 		
 	}
 	/**
@@ -62,6 +68,9 @@ public class ViewController {
 		
 		Customer customer = (Customer) userService.findByUsername(principal.getName());
 		List<View> views = viewService.findViewsByViewer(customer);
+		if(views.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 		List<AdvertisementDTO> result = new ArrayList<AdvertisementDTO>();
 		for(View v : views) {
 			result.add(new AdvertisementDTO(v.getAdvert()));

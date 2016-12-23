@@ -20,6 +20,6 @@ public class ViewService {
 	}
 	
 	public List<View> findViewsByViewer(Customer viewer) {
-		return repository.findViewsByViewer(viewer);
+		return repository.findTop10ViewsByViewerOrderByTimeDesc(viewer);
 	}
 }
