@@ -35,11 +35,24 @@ public class EstateController {
 	@Autowired 
 	private RateEstateService rateService;
 		
-	//za oglasivaca
-	@RequestMapping(method=RequestMethod.POST,consumes="application/json")
+	/**
+	 * <p>
+	 * 	Adding new estate 
+	 * 	method->post api/estate/add
+	 * </p>
+	 * @param	principal , user data
+	 * @param   estateDto , estate data to be saved , content type application/json
+	 * @return 
+	 * 
+	 * @author 	sirko
+	 */
+	@RequestMapping(value="/add",method=RequestMethod.POST,consumes="application/json")
 	public ResponseEntity<String> saveEstate(Principal principal,@RequestBody EstateDTO estateDTO){
-		//oglasivac
+		
 		Advertiser owner=(Advertiser) userService.findByUsername(principal.getName());
+		Estate e = estateService.findOneByName(estateDTO.getName());
+		
+		if(e!=null) return new ResponseEntity<String>("vecima",HttpStatus.CONFLICT);
 		
 		Estate estate= new Estate(estateDTO);
 		estate.setOwner(owner);
@@ -49,12 +62,23 @@ public class EstateController {
 		}
 		estateService.save(estate);	
 				
-		return new ResponseEntity<String>("aloebebebebe",HttpStatus.OK);
+		return new ResponseEntity<String>("aloebebebebe",HttpStatus.CREATED);
 	}
 	
-	//za kupca
-		@RequestMapping(value="/rate/{estate_id}",method=RequestMethod.POST)
-		public ResponseEntity<String> set_rate(Principal principal,@RequestBody RateDTO rateDTO,@PathVariable Long estate_id){
+	/**
+	 * <p>
+	 *	Rate estate
+	 *	method-> post api/estate/rate/{estate_id}
+	 * </p>
+	 * @param principal , user data
+	 * @param rateDTO	,estate rate
+	 * @param estate_id	,Long estate id
+	 * @return
+	 * 
+	 * @author sirko
+	 */
+	@RequestMapping(value="/rate/{estate_id}",method=RequestMethod.POST)
+	public ResponseEntity<String> set_rate(Principal principal,@RequestBody RateDTO rateDTO,@PathVariable Long estate_id){
 			Estate e=estateService.findOne(estate_id); //nekretnina
 			Customer c=(Customer) userService.findByUsername(principal.getName());//kupac
 			

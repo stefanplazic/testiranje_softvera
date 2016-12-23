@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysql.fabric.xmlrpc.base.Data;
 import com.nekretnine.dto.AdvertisementDTO;
 import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.models.Advertisement;
@@ -40,7 +41,17 @@ public class AdvertisementController {
 	@Autowired
 	private ReportService reportService;
 	
-	//za oglasivaca
+	/**
+	 * <p>
+	 * 	Add new advertisement
+	 * 	method->post	api/advertisement/add
+	 * </p>
+	 * @param principal			,user data
+	 * @param advertisementDTO	,advertisement to be saved , content type application/json
+	 * @return
+	 * 
+	 * @author sirko
+	 */
 	@RequestMapping(value="/add",method=RequestMethod.POST,consumes="application/json")
 	public ResponseEntity<String> add_advertisement(Principal principal,@RequestBody AdvertisementDTO advertisementDTO){
 		
@@ -53,7 +64,18 @@ public class AdvertisementController {
 		return new ResponseEntity<String>("aloebebebebe", HttpStatus.OK);
 	}
 
-	//za oglasivaca
+	/**
+	 * <p>
+	 * 	Modify advertisement state
+	 * 	method-> post	api/advertisement/modify/{advertisement_id}
+	 * </p>
+	 * @param principal	,user data
+	 * @param advert_id	, Long advertisement id
+	 * @param advertDTO	, new state to be saved {"state": {state} }, content type application/json
+	 * @return
+	 * 
+	 * @author sirko
+	 */
 	@RequestMapping(value="/modify/{advert_id}",method=RequestMethod.POST,consumes="application/json")
 	public ResponseEntity<String> modify_addvertisement(Principal principal,@PathVariable Long advert_id,@RequestBody AdvertisementDTO advertDTO){
 		
@@ -108,7 +130,17 @@ public class AdvertisementController {
 		return new ResponseEntity<List<AdvertisementDTO>>(result, HttpStatus.OK);
 	}
 	
-	//za oglasivaca
+	/**
+	 * <p>
+	 * 	Delete advertisement
+	 * 	method-> delete	api/delete/{advertisement_id}
+	 * </p>
+	 * @param principal	,user data
+	 * @param advert_id , Long advertisement id
+	 * @return
+	 * 
+	 * @author sirko
+	 */
 	@RequestMapping(value="/delete/{advert_id}",method=RequestMethod.DELETE,consumes="application/json")
 	public ResponseEntity<String> delete_advertisement(Principal principal,@PathVariable Long advert_id ){
 		
@@ -127,7 +159,17 @@ public class AdvertisementController {
 	}
 	
 
-	//za sve
+	/**
+	 * <p>
+	 * 	get advertisements. Works for both registered and unregistered users
+	 * 	method->get	api/advertisement/{advertisement_id}
+	 * </p>
+	 * @param principal
+	 * @param advert_id
+	 * @return
+	 * 
+	 * @author sirko
+	 */
 	@RequestMapping(value="/{advert_id}",method=RequestMethod.GET)
 	public ResponseEntity<AdvertisementDTO> get_advertisement(Principal principal,@PathVariable Long advert_id ){
 		

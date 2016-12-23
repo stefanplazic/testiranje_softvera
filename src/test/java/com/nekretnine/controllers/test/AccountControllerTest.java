@@ -54,7 +54,7 @@ public class AccountControllerTest {
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
-	@Rollback(false)
+	@Rollback(true)
 	public void testConfig() throws Exception {
 		// SecurityContextHolder.getContext().setAuthentication(new
 		// UsernamePasswordAuthenticationToken("admin", "admin"));

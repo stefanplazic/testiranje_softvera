@@ -6,4 +6,6 @@ import com.nekretnine.models.Estate;
 
 public interface EstateRepository extends JpaRepository<Estate, Long> {
 
+	public Estate findOneByName(String name);
+	
 }
