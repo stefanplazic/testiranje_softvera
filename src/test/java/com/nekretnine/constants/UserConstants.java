@@ -38,7 +38,7 @@ public class UserConstants {
 	
 	//----------------------------------------------------------
 	public static final String USERNAME_ADVETISER  = "mile";
-	public static final String USERNAME_ADVETISER_TWO  = "stefi";
+	public static final String USERNAME_ADVETISER_TWO  = "stefi";//stefi
 	
 	//-------------------------------------------------------------
 	
@@ -46,5 +46,11 @@ public class UserConstants {
 	public static final Long ADVERT_FIRST = 2L;
 	public static final Long ADVERT_SECOND= 6L;
 	public static final String UN_EXISTING_ADVERTISER_USERNAME= "budala";
+	public static final Long USERNAME_CUSTOMER_MILOS  = 3L;
+	public static final Long UN_EXISTING_ADVERTISER_ID= 1l;
+	public static final String CUSTOMER_MILOS  = "milos";
+	public static final Long ID_2= 2l;
+	public static final Long ID_NOt= 2555l;
+	
 	
 }

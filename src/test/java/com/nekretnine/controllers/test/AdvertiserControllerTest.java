@@ -2,6 +2,7 @@ package com.nekretnine.controllers.test;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -29,11 +30,15 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.nekretnine.MyprojectApplication;
 import com.nekretnine.TestUtil;
+import com.nekretnine.constants.AdvertismentConstants;
 import com.nekretnine.constants.CallToCompanyConstants;
+import com.nekretnine.constants.CompanyConstants;
 import com.nekretnine.constants.RateConstants;
 import com.nekretnine.constants.UserConstants;
 import com.nekretnine.dto.AdvertiserDTO;
+import com.nekretnine.dto.AdvertiserMessageDTO;
 import com.nekretnine.dto.CallToCompanyDTO;
+import com.nekretnine.dto.CompanyDTO;
 import com.nekretnine.dto.RateDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertiser;
@@ -74,7 +79,7 @@ public class AdvertiserControllerTest {
 
 	@Autowired
 	private CallToCompanyService calltoService;
-	
+
 	@Autowired
 	private AdvertisementService advertisementService;
 
@@ -127,17 +132,21 @@ public class AdvertiserControllerTest {
 		String json = TestUtil.json(new AdvertiserDTO(user));
 		mockMvc.perform(post(URL_PREFIX + "/callToCompany").principal(new UserPrincipal(UserConstants.USERNAME_SECOND))
 				.contentType(contentType).content(json)).andExpect(status().isOk());
-		// unemployed adveriser send call to company, it should return NOT_FOUND status code
+		// unemployed adveriser send call to company, it should return NOT_FOUND
+		// status code
 		user = (Advertiser) service.findByUsername(UserConstants.USERNAME_SECOND);
 		json = TestUtil.json(new AdvertiserDTO(user));
-		mockMvc.perform(post(URL_PREFIX + "/callToCompany").principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER))
-				.contentType(contentType).content(json)).andExpect(status().isNotFound());
-		//send not existing Advertiser to method, it should return NOT_FOUND status code
+		mockMvc.perform(post(URL_PREFIX + "/callToCompany")
+				.principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER)).contentType(contentType).content(json))
+				.andExpect(status().isNotFound());
+		// send not existing Advertiser to method, it should return NOT_FOUND
+		// status code
 		AdvertiserDTO advertiserDTO = new AdvertiserDTO();
 		advertiserDTO.setUsername(UserConstants.UN_EXISTING_ADVERTISER_USERNAME);
 		json = TestUtil.json(advertiserDTO);
-		mockMvc.perform(post(URL_PREFIX + "/callToCompany").principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER))
-				.contentType(contentType).content(json)).andExpect(status().isNotFound());
+		mockMvc.perform(post(URL_PREFIX + "/callToCompany")
+				.principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER)).contentType(contentType).content(json))
+				.andExpect(status().isNotFound());
 	}
 
 	@SuppressWarnings("restriction")
@@ -201,44 +210,128 @@ public class AdvertiserControllerTest {
 				.andExpect(jsonPath("$", hasSize(CallToCompanyConstants.ADVERT_SIZE)));
 
 	}
-	
+
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
 	@Rollback(true)
 	public void testGetSoldEstates() throws Exception {
-		//change the status advertisment
+		// change the status advertisment
 		Advertisement advertisement = advertisementService.findOne(CallToCompanyConstants.ADVERISMENT_ID_FIRST);
 		advertisement.setState(Advertisement.State.SOLD);
 		advertisementService.save(advertisement);
-		
+
 		advertisement = advertisementService.findOne(CallToCompanyConstants.ADVERISMENT_ID_SECOND);
 		advertisement.setState(Advertisement.State.SOLD);
 		advertisementService.save(advertisement);
-		
+
 		mockMvc.perform(get(URL_PREFIX + "/soldEstates").principal(new UserPrincipal(UserConstants.USERNAME_SECOND)))
 				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
 				.andExpect(jsonPath("$", hasSize(CallToCompanyConstants.SOLD_ESTATES_STEFAN)));
-		//testing stefi
-		mockMvc.perform(get(URL_PREFIX + "/soldEstates").principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER_TWO)))
-		.andExpect(status().isOk()).andExpect(content().contentType(contentType))
-		.andExpect(jsonPath("$", hasSize(CallToCompanyConstants.SOLD_ESTATES_STEFI)));
+		// testing stefi
+		mockMvc.perform(
+				get(URL_PREFIX + "/soldEstates").principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER_TWO)))
+				.andExpect(status().isOk()).andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$", hasSize(CallToCompanyConstants.SOLD_ESTATES_STEFI)));
 
+	}
+
+	@SuppressWarnings("restriction")
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSet_rate() throws Exception {
+
+		RateDTO rate = new RateDTO();
+		rate.setRate(RateConstants.RATE_ONE);
+		String json = TestUtil.json(rate);
+		// testing for user with id 2
+		mockMvc.perform(post(URL_PREFIX + "/rate/" + UserConstants.ADVERT_FIRST)
+				.principal(new UserPrincipal(UserConstants.CUSTOMER_MILOS)).contentType(contentType)
+				.content(json))
+				.andExpect(status().isCreated());
+	}
+
+	@SuppressWarnings("restriction")
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSendMessageToCustomer() throws Exception {
+		// USERNAME_ADVETISER_TWO
+		// customer USERNAME_CUSTOMER_MILOS
+		// this test should return NOT_FOUND because user doesn't exists
+		AdvertiserMessageDTO dto = new AdvertiserMessageDTO();
+		dto.setAdvertisementId(AdvertismentConstants.ADVERTISMENT_ID);
+		dto.setToUserId(UserConstants.UN_EXISTING_ADVERTISER_ID);
+		String json = TestUtil.json(dto);
+		mockMvc.perform(post(URL_PREFIX + "sendMessageToCustomer")
+				.principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER_TWO)).content(json)
+				.contentType(contentType))
+				.andExpect(status().isNotFound());
+		
+		//in this case should return NOT_FOUND because advertisement doesn't exists
+		dto = new AdvertiserMessageDTO();
+		dto.setAdvertisementId(AdvertismentConstants.ADVERTISMENT_ID_NONE_EXISTING);
+		dto.setToUserId(UserConstants.USERNAME_CUSTOMER_MILOS);
+		json = TestUtil.json(dto);
+		mockMvc.perform(post(URL_PREFIX + "sendMessageToCustomer")
+				.principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER_TWO)).content(json)
+				.contentType(contentType))
+				.andExpect(status().isNotFound());
+		
+		//should return OK 
+		dto = new AdvertiserMessageDTO();
+		dto.setAdvertisementId(AdvertismentConstants.ADVERTISMENT_ID);//2
+		dto.setToUserId(UserConstants.USERNAME_CUSTOMER_MILOS);//3
+		json = TestUtil.json(dto);
+		mockMvc.perform(post(URL_PREFIX + "sendMessageToCustomer")
+				.principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER_TWO)).contentType(contentType)
+				.content(json)
+				)//stefi
+				.andExpect(status().isOk());
 	}
 	
 	@SuppressWarnings("restriction")
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSet_rate() throws Exception {
+	public void testSendRequestForCompany() throws Exception {
 		
-		RateDTO rate = new RateDTO();
-		rate.setRate(RateConstants.RATE_ONE);
-		String json = TestUtil.json(rate);
-		//testing for user with id 2
-		mockMvc.perform(post(URL_PREFIX + "/rate/"+ UserConstants.ADVERT_FIRST).principal(new UserPrincipal(UserConstants.USERNAME_CUSTOMER_STEFI))
-				.content(json))
-		.andExpect(status().isCreated());
+		//case company owner is already an employe , returns CONFLICT
+	
+		String json = TestUtil.json(new CompanyDTO());
+		// testing for user with id 2
+		mockMvc.perform(post(URL_PREFIX + "/sendRequestForCompany")
+				.principal(new UserPrincipal(UserConstants.USERNAME_SECOND)).content(json)
+				.contentType(contentType))
+				.andExpect(status().isConflict());
+		
 	}
 	
+	@SuppressWarnings("restriction")
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testFire_from_company() throws Exception{
+		
+		mockMvc.perform(delete(URL_PREFIX + "/removeFromCompany/"+UserConstants.ID_2+"/"+CompanyConstants.COMPANY_ID_FIRST)
+				.principal(new UserPrincipal(UserConstants.USERNAME_SECOND)))
+				.andExpect(status().isOk());
+		
+		//advetier id doesn't exists - returns NOT FOUND
+		mockMvc.perform(delete(URL_PREFIX + "/removeFromCompany/"+UserConstants.ID_NOt+"/"+CompanyConstants.COMPANY_ID_FIRST)
+				.principal(new UserPrincipal(UserConstants.USERNAME_SECOND)))
+				.andExpect(status().isNotFound());
+		
+		//company id doesn't exists - returns NOT FOUND
+				mockMvc.perform(delete(URL_PREFIX + "/removeFromCompany/"+UserConstants.ID_2+"/"+CompanyConstants.COMPANY_ID_NOT)
+						.principal(new UserPrincipal(UserConstants.USERNAME_SECOND)))
+						.andExpect(status().isNotFound());
+				
+	 //not menagery of company tea pot
+				mockMvc.perform(delete(URL_PREFIX + "/removeFromCompany/"+UserConstants.ID_2+"/"+CompanyConstants.COMPANY_ID_FIRST)
+						.principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER_TWO)))
+						.andExpect(status().isIAmATeapot());		
+	}
 }
+
