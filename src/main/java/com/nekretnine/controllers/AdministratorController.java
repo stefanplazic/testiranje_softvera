@@ -25,7 +25,6 @@ import com.nekretnine.models.User;
 import com.nekretnine.models.UserAuthority;
 import com.nekretnine.repository.AuthorityRepository;
 import com.nekretnine.repository.UserAuthorityRepository;
-import com.nekretnine.services.AdminService;
 import com.nekretnine.services.AdvertiserService;
 import com.nekretnine.services.CompanyService;
 import com.nekretnine.services.MyMailSenderService;
@@ -38,9 +37,6 @@ public class AdministratorController {
 
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private AdminService adminService;
 	
 	@Autowired
 	private CompanyService companyService;
@@ -62,12 +58,12 @@ public class AdministratorController {
 	
 	/**
 	 * 
-	 * @param userType Type of User being registered. Can be 'Administrator' or 'Moderator'
-	 * @param userDTO Data for User being registered written in json, example:
+	 * @param 	userType Type of User being registered. Can be 'Administrator' or 'Moderator'
+	 * @param	userDTO Data for User being registered written in json, example:
 	 * 			@{"firstName" : "", "lastName" : "", "email" : "", "username" : "", "password" : ""}
-	 * @return If userType is invalid or User already exists, appropriate message is displayed and 
+	 * @return 	userType is invalid or User already exists, appropriate message is displayed and 
 	 * 			HttpStatus is being sent, otherwise email with verification link is sent to the User.
-	 * @author Nemanja Zunic 
+	 * @author	Nemanja Zunic, Stefan Plazic
 	 */
 	@RequestMapping(value = "/register/{userType}", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> saveAdmin(@PathVariable String userType, @RequestBody UserDTO userDTO) {
@@ -102,7 +98,7 @@ public class AdministratorController {
 		if(userService.findByEmail(user.getEmail())!=null || userService.findByUsername(user.getUsername())!=null)
 		{
 			return new ResponseEntity<String>(String.format("%s with that username, or email already exists.", StringUtils.capitalize(userType)),
-					HttpStatus.BAD_REQUEST);
+					HttpStatus.CONFLICT);
 		}
 		user = userService.save(user);
 		userAuthorityRepository.save(userAuth);
@@ -117,12 +113,12 @@ public class AdministratorController {
 	 * Method allows administrators to approve registration of company and send
 	 * success message to owner of company.
 	 * 
-	 * @param  principal  Current logged user (administrator), created by Spring Security.
-	 * @param  companyId  Id(Long) of company.
-	 * @return			  If company doesn't exists or company already was registered, 
-	 * 					  return error message and appropriate HttpStatus code.
-	 * 					  Otherwise, return string "Company is accepted." and HttpStatus OK.
-	 * @author Miodrag Vilotijević
+	 * @param 	principal  Current logged user (administrator), created by Spring Security.
+	 * @param  	companyId  Id(Long) of company.
+	 * @return	If company doesn't exists or company already was registered, 
+	 * 			return error message and appropriate HttpStatus code.
+	 * 			Otherwise, return string "Company is accepted." and HttpStatus OK.
+	 * @author 	Miodrag Vilotijević
 	 */
 	@RequestMapping(value = "/acceptCompany/{companyId}", method = RequestMethod.POST)
 	public ResponseEntity<String> acceptCompany(Principal principal, @PathVariable Long companyId){

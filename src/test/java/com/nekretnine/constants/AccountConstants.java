@@ -12,4 +12,5 @@ public class AccountConstants {
 	public static final String SECOND_ACCOUNT_NUMBER = "0645-22";
 	public static final double SECOND_AMOUNT = 1900;
 	public static final double ADD_MONEY = 100;
+
 }

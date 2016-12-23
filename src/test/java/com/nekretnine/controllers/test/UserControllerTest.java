@@ -70,7 +70,7 @@ public class UserControllerTest {
 	 */
 	@Test
 	@Transactional
-	@Rollback(false)
+	@Rollback(true)
 	public void testSaveUser() throws Exception {
 		User user = new Advertiser();
 		user.setFirstName(UserConstants.FIRST_NAME_SECOND);

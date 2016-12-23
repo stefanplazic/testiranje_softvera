@@ -41,8 +41,8 @@ public class ModeratorController {
 	 * Method used to accept Advertisement Report by a Moderator. Moderator responds by removing the Advertisement
 	 * and setting Report status. Notification is sent to the User that made the report, informing him about 
 	 * Moderators decision.
-	 * @author Miodrag Vilotijevic, Nemanja Zunic
-	 * @param principal containing Moderators information
+	 * @author Nemanja Zunic, Miodrag Vilotijevic
+	 * @param principal containing Moderator's information
 	 * @param reportId id of the Report being accepted by the Moderator
 	 */
 	@RequestMapping(value = "/acceptReport/{reportId}", method = RequestMethod.POST, consumes = "application/json")
@@ -52,6 +52,12 @@ public class ModeratorController {
 		
 		// modify onHold to false and save in database
 		Report report = reportService.findOne(reportId);
+		if(report == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		else if(!report.isOnHold()) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 		report.setOnHold(false);
 		reportService.save(report);
 		//set reported advertisement's state to REMOVED and save in database
@@ -90,7 +96,13 @@ public class ModeratorController {
 		Moderator mod = (Moderator) userService.findByUsername(principal.getName());
 		
 		// modify onHold to false and save in database
-		Report report = reportService.findOne(reportId);
+		Report report = reportService.findOne(reportId);		
+		if(report == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		else if(!report.isOnHold()) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 		report.setOnHold(false);
 		reportService.save(report);
 		
