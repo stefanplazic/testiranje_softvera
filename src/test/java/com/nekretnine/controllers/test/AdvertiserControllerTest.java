@@ -33,6 +33,7 @@ import com.nekretnine.TestUtil;
 import com.nekretnine.constants.AdvertismentConstants;
 import com.nekretnine.constants.CallToCompanyConstants;
 import com.nekretnine.constants.CompanyConstants;
+import com.nekretnine.constants.MessageConstants;
 import com.nekretnine.constants.RateConstants;
 import com.nekretnine.constants.UserConstants;
 import com.nekretnine.dto.AdvertiserDTO;
@@ -331,32 +332,49 @@ public class AdvertiserControllerTest {
 		AdvertiserMessageDTO dto = new AdvertiserMessageDTO();
 		dto.setAdvertisementId(AdvertismentConstants.ADVERTISMENT_ID);
 		dto.setToUserId(UserConstants.UN_EXISTING_ADVERTISER_ID);
+		dto.setMessage(MessageConstants.MESSAGE_SOME);
 		String json = TestUtil.json(dto);
-		mockMvc.perform(post(URL_PREFIX + "sendMessageToCustomer")
-				.principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER_TWO)).content(json)
-				.contentType(contentType))
+		mockMvc.perform(post(URL_PREFIX + "/sendMessageToCustomer")
+				.principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER_TWO)).contentType(contentType)
+				.content(json)
+				)
 				.andExpect(status().isNotFound());
 		
 		//in this case should return NOT_FOUND because advertisement doesn't exists
 		dto = new AdvertiserMessageDTO();
 		dto.setAdvertisementId(AdvertismentConstants.ADVERTISMENT_ID_NONE_EXISTING);
 		dto.setToUserId(UserConstants.USERNAME_CUSTOMER_MILOS);
+		dto.setMessage(MessageConstants.MESSAGE_SOME);
 		json = TestUtil.json(dto);
-		mockMvc.perform(post(URL_PREFIX + "sendMessageToCustomer")
-				.principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER_TWO)).content(json)
-				.contentType(contentType))
+		mockMvc.perform(post(URL_PREFIX + "/sendMessageToCustomer")
+				.principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER_TWO)).contentType(contentType)
+				.content(json)
+				)
 				.andExpect(status().isNotFound());
 		
 		//should return OK 
 		dto = new AdvertiserMessageDTO();
 		dto.setAdvertisementId(AdvertismentConstants.ADVERTISMENT_ID);//2
 		dto.setToUserId(UserConstants.USERNAME_CUSTOMER_MILOS);//3
+		dto.setMessage(MessageConstants.MESSAGE_SOME);
 		json = TestUtil.json(dto);
-		mockMvc.perform(post(URL_PREFIX + "sendMessageToCustomer")
+		mockMvc.perform(post(URL_PREFIX + "/sendMessageToCustomer")
 				.principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER_TWO)).contentType(contentType)
 				.content(json)
 				)//stefi
 				.andExpect(status().isOk());
+		//CONFLICT
+		dto = new AdvertiserMessageDTO();
+		dto.setAdvertisementId(AdvertismentConstants.ADVERTISMENT_ID);//2
+		dto.setToUserId(UserConstants.USERNAME_CUSTOMER_MILOS);//3
+		dto.setMessage(MessageConstants.MESSAGE_SOME);
+		json = TestUtil.json(dto);
+		mockMvc.perform(post(URL_PREFIX + "/sendMessageToCustomer")
+				.principal(new UserPrincipal(UserConstants.USERNAME_ADVETISER)).contentType(contentType)
+				.content(json)
+				)//stefi
+				.andExpect(status().isConflict());
+		
 	}
 	/**
 	 * <p>
