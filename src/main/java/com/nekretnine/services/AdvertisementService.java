@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nekretnine.models.Advertisement;
+import com.nekretnine.models.User;
 import com.nekretnine.models.Advertisement.State;
 import com.nekretnine.repository.AdvertisementRepository;
 
@@ -32,9 +33,9 @@ public class AdvertisementService {
 		repository.deleteById(id);
 	}
 	
-	/*public List<AdvertEstateDTO> findAdvertisements(String query) {
-		return repository.findAdvertisements(query);
-	}*/
+	public List<Advertisement> findAll() {
+		return repository.findAll();
+	}
 	
 	public List<Advertisement> findAdvertisements(Date publicationDate, Date expiryDate, State state, String name, Double price, 
 			Double area, String address, String city, String cityPart, String technicalEquipment, String heatingSystem) {
