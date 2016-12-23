@@ -3,6 +3,8 @@ package com.nekretnine.repository;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertisement.State;
+import com.nekretnine.models.Customer;
 
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long> {
 
@@ -45,4 +48,6 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 			@Param("state") State state, @Param("name") String name, @Param("price") Double price, @Param("area") Double area,
 			@Param("address") String address, @Param("city") String city, @Param("cityPart") String cityPart,
 			@Param("technicalEquipment") String technicalEquipment, @Param("heatingSystem") String heatingSystem);
+
+	Page<Advertisement> findAllBySoldto(Customer customer, Pageable pageable);
 }

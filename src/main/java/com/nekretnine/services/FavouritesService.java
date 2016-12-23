@@ -20,8 +20,8 @@ public class FavouritesService {
 		return repository.save(f);
 	}
 	
-	public Page<Favourites> findAllByCustomer(Pageable pageable, Customer customer){
-		return repository.findAllByCustomer(pageable, customer);
+	public Page<Favourites> findAllByCustomer(Customer customer, Pageable pageable){
+		return repository.findAllByCustomer(customer, pageable);
 	}
 
 	public Favourites findByEstateAndCustomer(Estate estate, Customer customer) {
