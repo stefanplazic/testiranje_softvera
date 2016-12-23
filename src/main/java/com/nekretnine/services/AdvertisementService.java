@@ -36,14 +36,16 @@ public class AdvertisementService {
 		repository.deleteById(id);
 	}
 	
-	public List<Advertisement> findAll() {
-		return repository.findAll();
+
+	public Page<Advertisement> findAdvertisements(Date publicationDate, Date expiryDate, State state, String name, Double minPrice,
+			Double maxPrice, Double minArea, Double maxArea, String address, String city, String cityPart, String technicalEquipment,
+			String heatingSystem, Pageable pageable) {
+		return repository.findAdvertisement(publicationDate, expiryDate, state, name, minPrice, maxPrice,
+				minArea, maxArea, address, city, cityPart, technicalEquipment, heatingSystem, pageable);
 	}
 	
-	public List<Advertisement> findAdvertisements(Date publicationDate, Date expiryDate, State state, String name, Double price, 
-			Double area, String address, String city, String cityPart, String technicalEquipment, String heatingSystem) {
-		return repository.findAdvertisement(publicationDate, expiryDate, state, name, price, area, address, city, cityPart,
-				technicalEquipment, heatingSystem);
+	public List<Advertisement> findAll() {
+		return repository.findAll();
 	}
 
 	public Page<Advertisement> findAllBySoldto(Customer customer,

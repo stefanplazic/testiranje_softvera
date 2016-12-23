@@ -54,13 +54,9 @@ public class EstateControllerTest {
 	
 	
 	/**
-	 * <p>
-	 * This method will test saveEstate method in EstateController. First it
-	 * will create user with given username and passwrod nad save it as
-	 * Advertiser. Result should be Created. After that it will try to save
-	 * Customer , but with same email - wich will send Conflict HTTP status
-	 * code.
-	 * <p>
+	 * Test saving estate by advertiser
+	 * 1st case : given correct data and estate name doesn't exists 201 created
+	 * 2nd case : estate name does exists conflict 409
 	 * 
 	 * @throws Exception
 	 * @author sirko
@@ -104,7 +100,14 @@ public class EstateControllerTest {
 		
 		
 	}
-	
+	/**
+	 * Test rating estates
+	 * 1st case: not rated before by user 201 created
+	 * 2nd case: already ratet 409
+	 * 3rd case: estate does not exists 404
+	 * @throws Exception
+	 * @author sirko
+	 */
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -127,7 +130,7 @@ public class EstateControllerTest {
 				.principal(new UserPrincipal("cone"))
 				.contentType(contentType)
 				.content(json_data))
-			.andExpect(status().isNotFound());	
+			.andExpect(status().isConflict());	
 		
 		
 		//ocena na nepostojecu nekretninu
