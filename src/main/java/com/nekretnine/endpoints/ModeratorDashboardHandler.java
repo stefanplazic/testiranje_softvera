@@ -31,7 +31,7 @@ public class ModeratorDashboardHandler extends TextWebSocketHandler {
 		// send all requests for reports to moderator
 		List<Report> reports = service.findAllByOnHold(true);
 		List<ReportDTO> dtos;
-		if (reports.size() != 0) {
+		if (!reports.isEmpty()) {
 			dtos = createDtoList(reports);
 			try {
 				TextMessage msg = new TextMessage(
@@ -53,7 +53,7 @@ public class ModeratorDashboardHandler extends TextWebSocketHandler {
 				Thread.sleep(10000);
 				reports = service.findAllByStatus("NEW");
 				
-				if (reports.size() != 0) {
+				if (!reports.isEmpty()) {
 					dtos = createDtoList(reports);
 					session.sendMessage(new TextMessage(mapper
 							.writeValueAsString(dtos)));

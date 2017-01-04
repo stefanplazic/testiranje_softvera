@@ -32,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
 		} else {
 
-			List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+			List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 			for (UserAuthority ua : user.getUserAuthorities()) {
 				grantedAuthorities.add(new SimpleGrantedAuthority(ua.getAuthority().getName()));
 			}

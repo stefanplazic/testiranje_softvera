@@ -51,13 +51,13 @@ public class Estate {
 	private Advertiser owner;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy="estate")
-	private Set<Image> images = new HashSet<Image>();
+	private Set<Image> images = new HashSet<>();
 	
 	@OneToMany(mappedBy="estate", fetch = FetchType.EAGER)
-	private Set<RateEstate> rates  = new HashSet<RateEstate>();
+	private Set<RateEstate> rates  = new HashSet<>();
 	
 	@OneToMany(mappedBy="estate", fetch = FetchType.EAGER)
-	private Set<Favourites> advertiserFav  = new HashSet<Favourites>();
+	private Set<Favourites> advertiserFav  = new HashSet<>();
 	
 	public Estate() {}
 
@@ -78,7 +78,6 @@ public class Estate {
 		this.owner=owner;
 		this.images=images;
 		
-		
 	}
 
 	public Estate(EstateDTO estate){
@@ -92,7 +91,7 @@ public class Estate {
 		this.cityPart = estate.getCityPart();
 		this.technicalEquipment = estate.getTechnicalEquipment();
 		this.heatingSystem = estate.getHeatingSystem();
-		this.images = new HashSet<Image>();
+		this.images = new HashSet<>();
 		for(ImageDTO i:estate.getImages()){
 			this.images.add(new Image(i));
 		}

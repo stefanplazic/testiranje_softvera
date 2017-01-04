@@ -5,7 +5,9 @@ public class PageableDTO {
 	private int page;
 	private int count;
 	
-	public PageableDTO(){}
+	public PageableDTO(){
+		super();
+	}
 
 	public PageableDTO(int page, int count) {
 		super();
@@ -28,8 +30,5 @@ public class PageableDTO {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
-	
-	
 	
 }

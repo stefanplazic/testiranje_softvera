@@ -27,10 +27,6 @@ import com.nekretnine.MyprojectApplication;
 import com.nekretnine.TestUtil;
 import com.nekretnine.constants.AdministratorConstraints;
 import com.nekretnine.models.Administrator;
-import com.nekretnine.models.Advertiser;
-import com.nekretnine.models.Customer;
-import com.nekretnine.models.User;
-import com.nekretnine.services.UserService;
 
 @SuppressWarnings("deprecation")
 @RunWith(SpringJUnit4ClassRunner.class)

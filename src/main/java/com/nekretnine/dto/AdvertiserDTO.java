@@ -14,9 +14,10 @@ public class AdvertiserDTO{
 	private String username;
 	private double avRate;
 	
-	
-	public AdvertiserDTO() {}
-	
+	public AdvertiserDTO() {
+		super();
+	}
+
 	public AdvertiserDTO(Advertiser advertiser) {
 		this.id = advertiser.getId();
 		this.firstName = advertiser.getFirstName();
@@ -32,7 +33,7 @@ public class AdvertiserDTO{
 	 * @return Avrage of all rates
 	 */
 	public static double calculateAverage(Set<RateAdvertiser> rates){
-		if(rates.size()==0 || rates == null)
+		if(rates.isEmpty())
 			return 0;
 		double res = 0;
 		for(RateAdvertiser rate : rates){

@@ -69,32 +69,32 @@ public class AdvertisementControllerTest {
 	@Rollback(true)
 	public void saveAdvertisementTest() throws Exception{
 		
-		AdvertisementDTO a= new AdvertisementDTO();
+		AdvertisementDTO a = new AdvertisementDTO();
 		
 		a.setPublicationDate(new Date());
 		a.setExpiryDate(new Date());		
 		
-		String json_data =TestUtil.json(a);
+		String jsonData = TestUtil.json(a);
 		
 		//dodavanje oglasa u bazu
 		mockMvc.perform(post(URL_PREFIX + "/add/1")
 				.principal(new UserPrincipal("stefan"))
 				.contentType(contentType)
-				.content(json_data))
+				.content(jsonData))
 			.andExpect(status().isCreated());	
 		
 		//dodavanje oglasa za nepostojecu nekretninu
 		mockMvc.perform(post(URL_PREFIX + "/add/1389")
 				.principal(new UserPrincipal("stefan"))
 				.contentType(contentType)
-				.content(json_data))
+				.content(jsonData))
 			.andExpect(status().isNotFound());	
 		
 		//dodavanje oglasa za nekretninu kojoj nema pristup
 		mockMvc.perform(post(URL_PREFIX + "/add/3")
 				.principal(new UserPrincipal("stefan"))
 				.contentType(contentType)
-				.content(json_data))
+				.content(jsonData))
 			.andExpect(status().isConflict());	
 		
 	}
@@ -111,34 +111,35 @@ public class AdvertisementControllerTest {
 	@Rollback(true)
 	public void modifyAdvertisementStatusTest() throws Exception{
 		
-		AdvertisementDTO a= new AdvertisementDTO();		
+		AdvertisementDTO a = new AdvertisementDTO();		
 		a.setState(Advertisement.State.REMOVED);
 		
-		String json_data =TestUtil.json(a);
+		String jsonData = TestUtil.json(a);
 		
 		
 		//promeni status na REMOVED
 		mockMvc.perform(post(URL_PREFIX + "/modify/1")
 				.principal(new UserPrincipal("stefan"))
 				.contentType(contentType)
-				.content(json_data))
+				.content(jsonData))
 			.andExpect(status().isOk());
 		
 		//not authorised to modify
 		mockMvc.perform(post(URL_PREFIX + "/modify/1")
 				.principal(new UserPrincipal("stefi"))
 				.contentType(contentType)
-				.content(json_data))
+				.content(jsonData))
 			.andExpect(status().isConflict());	
 		
 		//invalid advertisement id
 		mockMvc.perform(post(URL_PREFIX + "/modify/1234234")
 				.principal(new UserPrincipal("stefan"))
 				.contentType(contentType)
-				.content(json_data))				
+				.content(jsonData))				
 			.andExpect(status().isNotFound());	
 		
 	}
+	
 	/**
 	 * Test returning advertisement list
 	 * 1st case : chek if returned lists size is as requested
@@ -150,17 +151,16 @@ public class AdvertisementControllerTest {
 	@Rollback(true)
 	public void getAdvertisementListTest() throws Exception{
 		
-		AdvertisementSearchDTO a= new AdvertisementSearchDTO();
+		AdvertisementSearchDTO a = new AdvertisementSearchDTO();
 		a.setEstate(new EstateSearchDTO());
-		String json_data =TestUtil.json(a);
+		String jsonData = TestUtil.json(a);
 		int count=2;
 		mockMvc.perform(post(URL_PREFIX + "?page=0&count="+count)
 				.principal(new UserPrincipal("stefi"))
 				.contentType(contentType)
-				.content(json_data))				
+				.content(jsonData))				
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$",hasSize(count)));	
-		
 		
 	}
 	
@@ -178,13 +178,12 @@ public class AdvertisementControllerTest {
 	@Rollback(true)
 	public void getAdvertisementTest() throws Exception{
 		
-	
 		//check does it return advertisement with requested id
-		int advert_id=1;
-		mockMvc.perform(get(URL_PREFIX + "/"+advert_id)
+		int advertId = 1;
+		mockMvc.perform(get(URL_PREFIX + "/"+advertId)
 				.principal(new UserPrincipal("admin")))				
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.id").value(advert_id));	
+			.andExpect(jsonPath("$.id").value(advertId));	
 		
 		
 		//invalid advertisement id
@@ -193,11 +192,9 @@ public class AdvertisementControllerTest {
 			.andExpect(status().isNotFound());
 			
 		//is it for unregistered user
-		mockMvc.perform(get(URL_PREFIX + "/"+advert_id))				
+		mockMvc.perform(get(URL_PREFIX + "/"+advertId))				
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.estate.adress").doesNotExist());	
-		
-		
 		
 	}
 	
@@ -212,7 +209,6 @@ public class AdvertisementControllerTest {
 	@Rollback(true)
 	public void saveReportTest() throws Exception{
 		
-		
 		//test saving report
 		String message="message";		
 		mockMvc.perform(post(URL_PREFIX + "/2/report/")
@@ -220,9 +216,7 @@ public class AdvertisementControllerTest {
 				.contentType(contentType)
 				.param("message",message))				
 			.andExpect(status().isOk());
-				
-		
-		
+					
 	}
 	
 	

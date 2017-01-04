@@ -19,7 +19,7 @@ public class Authority {
 	String name;
 	
 	@OneToMany(mappedBy = "authority", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-	private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
+	private Set<UserAuthority> userAuthorities = new HashSet<>();
 
 	public Long getId() {
 		return id;

@@ -14,9 +14,10 @@ public class CustomerDTO {
 	private String email;
 	private Set<CommentDTO> commentDTOs;
 	
-	public CustomerDTO() {}
+	public CustomerDTO() {
+		super();
+	}
 
-	
 	public CustomerDTO(String firstName, String lastName, String username, String email, Set<CommentDTO> commentDTOs) {
 		super();
 		this.firstName = firstName;
@@ -32,7 +33,7 @@ public class CustomerDTO {
 		this.lastName = customer.getLastName();
 		this.username = customer.getUsername();
 		this.email = customer.getEmail();
-		this.commentDTOs = new HashSet<CommentDTO>();
+		this.commentDTOs = new HashSet<>();
 		for(Comment comment: customer.getComments()){
 			this.commentDTOs.add(new CommentDTO(comment));
 		}

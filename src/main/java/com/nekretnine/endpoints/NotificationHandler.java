@@ -31,7 +31,7 @@ public class NotificationHandler extends TextWebSocketHandler {
 		// send all notifications to client
 		List<Notification> notifications = service.findByToUser(new User(id));
 		List<NotificationDTO> dtos;
-		if (notifications.size() != 0) {
+		if (!notifications.isEmpty()) {
 			dtos = createDtoList(notifications);
 			try {
 				TextMessage msg = new TextMessage(
@@ -54,7 +54,7 @@ public class NotificationHandler extends TextWebSocketHandler {
 				notifications = service.findByToUserAndStatus(new User(id),
 						"NEW");
 				
-				if (notifications.size() != 0) {
+				if (!notifications.isEmpty()) {
 					dtos = createDtoList(notifications);
 					session.sendMessage(new TextMessage(mapper
 							.writeValueAsString(dtos)));

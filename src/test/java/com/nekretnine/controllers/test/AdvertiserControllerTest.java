@@ -1,6 +1,5 @@
 package com.nekretnine.controllers.test;
 
-import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -8,8 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.lang.Thread.State;
 import java.nio.charset.Charset;
 
 import javax.annotation.PostConstruct;
@@ -44,12 +41,9 @@ import com.nekretnine.dto.RateDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.CallToCompany;
-import com.nekretnine.models.Company;
-import com.nekretnine.models.RateAdvertiser;
 import com.nekretnine.models.User;
 import com.nekretnine.services.AdvertisementService;
 import com.nekretnine.services.CallToCompanyService;
-import com.nekretnine.services.CompanyService;
 import com.nekretnine.services.UserService;
 import com.sun.security.auth.UserPrincipal;
 
@@ -74,23 +68,20 @@ public class AdvertiserControllerTest {
 
 	@Autowired
 	private UserService service;
-
-	@Autowired
-	private CompanyService companyService;
-
+	
 	@Autowired
 	private CallToCompanyService calltoService;
 
 	@Autowired
 	private AdvertisementService advertisementService;
 
+	public AdvertiserControllerTest() {
+		super();
+	}
+	
 	@PostConstruct
 	public void setup() {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-	}
-
-	public AdvertiserControllerTest() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -134,8 +125,6 @@ public class AdvertiserControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void testGetMyProfile() throws Exception {
-		Company company = companyService.findOneByNameAndAddress("Some Adress", "StefiCompany");
-		User user = service.findByUsername(UserConstants.USERNAME);
 		mockMvc.perform(get(URL_PREFIX + "/myprofile").principal(new UserPrincipal(UserConstants.USERNAME_SECOND)))
 				.andExpect(status().isOk());
 	}
@@ -302,7 +291,7 @@ public class AdvertiserControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testSet_rate() throws Exception {
+	public void testSatRate() throws Exception {
 
 		RateDTO rate = new RateDTO();
 		rate.setRate(RateConstants.RATE_ONE);
@@ -415,7 +404,7 @@ public class AdvertiserControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void testFire_from_company() throws Exception{
+	public void testFireFromCompany() throws Exception{
 		
 		mockMvc.perform(delete(URL_PREFIX + "/removeFromCompany/"+UserConstants.ID_2+"/"+CompanyConstants.COMPANY_ID_FIRST)
 				.principal(new UserPrincipal(UserConstants.USERNAME_SECOND)))

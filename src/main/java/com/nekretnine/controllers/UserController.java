@@ -69,20 +69,20 @@ public class UserController {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		User user;
 		UserAuthority authority = new UserAuthority();
-		if (userType.equalsIgnoreCase("customer")) {
+		if ("customer".equalsIgnoreCase(userType)) {
 			user = new Customer();
 			authority
-					.setAuthority(authorityRepository.findByName(("CUSTOMER")));
+					.setAuthority(authorityRepository.findByName("CUSTOMER"));
 			authority.setUser(user);
 		}
 
-		else if (userType.equalsIgnoreCase("advertiser")) {
+		else if ("advertiser".equalsIgnoreCase(userType)) {
 			user = new Advertiser();
 			authority.setAuthority(authorityRepository
-					.findByName(("ADVERTISER")));
+					.findByName("ADVERTISER"));
 			authority.setUser(user);
 		} else {
-			return new ResponseEntity<String>(
+			return new ResponseEntity<>(
 					"Cant create that type of user, ony Customer and Advertiser allowed",HttpStatus.BAD_REQUEST);
 		}
 
@@ -129,22 +129,13 @@ public class UserController {
 			// Reload user details so we can generate token
 			UserDetails details = userDetailsService
 					.loadUserByUsername(loginDTO.getUsername());
-			return new ResponseEntity<String>(
+			return new ResponseEntity<>(
 					tokenUtils.generateToken(details), HttpStatus.OK);
 		} catch (Exception ex) {
-			return new ResponseEntity<String>("Invalid login",
+			return new ResponseEntity<>("Invalid login",
 					HttpStatus.NOT_FOUND);
 		}
 	}
-
-	/*
-	 * @RequestMapping(value = "/findUser", method = RequestMethod.POST) public
-	 * ResponseEntity<UserDTO> findOneByUsernameAndPassword(@RequestBody
-	 * LoginDTO loginDTO) { UserDTO user = new
-	 * UserDTO(service.findOneByUsernameAndPassword(loginDTO.getUsername(),
-	 * loginDTO.getPassword())); return new ResponseEntity<>(user,
-	 * HttpStatus.OK); }
-	 */
 
 	/**
 	 * @author Stefan Plazic

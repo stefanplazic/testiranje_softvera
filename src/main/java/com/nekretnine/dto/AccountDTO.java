@@ -8,8 +8,10 @@ public class AccountDTO {
 	private double amount;
 	private String acountNumber;
 	
-	public AccountDTO() {}
-	
+	public AccountDTO() {
+		super();
+	}
+
 	public AccountDTO(Account account) {
 		this.id = account.getId();
 		this.amount = account.getAmount();
@@ -46,6 +48,5 @@ public class AccountDTO {
 	public void setAcountNumber(String acountNumber) {
 		this.acountNumber = acountNumber;
 	}
-	
 	
 }

@@ -53,7 +53,7 @@ public class Advertisement {
 	private Customer soldto;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER,mappedBy="advertisement")
-	private Set<Notification> notifications = new HashSet<Notification>();
+	private Set<Notification> notifications = new HashSet<>();
 	
 	public Advertisement() {
 		super();

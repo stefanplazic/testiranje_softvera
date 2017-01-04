@@ -25,6 +25,6 @@ public interface NotificationRepository extends
 	@Transactional
 	@Modifying(clearAutomatically = true)
 	@Query("update Notification n set n.seen = ?1 where n.id = ?2")
-	void setNotificationView(boolean seen, Long notification_id);
+	void setNotificationView(boolean seen, Long notificationId);
 
 }

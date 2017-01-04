@@ -142,7 +142,7 @@ public class UserControllerTest {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void TestVerify() throws Exception {
+	public void testVerify() throws Exception {
 		// this test should be valid , we already have a user with that username
 		User user = userService.findByUsername(UserConstants.USERNAME_SECOND);
 		mockMvc.perform(get(URL_PREFIX + "/verify/" + user.getVerifyCode())).andExpect(status().isOk());

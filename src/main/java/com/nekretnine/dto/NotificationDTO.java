@@ -14,7 +14,9 @@ public class NotificationDTO {
 	private boolean seen;
 	private AdvertisementDTO advertisement;
 	
-	public NotificationDTO(){}
+	public NotificationDTO(){
+		super();
+	}
 
 	public NotificationDTO(Long id, String text, String nType, UserDTO fromUser,
 			Date made, boolean seen) {
@@ -36,7 +38,7 @@ public class NotificationDTO {
 		this.made = notification.getMade();
 		this.seen = notification.isSeen();
 		
-		if(this.nType.equals("message"))
+		if("message".equals(this.nType))
 			this.advertisement = new AdvertisementDTO(notification.getAdvertisement());
 		
 	}	

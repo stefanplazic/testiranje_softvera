@@ -1,7 +1,6 @@
 package com.nekretnine.services.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.isNotNull;
 
 import java.util.List;
 
@@ -211,7 +210,7 @@ public class UserServiceTest {
 	@Test
 	@Transactional
     @Rollback(true)
-	public void TestFindByVerifyCode(){
+	public void testFindByVerifyCode(){
 		User user = service.findByVerifyCode(UserConstants.VERIFY_CODE);
 		
 		assertThat(user).isNotNull();

@@ -5,8 +5,10 @@ public class CustomerMessageDTO {
 	private String message;
 	private Long advertisementId;
 	
-	public CustomerMessageDTO(){}
-	
+	public CustomerMessageDTO() {
+		super();
+	}
+
 	public CustomerMessageDTO(String message, Long advertisementId) {
 		super();
 		this.message = message;

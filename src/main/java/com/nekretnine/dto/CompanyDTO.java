@@ -9,8 +9,10 @@ public class CompanyDTO {
 	private String address;
 	private AdvertiserDTO owner;
 	
-	public CompanyDTO(){}
-	
+	public CompanyDTO() {
+		super();
+	}
+
 	public CompanyDTO(long id, String name, String address) {
 		super();
 		this.id = id;

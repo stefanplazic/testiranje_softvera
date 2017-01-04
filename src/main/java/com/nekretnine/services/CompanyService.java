@@ -27,8 +27,8 @@ public class CompanyService {
 		return repository.findOneByNameAndAddress(name, address);
 	}
 	
-	public List<Company> findAllByOnHold(boolean on_hold) {
-		return repository.findAllByOnHold(on_hold);
+	public List<Company> findAllByOnHold(boolean onHold) {
+		return repository.findAllByOnHold(onHold);
 	}
 
 	public int modifyCompany(CompanyDTO companyDTO) {
