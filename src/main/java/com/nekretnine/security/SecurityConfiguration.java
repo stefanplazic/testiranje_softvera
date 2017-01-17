@@ -60,14 +60,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 
 
-				.antMatchers( "/api/users/login", "/api/users/register/**","/api/users/verify/**").
+				.antMatchers( "/api/users/login", "/api/users/register/**","/api/users/verify/**","/api/users/data").
 					permitAll()
 					.and()
 				.authorizeRequests()
+				
+				/*.antMatchers( "/api/users/data").
+				hasAuthority("CUSTOMER|ADVERTISER|ADMINISTRATOR")
+				.and()
+				.authorizeRequests()*/
+				
 				.antMatchers( "/api/advertiser/profile/","/api/customer/profile/", "api/account/config"). 
 				hasAuthority("CUSTOMER|ADVERTISER")			
 				.and()
-			.authorizeRequests()
+				.authorizeRequests()
+				
 				.antMatchers( "/api/administrator/register")
 				.hasAuthority("ADMINISTRATOR")
 				.and()

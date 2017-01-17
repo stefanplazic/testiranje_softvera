@@ -18,18 +18,18 @@ public class ApplicationLoader implements ApplicationRunner {
 	private UserRepository userRepository;
 	private UserAuthorityRepository userAuthRepository;
 	private AuthorityRepository authorityRepository;
-	
+
 	public ApplicationLoader(AuthorityRepository authRepo, UserRepository userRepo,
 			UserAuthorityRepository userAuthRepo) {
 		this.userRepository = userRepo;
 		this.authorityRepository = authRepo;
 		this.userAuthRepository = userAuthRepo;
 	}
-	
+
 	/**
-	 * Method used to put initial data in the Database:
-	 * Default User roles (Authorities) and 
-	 * Default Administrator, fist user in the Application
+	 * Method used to put initial data in the Database: Default User roles
+	 * (Authorities) and Default Administrator, fist user in the Application
+	 * 
 	 * @author Stefan Plazic, Nemanja Zunic
 	 */
 	@Override
@@ -38,7 +38,7 @@ public class ApplicationLoader implements ApplicationRunner {
 		Authority authority;
 
 		if (authorityRepository.findByName("ADMINISTRATOR") == null) {
-			//save administrator
+			// save administrator
 			authority = new Authority();
 			authority.setName("ADMINISTRATOR");
 			authorityRepository.save(authority);
@@ -62,12 +62,12 @@ public class ApplicationLoader implements ApplicationRunner {
 			authority.setName("ADVERTISER");
 			authorityRepository.save(authority);
 		}
-		
+
 		Administrator admin = new Administrator();
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		//if default admin doesn't exist, insert him into the Database
+		// if default admin doesn't exist, insert him into the Database
 		if (userRepository.findByEmail("admin") == null) {
-			
+
 			admin.setFirstName("admin");
 			admin.setLastName("admin");
 			admin.setEmail("admin");
@@ -76,12 +76,12 @@ public class ApplicationLoader implements ApplicationRunner {
 			admin.setVerifyCode("admin needs no code");
 			admin.setVerified(true);
 			userRepository.save(admin);
-			
+
 			UserAuthority userAuth = new UserAuthority();
 			userAuth.setUser(admin);
 			userAuth.setAuthority(authorityRepository.findByName("ADMINISTRATOR"));
 			userAuthRepository.save(userAuth);
-			
+
 		}
 	}
 
