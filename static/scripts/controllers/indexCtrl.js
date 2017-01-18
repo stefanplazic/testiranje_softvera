@@ -29,7 +29,7 @@
 				// save user token to cookie
 				$cookies.put("token", response.data.response);
 				vm.loggedIn = true;
-				getUserData();
+				//getUserData();
 				$window.location = "#/profile";
 
 			}, function(response) {
@@ -46,7 +46,8 @@
 				$http.get("/api/users/data", { headers: { 'X-Auth-Token': $cookies.get("token") } }).then(function (response) {
 					
 					//if status is ok - save user data to cookie
-	                $cookies.put('userdata',response.data);
+	                $cookies.putObject('userdata',response.data);
+	                console.log(response.data);
 	            },function(error){
 					            	// log error response and maybe send it to
 									// error monitor app
@@ -57,7 +58,7 @@
 		
 		//get if there is user cookie, if so - redirect user to profile page (#profile)
 		function checkIfLogged(){
-			if($cookies.get("X-Auth-Token") != undefined){
+			if($cookies.get("token") != undefined){
 				console.log("IF Logged");
 				vm.loggedIn = true;
 				$window.location = "#/profile";
