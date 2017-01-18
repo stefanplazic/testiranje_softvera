@@ -38,23 +38,6 @@
 			});
 		}
 		;
-		// get user data with give user token
-		function getUserData(){
-			if(vm.loggedIn == true){
-				
-				//do get request and send token with it
-				$http.get("/api/users/data", { headers: { 'X-Auth-Token': $cookies.get("token") } }).then(function (response) {
-					
-					//if status is ok - save user data to cookie
-	                $cookies.putObject('userdata',response.data);
-	                console.log(response.data);
-	            },function(error){
-					            	// log error response and maybe send it to
-									// error monitor app
-					console.error("Error ocurred: " + response.status);
-	            });
-			}
-		}
 		
 		//get if there is user cookie, if so - redirect user to profile page (#profile)
 		function checkIfLogged(){

@@ -71,7 +71,7 @@ public class UserController {
 	 * @author Stefan Plazic
 	 */
 	@RequestMapping(value = "/register/{userType}", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> saveCustomer(@PathVariable String userType, @RequestBody UserDTO userDTO) {
+	public ResponseEntity<ResponseDTO> saveCustomer(@PathVariable String userType, @RequestBody UserDTO userDTO) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		User user;
 		UserAuthority authority = new UserAuthority();
@@ -86,7 +86,8 @@ public class UserController {
 			authority.setAuthority(authorityRepository.findByName(("ADVERTISER")));
 			authority.setUser(user);
 		} else {
-			return new ResponseEntity<String>("Cant create that type of user, ony Customer and Advertiser allowed",
+			return new ResponseEntity<ResponseDTO>(
+					new ResponseDTO("Cant create that type of user, ony Customer and Advertiser allowed"),
 					HttpStatus.BAD_REQUEST);
 		}
 
@@ -99,7 +100,8 @@ public class UserController {
 
 		// check if user with the email exist
 		if (service.findByEmail(user.getEmail()) != null || service.findByUsername(user.getUsername()) != null) {
-			return new ResponseEntity<>("User with that username, or email already exists", HttpStatus.CONFLICT);
+			return new ResponseEntity<ResponseDTO>(new ResponseDTO("User with that username, or email already exists"),
+					HttpStatus.CONFLICT);
 		}
 
 		user = service.save(user);
@@ -107,8 +109,9 @@ public class UserController {
 		mailSender.sendMail(user.getEmail(), "Registration",
 				"Click her to finish registration: <a href='http://localhost:8080/api/users/verify/"
 						+ user.getVerifyCode() + "'>Click</a>");
-		return new ResponseEntity<>("Customer has been created Go to " + user.getEmail() + " to verify your account",
-				HttpStatus.CREATED);
+		ResponseDTO dto = new ResponseDTO();
+		dto.setResponse("Customer has been created Go to " + user.getEmail() + " to verify your account");
+		return new ResponseEntity<ResponseDTO>(dto, HttpStatus.CREATED);
 	}
 
 	/**

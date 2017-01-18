@@ -20,6 +20,11 @@ angular
     	  controller: "profileController",
     	  controllerAs: "profileCtrl"
       })
+      .when('/register',{
+    	  templateUrl: '/views/registration.html',
+    	  controller:  'registrationController',
+    	  controllerAs:'registerCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
