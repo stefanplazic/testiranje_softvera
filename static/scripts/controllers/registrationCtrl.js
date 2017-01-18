@@ -23,8 +23,10 @@
             
             $http.post('/api/users/register/'+vm.type, userData).then(function (response) {
                 if (response) {
-                    //$scope.indexCtrl.login(userData);
+                    $scope.indexCtrl.login(userData);
                 }
+            },function(response){
+            	alert(response.data.response);
             });
         }
     }
