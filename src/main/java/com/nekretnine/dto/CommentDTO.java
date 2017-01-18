@@ -9,7 +9,10 @@ public class CommentDTO {
 	private AdvertisementDTO advertisementDTO;
 	private long time;
 	
-	public CommentDTO() {}
+	public CommentDTO() {
+		super();
+	}
+	
 	public CommentDTO(Comment comment) {
 		this.id  = comment.getId();
 		this.data  = comment.getData();

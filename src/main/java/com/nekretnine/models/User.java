@@ -39,10 +39,10 @@ public class User {
 	
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.EAGER)
-	private Set<Report> reports = new HashSet<Report>();
+	private Set<Report> reports = new HashSet<>();
 	
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
-	private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
+	private Set<UserAuthority> userAuthorities = new HashSet<>();
 	
 	@Column(nullable = true)
 	private boolean isVerified;

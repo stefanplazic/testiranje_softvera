@@ -35,7 +35,7 @@ public class Company {
 	private String status;
 	
 	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER,mappedBy="company")
-	private Set<Advertiser> members = new HashSet<Advertiser>();
+	private Set<Advertiser> members = new HashSet<>();
 	
 	@OneToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "owner")

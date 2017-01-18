@@ -14,7 +14,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.data.repository.query.Param;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,10 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nekretnine.MyprojectApplication;
 import com.nekretnine.constants.AdvertisementConstraints;
-import com.nekretnine.constants.UserConstants;
 import com.nekretnine.models.Advertisement;
-import com.nekretnine.models.User;
-import com.nekretnine.models.Advertisement.State;
 import com.nekretnine.services.AdvertisementService;
 
 @SuppressWarnings("deprecation")

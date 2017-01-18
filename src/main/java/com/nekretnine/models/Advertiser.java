@@ -20,17 +20,17 @@ public class Advertiser extends User {
 	private Company company;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy="advertiser")
-	private Set<Advertisement> advertisements = new HashSet<Advertisement>();
+	private Set<Advertisement> advertisements = new HashSet<>();
 	
 	
 	@OneToMany(mappedBy="advertiserRate", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<RateAdvertiser> rates  = new HashSet<RateAdvertiser>();
+	private Set<RateAdvertiser> rates  = new HashSet<>();
 	
 	@OneToMany(mappedBy="fromadvrt", fetch = FetchType.LAZY)
-	private Set<CallToCompany> sendCompanyCalls  = new HashSet<CallToCompany>();
+	private Set<CallToCompany> sendCompanyCalls  = new HashSet<>();
 	
 	@OneToMany(mappedBy="toadvrt", fetch = FetchType.LAZY)
-	private Set<CallToCompany> receivedCompanyCalls  = new HashSet<CallToCompany>();
+	private Set<CallToCompany> receivedCompanyCalls  = new HashSet<>();
 	
 	public Advertiser() {
 		super();

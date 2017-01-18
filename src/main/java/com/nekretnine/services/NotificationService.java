@@ -31,8 +31,8 @@ public class NotificationService {
 		repository.setNotificationsStatus(status, toUser);
 	}
 	
-	void setNotificationView(boolean view, Long notification_id){
-		repository.setNotificationView(view, notification_id);
+	void setNotificationView(boolean view, Long notificationId){
+		repository.setNotificationView(view, notificationId);
 	}
 
 }

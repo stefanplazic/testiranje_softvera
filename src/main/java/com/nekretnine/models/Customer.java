@@ -13,19 +13,19 @@ public class Customer extends User {
 
 	@Column(nullable = false)
 	@OneToMany(mappedBy="customer", fetch = FetchType.LAZY)
-	private Set<RateEstate> rates  = new HashSet<RateEstate>();
+	private Set<RateEstate> rates  = new HashSet<>();
 	
 	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
-	private Set<Comment> comments = new HashSet<Comment>();
+	private Set<Comment> comments = new HashSet<>();
 	
 	@OneToMany(mappedBy="customAdv", fetch = FetchType.LAZY)
-	private Set<RateAdvertiser> advRates  = new HashSet<RateAdvertiser>();
+	private Set<RateAdvertiser> advRates  = new HashSet<>();
 	
 	@OneToMany(mappedBy="soldto", fetch = FetchType.LAZY)
-	private Set<Advertisement> boughtAdvertisement  = new HashSet<Advertisement>();
+	private Set<Advertisement> boughtAdvertisement  = new HashSet<>();
 
 	@OneToMany(mappedBy="customer", fetch = FetchType.LAZY)
-	private Set<Favourites> favourites  = new HashSet<Favourites>();
+	private Set<Favourites> favourites  = new HashSet<>();
 	
 	public Customer() {
 		super();

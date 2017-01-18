@@ -52,7 +52,8 @@ public class EstateController {
 		Advertiser owner=(Advertiser) userService.findByUsername(principal.getName());
 		Estate e = estateService.findOneByName(estateDTO.getName());
 		
-		if(e!=null) return new ResponseEntity<String>("vecima",HttpStatus.CONFLICT);
+		if(e!=null) 
+			return new ResponseEntity<>("vecima",HttpStatus.CONFLICT);
 		
 		Estate estate= new Estate(estateDTO);
 		estate.setOwner(owner);
@@ -62,7 +63,7 @@ public class EstateController {
 		}
 		estateService.save(estate);	
 				
-		return new ResponseEntity<String>("aloebebebebe",HttpStatus.CREATED);
+		return new ResponseEntity<>("aloebebebebe",HttpStatus.CREATED);
 	}
 	
 	/**
@@ -72,23 +73,24 @@ public class EstateController {
 	 * </p>
 	 * @param principal , user data
 	 * @param rateDTO	,estate rate
-	 * @param estate_id	,Long estate id
+	 * @param estateId	,Long estate id
 	 * @return
 	 * 
 	 * @author sirko
 	 */
-	@RequestMapping(value="/rate/{estate_id}",method=RequestMethod.POST)
-	public ResponseEntity<String> set_rate(Principal principal,@RequestBody RateDTO rateDTO,@PathVariable Long estate_id){
-			Estate e=estateService.findOne(estate_id); //nekretnina
+	@RequestMapping(value="/rate/{estateId}",method=RequestMethod.POST)
+	public ResponseEntity<String> setRate(Principal principal,@RequestBody RateDTO rateDTO,@PathVariable Long estateId){
+			Estate e=estateService.findOne(estateId); //nekretnina
 			Customer c=(Customer) userService.findByUsername(principal.getName());//kupac
 			
 			//da li nekretnina postoji
-			if(e==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			if(e==null) 
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			
 			//da li je vec rejtovao
 			RateEstate jel =rateService.findOneByEstateAndCustomer(e, c);
-			if(jel!=null) return new ResponseEntity<String>("vec si rejtovao",HttpStatus.CONFLICT);
-			
+			if(jel!=null) 
+				return new ResponseEntity<>("vec si rejtovao",HttpStatus.CONFLICT);
 			
 			//kreiranje rate-estate objekta
 			RateEstate re=new RateEstate();

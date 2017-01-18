@@ -1,7 +1,6 @@
 package com.nekretnine.dto;
 
 import com.nekretnine.models.Report;
-import com.nekretnine.models.User;
 
 public class ReportDTO {
 
@@ -12,6 +11,10 @@ public class ReportDTO {
 	private String status;
 	private boolean onHold;
 	
+	public ReportDTO() {
+		super();
+	}
+
 	public ReportDTO(Long id, UserDTO user, AdvertisementDTO advertisement, String message, String status, boolean onHold) {
 		super();
 		this.id = id;

@@ -67,7 +67,7 @@ public class EstateControllerTest {
 	public void testSaveEstate() throws Exception {
 		
 		EstateDTO e= new EstateDTO();
-		Set<ImageDTO> imgs=new HashSet<ImageDTO>();		
+		Set<ImageDTO> imgs=new HashSet<>();		
 		imgs.add(new ImageDTO(null,"nekiurl",null));
 		e.setName("livada");
 		e.setCity("selo");
@@ -79,27 +79,24 @@ public class EstateControllerTest {
 		e.setHeatingSystem("sunce");
 		e.setTechnicalEquipment("lift");
 		
-		
-		String json_data=TestUtil.json(e);
+		String jsonData=TestUtil.json(e);
 		
 		//proveri dodavanje u bazu
 		mockMvc.perform(post(URL_PREFIX + "/add")
 				.principal(new UserPrincipal("mile"))
 				.contentType(contentType)
-				.content(json_data))
+				.content(jsonData))
 			.andExpect(status().isCreated());
 		
 		//dodavanje ako vec postoji nekretnina
 		mockMvc.perform(post(URL_PREFIX + "/add")
 				.principal(new UserPrincipal("mile"))
 				.contentType(contentType)
-				.content(json_data))
+				.content(jsonData))
 			.andExpect(status().isConflict());	
 		
-		
-		
-		
 	}
+	
 	/**
 	 * Test rating estates
 	 * 1st case: not rated before by user 201 created
@@ -116,20 +113,20 @@ public class EstateControllerTest {
 		RateDTO r=new RateDTO();
 		r.setRate(3);
 		
-		String json_data =TestUtil.json(r);
+		String jsonData =TestUtil.json(r);
 		
 		//dodavanje ako vec postoji nekretnina
 		mockMvc.perform(post(URL_PREFIX + "/rate/1")
 				.principal(new UserPrincipal("cone"))
 				.contentType(contentType)
-				.content(json_data))
+				.content(jsonData))
 			.andExpect(status().isCreated());	
 		
 		//ocena na prethodno ocenjenu nekretninu
 		mockMvc.perform(post(URL_PREFIX + "/rate/1")
 				.principal(new UserPrincipal("cone"))
 				.contentType(contentType)
-				.content(json_data))
+				.content(jsonData))
 			.andExpect(status().isConflict());	
 		
 		
@@ -137,13 +134,9 @@ public class EstateControllerTest {
 		mockMvc.perform(post(URL_PREFIX + "/rate/14523")
 				.principal(new UserPrincipal("cone"))
 				.contentType(contentType)
-				.content(json_data))
+				.content(jsonData))
 			.andExpect(status().isNotFound());	
 		
-				
-		
-	
 	}
 		
-
 }

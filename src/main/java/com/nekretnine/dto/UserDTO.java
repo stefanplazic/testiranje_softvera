@@ -12,6 +12,10 @@ public class UserDTO {
 	private String password;
 	private String authority;
 
+	public UserDTO() {
+		super();
+	}
+
 	public UserDTO(Long id, String firstName, String lastName, String email, String username, String password) {
 		super();
 		this.id = id;
@@ -20,9 +24,6 @@ public class UserDTO {
 		this.email = email;
 		this.username = username;
 		this.password = password;
-	}
-
-	public UserDTO() {
 	}
 
 	public UserDTO(User u) {

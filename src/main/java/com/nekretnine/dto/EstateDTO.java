@@ -19,11 +19,11 @@ public class EstateDTO {
 	private String heatingSystem;
 	private AdvertiserDTO owner;
 	private Set<ImageDTO> images;
-
-	public EstateDTO(){
-		
-	}
 	
+	public EstateDTO() {
+		super();
+	}
+
 	public EstateDTO(long id,String name,double price,double area,String address,
 			String city,String cityPart,String technicalEquipment,String heatingSystem){
 		this.id=id;
@@ -38,8 +38,19 @@ public class EstateDTO {
 	//	this.images=images;
 	}
 	
+	public EstateDTO(Estate estate){
+		this(estate.getId(),estate.getName(),estate.getPrice(),
+				estate.getArea(),estate.getAddress(),estate.getCity(),estate.getCityPart(),
+				estate.getTechnicalEquipment(),estate.getHeatingSystem());
 
+		this.images=new HashSet<>();
+		for(Image i : estate.getImages()){
+			this.images.add(new ImageDTO(i));
+		}
+		this.owner = new AdvertiserDTO(estate.getOwner());
 
+	}
+	
 	public Set<ImageDTO> getImages() {
 		return images;
 	}
@@ -62,19 +73,6 @@ public class EstateDTO {
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public EstateDTO(Estate estate){
-		this(estate.getId(),estate.getName(),estate.getPrice(),
-				estate.getArea(),estate.getAddress(),estate.getCity(),estate.getCityPart(),
-				estate.getTechnicalEquipment(),estate.getHeatingSystem());
-
-		this.images=new HashSet<ImageDTO>();
-		for(Image i : estate.getImages()){
-			this.images.add(new ImageDTO(i));
-		}
-		this.owner = new AdvertiserDTO(estate.getOwner());
-
 	}
 
 	public String getCity() {

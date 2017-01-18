@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.nekretnine.models.Advertisement;
-import com.nekretnine.models.User;
 import com.nekretnine.models.Advertisement.State;
 import com.nekretnine.models.Customer;
 import com.nekretnine.repository.AdvertisementRepository;

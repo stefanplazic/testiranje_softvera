@@ -29,7 +29,7 @@ public class AdminDashboardHandler extends TextWebSocketHandler{
 		// send all requests for company to administrator
 		List<Company> companys = service.findAllByOnHold(true);
 		List<CompanyDTO> dtos;
-		if (companys.size() != 0) {
+		if (!companys.isEmpty()) {
 			dtos = createDtoList(companys);
 			try {
 				TextMessage msg = new TextMessage(
@@ -51,7 +51,7 @@ public class AdminDashboardHandler extends TextWebSocketHandler{
 				Thread.sleep(3000);
 				companys = service.findAllByStatus("NEW");
 				
-				if (companys.size() != 0) {
+				if (!companys.isEmpty()) {
 					dtos = createDtoList(companys);
 					session.sendMessage(new TextMessage(mapper
 							.writeValueAsString(dtos)));

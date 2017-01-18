@@ -7,24 +7,25 @@ import com.nekretnine.models.CallToCompany;
 public class CallToCompanyDTO {
 
 	private Long id;
-	private Date DateOfCall;
+	private Date dateOfCall;
 	private AdvertiserDTO fromadvrt;
 	private AdvertiserDTO toadvrt;
 	
-	public CallToCompanyDTO() {}
-	
-	
+	public CallToCompanyDTO() {
+		super();
+	}
+
 	public CallToCompanyDTO(Long id, Date dateOfCall, AdvertiserDTO fromadvrt, AdvertiserDTO toadvrt) {
 		super();
 		this.id = id;
-		DateOfCall = dateOfCall;
+		this.dateOfCall = dateOfCall;
 		this.fromadvrt = fromadvrt;
 		this.toadvrt = toadvrt;
 	}
 
 	public CallToCompanyDTO(CallToCompany callToCompany) {
 		this.id = callToCompany.getId();
-		this.DateOfCall = callToCompany.getDateOfCall();
+		this.dateOfCall = callToCompany.getDateOfCall();
 		this.fromadvrt = new AdvertiserDTO(callToCompany.getFromAdvertiser());
 		this.toadvrt = new AdvertiserDTO(callToCompany.getToAdvertiser());
 	}
@@ -36,10 +37,10 @@ public class CallToCompanyDTO {
 		this.id = id;
 	}
 	public Date getDateOfCall() {
-		return DateOfCall;
+		return dateOfCall;
 	}
 	public void setDateOfCall(Date dateOfCall) {
-		DateOfCall = dateOfCall;
+		this.dateOfCall = dateOfCall;
 	}
 	public AdvertiserDTO getFromadvrt() {
 		return fromadvrt;

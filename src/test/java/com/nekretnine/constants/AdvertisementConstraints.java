@@ -1,7 +1,5 @@
 package com.nekretnine.constants;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.nekretnine.models.Advertisement.State;

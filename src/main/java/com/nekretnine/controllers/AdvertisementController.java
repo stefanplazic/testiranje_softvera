@@ -1,6 +1,5 @@
 package com.nekretnine.controllers;
 
-
 import java.security.Principal;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nekretnine.dto.AdvertisementDTO;
 import com.nekretnine.dto.AdvertisementSearchDTO;
-import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.dto.EstateSearchDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertiser;
@@ -57,22 +55,24 @@ public class AdvertisementController {
 	 * </p>
 	 * @param principal			,user data
 	 * @param advertisementDTO	,advertisement to be saved , content type application/json
-	 * @param estate_id			,long estate id 
+	 * @param estateId			,long estate id 
 	 * @return
 	 * 
 	 * @author sirko
 	 */
-	@RequestMapping(value="/add/{estate_id}",method=RequestMethod.POST,consumes="application/json")
-	public ResponseEntity<String> add_advertisement(Principal principal,
-			@RequestBody AdvertisementDTO advertisementDTO,@PathVariable Long estate_id){
+	@RequestMapping(value="/add/{estateId}",method=RequestMethod.POST,consumes="application/json")
+	public ResponseEntity<String> addAdvertisement(Principal principal,
+			@RequestBody AdvertisementDTO advertisementDTO,@PathVariable Long estateId){
 		
-		Estate e=estateService.findOne(estate_id);
+		Estate e=estateService.findOne(estateId);
 		
-		if(e==null) return new ResponseEntity<String>("nematenekretnine",HttpStatus.NOT_FOUND);
+		if(e==null) 
+			return new ResponseEntity<>("nematenekretnine",HttpStatus.NOT_FOUND);
 		
 		Advertiser u=(Advertiser)userService.findByUsername(principal.getName());
 		
-		if(e.getOwner().getId()!=u.getId()) return new ResponseEntity<String>("nemoze",HttpStatus.CONFLICT);
+		if(e.getOwner().getId()!=u.getId()) 
+			return new ResponseEntity<>("nemoze",HttpStatus.CONFLICT);
 		
 		Advertisement a=new Advertisement();
 		a.setExpiryDate(advertisementDTO.getExpiryDate());
@@ -83,7 +83,7 @@ public class AdvertisementController {
 
 		advertisementService.save(a);
 
-		return new ResponseEntity<String>("aloebebebebe", HttpStatus.CREATED);
+		return new ResponseEntity<>("aloebebebebe", HttpStatus.CREATED);
 	}
 
 	/**
@@ -92,28 +92,31 @@ public class AdvertisementController {
 	 * 	method-> post	api/advertisement/modify/{advertisement_id}
 	 * </p>
 	 * @param principal	,user data
-	 * @param advert_id	, Long advertisement id
+	 * @param advertId	, Long advertisement id
 	 * @param advertDTO	, new state to be saved {"state": {state} }, content type application/json
 	 * @return
 	 * 
 	 * @author sirko
 	 */
-	@RequestMapping(value="/modify/{advert_id}",method=RequestMethod.POST,consumes="application/json")
-	public ResponseEntity<String> modify_addvertisement(Principal principal,@PathVariable Long advert_id,@RequestBody AdvertisementDTO advertDTO){
+	@RequestMapping(value="/modify/{advertId}",method=RequestMethod.POST,consumes="application/json")
+	public ResponseEntity<String> modifyAdvertisement(Principal principal,@PathVariable Long advertId, @RequestBody AdvertisementDTO advertDTO){
 		
-		Advertisement adv = advertisementService.findOne(advert_id);
+		Advertisement adv = advertisementService.findOne(advertId);
 		Advertiser u=(Advertiser)userService.findByUsername(principal.getName());		
 	
 		//da li reklama postoji
-		if(adv==null) return new ResponseEntity<String>("nemanema",HttpStatus.NOT_FOUND);
+		if(adv==null) 
+			return new ResponseEntity<>("nemanema",HttpStatus.NOT_FOUND);
 		//da li je oglasivac okacio reklamu
-		if(adv.getAdvertiser().getId()!=u.getId())return new ResponseEntity<String>("nemoze",HttpStatus.CONFLICT);
+		if(adv.getAdvertiser().getId()!=u.getId())
+			return new ResponseEntity<>("nemoze",HttpStatus.CONFLICT);
 		
 		// apdejt status reklame ako je prosledjen
-		if (advertDTO.getState() != null)	advertisementService.setState(advertDTO.getState(), advert_id);
+		if (advertDTO.getState() != null)	
+			advertisementService.setState(advertDTO.getState(), advertId);
 		// apdejt vlasnika reklame ako je prosledjen i ako je nov vlasnik njegov kola(iz iste kompanije)
 
-		return new ResponseEntity<String>("braobrao", HttpStatus.OK);
+		return new ResponseEntity<>("braobrao", HttpStatus.OK);
 	}
 
 	/**
@@ -151,7 +154,7 @@ public class AdvertisementController {
 		for(Advertisement ad: adv.getContent()) {
 			result.add(new AdvertisementDTO(ad));
 		}
-		return new ResponseEntity<List<AdvertisementDTO>>(result, HttpStatus.OK);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	
@@ -162,18 +165,19 @@ public class AdvertisementController {
 	 * 	method->get	api/advertisement/{advertisement_id}
 	 * </p>
 	 * @param principal
-	 * @param advert_id
+	 * @param advertId
 	 * @return requested advertisement
 	 * 
 	 * @author sirko
 	 */
-	@RequestMapping(value="/{advert_id}",method=RequestMethod.GET)
-	public ResponseEntity<AdvertisementDTO> get_advertisement(Principal principal,@PathVariable Long advert_id ){
+	@RequestMapping(value="/{advertId}",method=RequestMethod.GET)
+	public ResponseEntity<AdvertisementDTO> getAdvertisement(Principal principal,@PathVariable Long advertId){
 		
-		Advertisement adv = advertisementService.findOne(advert_id);
+		Advertisement adv = advertisementService.findOne(advertId);
 		
 		//da li reklama postoji
-		if(adv==null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		if(adv==null) 
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
 		AdvertisementDTO advertDTO = new AdvertisementDTO(adv);
 		
@@ -211,7 +215,5 @@ public class AdvertisementController {
 		reportService.save(new Report(user, advertisement, message, "NEW", true));
 		return new ResponseEntity<>("braobrao", HttpStatus.OK);
 	}
-	
-
 
 }

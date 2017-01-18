@@ -26,12 +26,9 @@ public class MyMailSenderService {
 			helper.setTo(to);
 			helper.setText(body, true);
 		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
+	
 		javaMailSender.send(message);
 	}
 }

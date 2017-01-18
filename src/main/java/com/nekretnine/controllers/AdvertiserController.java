@@ -233,12 +233,12 @@ public class AdvertiserController {
 		Advertiser me = (Advertiser) userService.findByUsername(principal.getName());
 
 		// get all call from company
-		List<CallToCompanyDTO> callToCompaniesDTO = new ArrayList<CallToCompanyDTO>();
+		List<CallToCompanyDTO> callToCompaniesDTO = new ArrayList<>();
 		List<CallToCompany> companies = callService.findByToadvrt(me);
 		for (CallToCompany callToCompan : companies) {
 			callToCompaniesDTO.add(new CallToCompanyDTO(callToCompan));
 		}
-		return new ResponseEntity<List<CallToCompanyDTO>>(callToCompaniesDTO, HttpStatus.FOUND);
+		return new ResponseEntity<>(callToCompaniesDTO, HttpStatus.FOUND);
 	}
 
 	/**
@@ -255,7 +255,7 @@ public class AdvertiserController {
 	public ResponseEntity<List<AdvertiserDTO>> getUnemployed(Principal principal) {
 
 		// put all unemployed users in this list
-		List<AdvertiserDTO> advertiserDTOs = new ArrayList<AdvertiserDTO>();
+		List<AdvertiserDTO> advertiserDTOs = new ArrayList<>();
 
 		// get all advertisers
 		List<Advertiser> advertisers = service.findAll();
@@ -265,7 +265,7 @@ public class AdvertiserController {
 				advertiserDTOs.add(new AdvertiserDTO(advrt));
 		}
 
-		return new ResponseEntity<List<AdvertiserDTO>>(advertiserDTOs, HttpStatus.FOUND);
+		return new ResponseEntity<>(advertiserDTOs, HttpStatus.FOUND);
 	}
 
 	/**
@@ -286,20 +286,20 @@ public class AdvertiserController {
 		User me = userService.findByUsername(principal.getName());
 		Advertiser advertiser = (Advertiser) me;
 
-		List<EstateDTO> estateDTOs = new ArrayList<EstateDTO>();
+		List<EstateDTO> estateDTOs = new ArrayList<>();
 		// get estates from advertisement and convert them to DTOs
 		for (Advertisement advertisement : advertiser.getAdvertisements()) {
 			if (advertisement.getState() == State.RENTED || advertisement.getState() == State.SOLD)
 				estateDTOs.add(new EstateDTO(advertisement.getEstate()));
 		}
-		return new ResponseEntity<List<EstateDTO>>(estateDTOs, HttpStatus.OK);
+		return new ResponseEntity<>(estateDTOs, HttpStatus.OK);
 	}
 
 	// za kupca
-	@RequestMapping(value = "/rate/{advertiser_id}", method = RequestMethod.POST)
-	public ResponseEntity<String> set_rate(Principal principal, @RequestBody RateDTO rateDTO,
-			@PathVariable Long advertiser_id) {
-		Advertiser a = (Advertiser) userService.findOne(advertiser_id); // oglasavac
+	@RequestMapping(value = "/rate/{advertiserId}", method = RequestMethod.POST)
+	public ResponseEntity<String> setRate(Principal principal, @RequestBody RateDTO rateDTO,
+			@PathVariable Long advertiserId) {
+		Advertiser a = (Advertiser) userService.findOne(advertiserId); // oglasavac
 		Customer c = (Customer) userService.findByUsername(principal.getName());// kupac
 
 		// da li oglasavac postoji
@@ -307,9 +307,9 @@ public class AdvertiserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
 		// da li je vec rejtovao
-		RateAdvertiser jel = rateService.already_rated(a, c);
+		RateAdvertiser jel = rateService.alreadyRated(a, c);
 		if (jel != null)
-			return new ResponseEntity<String>("vec si rejtovao", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("vec si rejtovao", HttpStatus.NOT_FOUND);
 
 		// kreiranje rate-advertiser objekta
 		RateAdvertiser ra = new RateAdvertiser();
@@ -387,7 +387,7 @@ public class AdvertiserController {
 		Advertiser owner = (Advertiser) userService.findByUsername(principal.getName());
 
 		if (owner.getCompany() != null) {
-			return new ResponseEntity<String>("Owner is already employee.", HttpStatus.CONFLICT);
+			return new ResponseEntity<>("Owner is already employee.", HttpStatus.CONFLICT);
 		}
 
 		Company company = companyService.findOneByNameAndAddress(companyDTO.getName(), companyDTO.getAddress());
@@ -397,38 +397,38 @@ public class AdvertiserController {
 			com.setOwner(new Advertiser(owner));
 			com = companyService.saveCompany(com);
 			service.setAdvertisersCompany(com, owner.getId());
-			return new ResponseEntity<String>("The request for company has successfully added.", HttpStatus.OK);
+			return new ResponseEntity<>("The request for company has successfully added.", HttpStatus.OK);
 		}
-		return new ResponseEntity<String>("The company with entered name and address already exists.",
+		return new ResponseEntity<>("The company with entered name and address already exists.",
 				HttpStatus.CONFLICT);
 
 	}
 
-	@RequestMapping(value = "/removeFromCompany/{advertiser_id}/{company_id}", method = RequestMethod.DELETE)
-	public ResponseEntity<String> fire_from_company(Principal principal, @PathVariable Long advertiser_id,
-			@PathVariable Long company_id) {
+	@RequestMapping(value = "/removeFromCompany/{advertiserId}/{companyId}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> fireFromCompany(Principal principal, @PathVariable Long advertiserId,
+			@PathVariable Long companyId) {
 
-		Advertiser a = (Advertiser) userService.findOne(advertiser_id);
-		Company c = companyService.findOne(company_id);
+		Advertiser a = (Advertiser) userService.findOne(advertiserId);
+		Company c = companyService.findOne(companyId);
 		Advertiser ma = (Advertiser) userService.findByUsername(principal.getName());
 
 		if (a == null)
-			return new ResponseEntity<String>("oglasivac ne postoji", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("oglasivac ne postoji", HttpStatus.NOT_FOUND);
 		if (c == null)
-			return new ResponseEntity<String>("kompanija ne postoji", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("kompanija ne postoji", HttpStatus.NOT_FOUND);
 
 		// ako nije menadzer
 		if (ma.getId() != c.getOwner().getId())
-			return new ResponseEntity<String>("nisi menadzer kompanije", HttpStatus.I_AM_A_TEAPOT);
+			return new ResponseEntity<>("nisi menadzer kompanije", HttpStatus.I_AM_A_TEAPOT);
 
 		// ako ne radi u toj kompaniji
 		if (a.getCompany().getId() != c.getId())
-			return new ResponseEntity<String>("nemoze", HttpStatus.I_AM_A_TEAPOT);
+			return new ResponseEntity<>("nemoze", HttpStatus.I_AM_A_TEAPOT);
 
 		// brisi ga
-		service.fire(advertiser_id);
+		service.fire(advertiserId);
 
-		return new ResponseEntity<String>("sve kul", HttpStatus.OK);
+		return new ResponseEntity<>("sve kul", HttpStatus.OK);
 	}
 
 }

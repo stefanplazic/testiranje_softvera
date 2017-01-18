@@ -7,15 +7,12 @@ import com.nekretnine.models.Advertisement.State;
 
 public class AdvertisementDTO {
 
-
-	
 	private Long id;
 	private Date publicationDate;
 	private Date expiryDate;
 	private State state;
 	private AdvertiserDTO advertiser;
 	private EstateDTO estate;
-	
 	
 	public AdvertisementDTO() {
 		super();
@@ -95,7 +92,5 @@ public class AdvertisementDTO {
 		return "AdvertisementDTO [id=" + id + ", publicationDate=" + publicationDate + ", expiryDate=" + expiryDate
 				+ ", state=" + state + ", advertiser=" + advertiser + ", estate=" + estate + "]";
 	}
-	
-	
-	
+		
 }

@@ -18,7 +18,7 @@ public class RateAdvertiserService {
 		return repository.save(ra);
 	}
 	
-	public RateAdvertiser already_rated(Advertiser a,Customer b){
+	public RateAdvertiser alreadyRated(Advertiser a,Customer b){
 		return repository.findOneByAdvertiserRateAndCustomAdv(a,b);
 	}
 	

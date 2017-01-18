@@ -117,7 +117,7 @@ public class CustomerController {
 				customer,
 				new PageRequest(pageableDTO.getPage(), pageableDTO.getCount()));
 		List<Advertisement> adv = page.getContent();
-		List<EstateDTO> estates = new ArrayList<EstateDTO>();
+		List<EstateDTO> estates = new ArrayList<>();
 		for (Advertisement a : adv) {
 			estates.add(new EstateDTO(a.getEstate()));
 		}
@@ -223,7 +223,7 @@ public class CustomerController {
 		Page<Favourites> page = favouritesService.findAllByCustomer(customer,
 				new PageRequest(pageableDTO.getPage(), pageableDTO.getCount()));
 		List<Favourites> favourites = page.getContent();
-		List<EstateDTO> estates = new ArrayList<EstateDTO>();
+		List<EstateDTO> estates = new ArrayList<>();
 		for (Favourites f : favourites) {
 			estates.add(new EstateDTO(f.getEstate()));
 		}

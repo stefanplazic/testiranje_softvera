@@ -72,18 +72,18 @@ public class AdministratorController {
 		User user;
 		UserAuthority userAuth = new UserAuthority();
 		
-		if(userType.equalsIgnoreCase("administrator")) {
+		if("administrator".equalsIgnoreCase(userType)) {
 			user = new Administrator();
 			userAuth.setAuthority(authorityRepository.findByName("ADMINISTRATOR"));
 			userAuth.setUser(user);
 		}
-		else if(userType.equalsIgnoreCase("moderator")) {
+		else if("moderator".equalsIgnoreCase(userType)) {
 			user = new Moderator();
 			userAuth.setAuthority(authorityRepository.findByName("MODERATOR"));
 			userAuth.setUser(user);
 		}
 		else {
-			return new ResponseEntity<String>(
+			return new ResponseEntity<>(
 					String.format("Can't create %s type of user, ony Administrator and Moderator allowed.", userType),
 					HttpStatus.BAD_REQUEST);
 		}
@@ -97,13 +97,13 @@ public class AdministratorController {
 		
 		if(userService.findByEmail(user.getEmail())!=null || userService.findByUsername(user.getUsername())!=null)
 		{
-			return new ResponseEntity<String>(String.format("%s with that username, or email already exists.", StringUtils.capitalize(userType)),
+			return new ResponseEntity<>(String.format("%s with that username, or email already exists.", StringUtils.capitalize(userType)),
 					HttpStatus.CONFLICT);
 		}
 		user = userService.save(user);
 		userAuthorityRepository.save(userAuth);
 		mailSender.sendMail(user.getEmail(), "Registration", "Click her to finish registration: <a href='http://localhost:8080/api/users/verify/"+user.getVerifyCode()+"'>Click</a>");
-		return new ResponseEntity<String>(
+		return new ResponseEntity<>(
 				String.format("%s has been created. Go to: %s to verify your account.", 
 						StringUtils.capitalize(userType), user.getEmail()),
 				HttpStatus.CREATED);	
@@ -126,10 +126,10 @@ public class AdministratorController {
 		Administrator admin = (Administrator) userService.findByUsername(principal.getName());
 		Company company = companyService.findOne(companyId);
 		if(company == null){
-			return new ResponseEntity<String>("Company not found", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Company not found", HttpStatus.NOT_FOUND);
 		}
 		if(!company.isonHold()){
-			return new ResponseEntity<String>(HttpStatus.CONFLICT);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		
 		// modify onHold to false and save in database
@@ -148,7 +148,7 @@ public class AdministratorController {
 				+ "company "+company.getName());
 		notification.setFromUser(admin);
 		notificationService.saveNotification(notification);
-		return new ResponseEntity<String>("Company is accepted.", HttpStatus.OK);
+		return new ResponseEntity<>("Company is accepted.", HttpStatus.OK);
 		
 		
 	}
@@ -170,10 +170,10 @@ public class AdministratorController {
 		Administrator admin = (Administrator) userService.findByUsername(principal.getName());
 		Company company = companyService.findOne(companyId);
 		if(company == null){
-			return new ResponseEntity<String>("Company not found", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Company not found", HttpStatus.NOT_FOUND);
 		}
 		if(!company.isonHold()){
-			return new ResponseEntity<String>(HttpStatus.CONFLICT);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		// set advertiser's company to null, and delete company (request)
 		Advertiser owner = (Advertiser) userService.findByEmail(company.getOwner().getEmail());
@@ -191,7 +191,7 @@ public class AdministratorController {
 				+ "company "+company.getName());
 		notification.setFromUser(admin);
 		notificationService.saveNotification(notification);
-		return new ResponseEntity<String>("Company is not accepted.", HttpStatus.OK);
+		return new ResponseEntity<>("Company is not accepted.", HttpStatus.OK);
 		
 		
 	}

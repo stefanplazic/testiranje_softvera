@@ -75,20 +75,23 @@ public class UserController {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		User user;
 		UserAuthority authority = new UserAuthority();
-		if (userType.equalsIgnoreCase("customer")) {
+		if ("customer".equalsIgnoreCase(userType)) {
 			user = new Customer();
-			authority.setAuthority(authorityRepository.findByName(("CUSTOMER")));
+
+			authority.setAuthority(authorityRepository.findByName("CUSTOMER"));
 			authority.setUser(user);
 		}
 
-		else if (userType.equalsIgnoreCase("advertiser")) {
+		else if ("advertiser".equalsIgnoreCase(userType)) {
 			user = new Advertiser();
+
 			authority.setAuthority(authorityRepository.findByName(("ADVERTISER")));
 			authority.setUser(user);
 		} else {
-			return new ResponseEntity<ResponseDTO>(
+			return new ResponseEntity<>(
 					new ResponseDTO("Cant create that type of user, ony Customer and Advertiser allowed"),
 					HttpStatus.BAD_REQUEST);
+
 		}
 
 		user.setFirstName(userDTO.getFirstName());
@@ -100,7 +103,7 @@ public class UserController {
 
 		// check if user with the email exist
 		if (service.findByEmail(user.getEmail()) != null || service.findByUsername(user.getUsername()) != null) {
-			return new ResponseEntity<ResponseDTO>(new ResponseDTO("User with that username, or email already exists"),
+			return new ResponseEntity<>(new ResponseDTO("User with that username, or email already exists"),
 					HttpStatus.CONFLICT);
 		}
 
@@ -141,18 +144,10 @@ public class UserController {
 			return new ResponseEntity<ResponseDTO>(new ResponseDTO(tokenUtils.generateToken(details)), HttpStatus.OK);
 		} catch (Exception ex) {
 			return new ResponseEntity<ResponseDTO>(new ResponseDTO("Wrong username and password combination"),
+
 					HttpStatus.NOT_FOUND);
 		}
 	}
-
-	/*
-	 * @RequestMapping(value = "/findUser", method = RequestMethod.POST) public
-	 * ResponseEntity<UserDTO> findOneByUsernameAndPassword(@RequestBody
-	 * LoginDTO loginDTO) { UserDTO user = new
-	 * UserDTO(service.findOneByUsernameAndPassword(loginDTO.getUsername(),
-	 * loginDTO.getPassword())); return new ResponseEntity<>(user,
-	 * HttpStatus.OK); }
-	 */
 
 	/**
 	 * @author Stefan Plazic

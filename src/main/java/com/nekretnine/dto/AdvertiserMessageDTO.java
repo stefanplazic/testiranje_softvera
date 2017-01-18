@@ -5,8 +5,10 @@ public class AdvertiserMessageDTO {
 	private String message;
 	private Long advertisementId;
 	private Long toUserId;
-	
-	public AdvertiserMessageDTO(){}
+
+	public AdvertiserMessageDTO() {
+		super();
+	}
 
 	public AdvertiserMessageDTO(String message, Long advertisementId, Long toUserId) {
 		super();

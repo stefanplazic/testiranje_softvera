@@ -21,8 +21,7 @@ public class CallToCompany {
 	private Long id;
 	
 	@Column(nullable = false)
-	private Date DateOfCall;
-	
+	private Date dateOfCall;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "fromadvrt")
@@ -38,7 +37,7 @@ public class CallToCompany {
 	public CallToCompany(Long id, Date dateOfCall, Advertiser fromAdvertiser, Advertiser toAdvertiser) {
 		super();
 		this.id = id;
-		DateOfCall = dateOfCall;
+		this.dateOfCall = dateOfCall;
 		this.fromadvrt = fromAdvertiser;
 		this.toadvrt = toAdvertiser;
 	}
@@ -52,11 +51,11 @@ public class CallToCompany {
 	}
 
 	public Date getDateOfCall() {
-		return DateOfCall;
+		return dateOfCall;
 	}
 
 	public void setDateOfCall(Date dateOfCall) {
-		DateOfCall = dateOfCall;
+		this.dateOfCall = dateOfCall;
 	}
 
 	public Advertiser getFromAdvertiser() {

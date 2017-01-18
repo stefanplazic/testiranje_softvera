@@ -9,8 +9,9 @@ public class ImageDTO {
 	private EstateDTO estate;
 	
 	public ImageDTO(){
-		
+		super();
 	}
+	
 	public ImageDTO(Long id,String url,EstateDTO estate){
 		this.id=id;
 		this.url=url;
