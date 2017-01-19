@@ -34,7 +34,7 @@
 					// if status is ok - save user data to cookie
 					$cookies.putObject('userdata', response.data);
 					console.log(response.data);
-					$window.location = "#/profile";
+					$window.location = "#/search";
 				}, function(error) {
 					// log error response and maybe send it to
 					// error monitor app
@@ -53,7 +53,7 @@
 			if($cookies.get("token") != undefined){
 				console.log("IF Logged");
 				vm.loggedIn = true;
-				$window.location = "#/profile";
+				$window.location = "#/search";
 			}
 		}
 	}

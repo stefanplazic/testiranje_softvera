@@ -3,9 +3,9 @@ angular.module('myApp',
 		.config([ '$routeProvider', function($routeProvider) {
 			$routeProvider
 			.when('/', {
-				templateUrl : '/views/profile.html',
-				controller : "profileController",
-				controllerAs : "profileCtrl"
+				templateUrl : '/views/search.html',
+				controller : "searchController",
+				controllerAs : "searchCtrl"
 			}).when('/login', {
 				templateUrl : '/views/login.html',
 				controller : "loginController",
@@ -15,6 +15,10 @@ angular.module('myApp',
 				templateUrl : '/views/registration.html',
 				controller : 'registrationController',
 				controllerAs : 'registerCtrl'
+			}).when('/profile', {
+				templateUrl : '/views/profile.html',
+				controller : 'profileController',
+				controllerAs : 'profileCtrl'
 			}).otherwise({
 				redirectTo : '/'
 			});
