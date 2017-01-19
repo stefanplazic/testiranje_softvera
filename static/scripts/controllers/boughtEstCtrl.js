@@ -37,7 +37,8 @@
 			var pageRequest = {"page": pNum, "count": vm.perPage};
 			 $http.post("/api/customer/myEstates", pageRequest, { headers: { 'X-Auth-Token': $cookies.get("token") } })
 			 	.then(function (response){
-			 		console.log(response.data)
+			 		vm.myEstate = response.data;//list of my estates
+			 		console.log(vm.myEstate);
 			 	});
 		}
     }

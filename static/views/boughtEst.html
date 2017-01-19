@@ -1,16 +1,54 @@
 <!-- let user seee the list of all bought and sold estates -->
+<script>
+	/*function for selecting currently clicked button*/
 
+	$(document).ready(function() {
+		$('ul.pagination > li ').children().click(function() {
+			//alert("Radi");
+			$('.active').removeClass('active');
+			$(this).addClass('active');
+		});
+	});
+	
+
+</script>
 
 <div class="container">
 
 	<center>
 		<h4>List of bought estates</h4>
-	</center>
 
-	<center>
-		<ul class="pagination">
-			<li><a ng-repeat="num in EstCtrl.pages" ng-click="EstCtrl.getAdvert(num-1)">{{num}}</a></li>
+		<div class="raw">
+			<div class="col-sm-3 col-lg-3 col-md-3"
+				ng-repeat="advert in EstCtrl.myEstate">
+				<div class="thumbnail">
+					<img src="http://placehold.it/320x150" alt="">
+					<div class="caption">
+						<h4 class="pull-right">${{advert.price}}</h4>
+						<h4>
+							<a href="#">{{advert.name}}</a>
+						</h4>
+						<p>The area: {{advert.area}}</p>
+						<p>
+							The city: <b></b>{{advert.city}} </b>
+						</p>
+						<p>
 
-		</ul>
+							Advertiser : <a href="mailto:{{advert.owner.email}}">{{advert.owner.username}}</a>
+						</p>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="navbar navbar-default navbar-fixed-bottom">
+
+			<ul class="pagination">
+				<li ng-repeat="num in EstCtrl.pages"
+					ng-click="EstCtrl.getAdvert(num-1)"><a>{{num}}</a></li>
+			</ul>
+		</div>
+
 	</center>
 </div>
