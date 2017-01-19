@@ -11,6 +11,7 @@
 		// login and logout methods
 		vm.logout = logout;
 		vm.login = login;
+		vm.selectPage = selectPage;
 		checkIfLogged();
 
 		// method for deleting user data - cookies
@@ -56,6 +57,11 @@
 				vm.loggedIn = true;
 				$window.location = "#/search";
 			}
+		}
+		
+		//for adding active class to pagination
+		function selectPage($event) {
+			$($event.currentTarget).addClass("active").siblings().removeClass("active");
 		}
 		
 	}

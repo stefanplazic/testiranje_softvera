@@ -46,7 +46,7 @@
 
 			<ul class="pagination">
 				<li ng-repeat="num in EstCtrl.pages"
-					ng-click="EstCtrl.getAdvert(num-1)"><a>{{num}}</a></li>
+					ng-click="EstCtrl.getAdvert(num-1); indexCtrl.selectPage($event)"><a>{{num}}</a></li>
 			</ul>
 		</div>
 
