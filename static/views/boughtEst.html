@@ -7,13 +7,10 @@
 		<h4>List of bought estates</h4>
 	</center>
 
-	{{EstCtrl.pageNum}}
-
-
 	<center>
 		<ul class="pagination">
-			<li><a href="#" ng-repeat="num in EstCtrl.pages">{{num}}</a></li>
-		
+			<li><a ng-repeat="num in EstCtrl.pages" ng-click="EstCtrl.getAdvert(num-1)">{{num}}</a></li>
+
 		</ul>
 	</center>
 </div>
