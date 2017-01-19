@@ -49,6 +49,8 @@
 			</div>
 			<ul class="nav navbar-nav">
 				<!-- ovde buttons za akcije korisnika -->
+				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority =='CUSTOMER'" data-toggle="tooltip" title="Bought estates">
+				<a href="/#/profile"><span class="glyphicon glyphicon-list-alt"></span></a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li ng-show="indexCtrl.loggedIn" data-toggle="tooltip" title="Profile">
