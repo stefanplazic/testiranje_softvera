@@ -1,6 +1,7 @@
 package com.nekretnine.repository;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,4 +52,6 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 			@Param("technicalEquipment") String technicalEquipment, @Param("heatingSystem") String heatingSystem, Pageable pageable);
 
 	Page<Advertisement> findAllBySoldto(Customer customer, Pageable pageable);
+	
+	List<Advertisement> findBySoldto(Customer customer);
 }

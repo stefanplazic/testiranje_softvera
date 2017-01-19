@@ -53,4 +53,8 @@ public class AdvertisementService {
 		return repository.findAllBySoldto(customer, pageable);
 	}
 	
+	public List<Advertisement> findBySoldto(Customer customer){
+		return repository.findBySoldto(customer);
+	}
+	
 }

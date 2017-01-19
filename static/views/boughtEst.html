@@ -1,0 +1,19 @@
+<!-- let user seee the list of all bought and sold estates -->
+
+
+<div class="container">
+
+	<center>
+		<h4>List of bought estates</h4>
+	</center>
+
+	{{EstCtrl.pageNum}}
+
+
+	<center>
+		<ul class="pagination">
+			<li><a href="#" ng-repeat="num in EstCtrl.pages">{{num}}</a></li>
+		
+		</ul>
+	</center>
+</div>

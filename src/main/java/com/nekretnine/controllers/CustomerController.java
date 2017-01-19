@@ -19,6 +19,7 @@ import com.nekretnine.dto.CustomerDTO;
 import com.nekretnine.dto.CustomerMessageDTO;
 import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.dto.PageableDTO;
+import com.nekretnine.dto.ResponseDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Customer;
 import com.nekretnine.models.Estate;
@@ -122,6 +123,22 @@ public class CustomerController {
 			estates.add(new EstateDTO(a.getEstate()));
 		}
 		return new ResponseEntity<>(estates, HttpStatus.OK);
+	}
+	
+	/**
+	 * 
+	 * @param principal
+	 * @return
+	 */
+	@RequestMapping(value = "/myEstates/size", method = RequestMethod.GET)
+	public ResponseEntity<ResponseDTO> myEstates(Principal principal) {
+
+		Customer customer = (Customer) userService.findByUsername(principal
+				.getName());
+
+		List<Advertisement> page = advertisementService.findBySoldto(customer);
+		
+		return new ResponseEntity<>(new ResponseDTO(""+page.size()), HttpStatus.OK);
 	}
 
 	/**

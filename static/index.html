@@ -37,6 +37,7 @@
 <script src="/scripts/controllers/profileCtrl.js"></script>
 <script src="/scripts/controllers/registrationCtrl.js"></script>
 <script src="/scripts/controllers/searchCtrl.js"></script>
+<script src="/scripts/controllers/boughtEstCtrl.js"></script>
 
 </head>
 
@@ -50,7 +51,7 @@
 			<ul class="nav navbar-nav">
 				<!-- ovde buttons za akcije korisnika -->
 				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority =='CUSTOMER'" data-toggle="tooltip" title="Bought estates">
-				<a href="/#/profile"><span class="glyphicon glyphicon-list-alt"></span></a></li>
+				<a href="/#/boughtEstates"><span class="glyphicon glyphicon-list-alt"></span></a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li ng-show="indexCtrl.loggedIn" data-toggle="tooltip" title="Profile">
