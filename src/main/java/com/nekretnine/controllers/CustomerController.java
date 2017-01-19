@@ -136,9 +136,9 @@ public class CustomerController {
 		Customer customer = (Customer) userService.findByUsername(principal
 				.getName());
 
-		List<Advertisement> page = advertisementService.findBySoldto(customer);
+		int size = advertisementService.findBySoldto(customer);
 		
-		return new ResponseEntity<>(new ResponseDTO(""+page.size()), HttpStatus.OK);
+		return new ResponseEntity<>(new ResponseDTO(""+size), HttpStatus.OK);
 	}
 
 	/**

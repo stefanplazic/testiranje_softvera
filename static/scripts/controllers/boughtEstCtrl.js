@@ -8,7 +8,7 @@
     function BoughtEstateController($http, $scope, $window, $cookies) {
 
         var vm = this;
-        vm.perPage = 5;//size of page
+        vm.perPage = 1;//size of page
         vm.pages = [];
         vm.getAdvert = getAdvert;
 		if ($cookies.getObject('userdata') === undefined)

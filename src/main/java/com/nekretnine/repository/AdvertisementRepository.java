@@ -53,5 +53,6 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 
 	Page<Advertisement> findAllBySoldto(Customer customer, Pageable pageable);
 	
-	List<Advertisement> findBySoldto(Customer customer);
+	@Query("select count(id) from Advertisement where soldTo = ?1")
+	int findBySoldto(Long id);
 }
