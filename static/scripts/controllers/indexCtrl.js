@@ -30,7 +30,16 @@
 				$cookies.put("token", response.data.response);
 				vm.loggedIn = true;
 				//getUserData();
-				$window.location = "#/profile";
+				$http.get("/api/users/data", {headers : {'X-Auth-Token' : $cookies.get("token")}}).then(function(response) {
+					// if status is ok - save user data to cookie
+					$cookies.putObject('userdata', response.data);
+					console.log(response.data);
+					$window.location = "#/profile";
+				}, function(error) {
+					// log error response and maybe send it to
+					// error monitor app
+					console.error("Error ocurred: " + response.status);
+				});
 
 			}, function(response) {
 				alert(response.data.response);
