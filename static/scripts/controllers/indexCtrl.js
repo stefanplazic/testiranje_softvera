@@ -11,6 +11,7 @@
 		// login and logout methods
 		vm.logout = logout;
 		vm.login = login;
+		vm.selectPage = selectPage;
 		checkIfLogged();
 
 		// method for deleting user data - cookies
@@ -33,6 +34,7 @@
 				$http.get("/api/users/data", {headers : {'X-Auth-Token' : $cookies.get("token")}}).then(function(response) {
 					// if status is ok - save user data to cookie
 					$cookies.putObject('userdata', response.data);
+					vm.authority = response.data.authority;//set user role to scope
 					console.log(response.data);
 					$window.location = "#/search";
 				}, function(error) {
@@ -56,6 +58,12 @@
 				$window.location = "#/search";
 			}
 		}
+		
+		//for adding active class to pagination
+		function selectPage($event) {
+			$($event.currentTarget).addClass("active").siblings().removeClass("active");
+		}
+		
 	}
 
 }

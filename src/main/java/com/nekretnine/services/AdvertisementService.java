@@ -56,5 +56,9 @@ public class AdvertisementService {
 	public Long count() {
 		return repository.count();
 	}
+
+	public int findBySoldto(Customer customer){
+		return repository.findBySoldto(customer.getId());
+	}
 	
 }

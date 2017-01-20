@@ -19,6 +19,10 @@ angular.module('myApp',
 				templateUrl : '/views/profile.html',
 				controller : 'profileController',
 				controllerAs : 'profileCtrl'
+			}).when('/boughtEstates', {
+				templateUrl: '/views/boughtEst.html',
+				controller: 'BoughtEstateController',
+				controllerAs: 'EstCtrl'
 			}).otherwise({
 				redirectTo : '/'
 			});
