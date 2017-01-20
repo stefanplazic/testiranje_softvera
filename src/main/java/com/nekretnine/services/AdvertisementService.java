@@ -53,4 +53,8 @@ public class AdvertisementService {
 		return repository.findAllBySoldto(customer, pageable);
 	}
 	
+	public Long count() {
+		return repository.count();
+	}
+	
 }

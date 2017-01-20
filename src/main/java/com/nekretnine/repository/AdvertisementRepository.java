@@ -32,8 +32,8 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 	void deleteById(Long id);
 	
 	@Query("select a from Advertisement as a join a.estate as e WHERE "
-			+ "(:publicationDate is null or a.publicationDate = :publicationDate) AND "
-			+ "(:expiryDate is null or a.expiryDate = :expiryDate) AND "
+			+ "(:publicationDate is null or a.publicationDate > :publicationDate) AND "
+			+ "(:expiryDate is null or a.expiryDate < :expiryDate) AND "
 			+ "(:state is null or a.state = :state) AND "
 			+ "(:name is null or e.name = :name) AND "
 			+ "(:minPrice = 0.0 or e.price > :minPrice) AND "

@@ -1,14 +1,137 @@
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-2">
-			<p>filter</p>
+		<div class="col-md-3">
+			<form>
+				<h4>Filter Advertisements</h4>
+				<div class="form-group">
+					<input type="text" class="form-control" ng-model="searchCtrl.name"
+						placeholder="Estate name" data-toggle="tooltip"
+						title="Estate name" empty-to-null>
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" ng-model="searchCtrl.city"
+						placeholder="City" data-toggle="tooltip" title="City" empty-to-null>
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control"
+						ng-model="searchCtrl.cityPart" placeholder="City part"
+						data-toggle="tooltip" title="City part" empty-to-null>
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control"
+						ng-model="searchCtrl.address" placeholder="Address"
+						data-toggle="tooltip" title="Address" empty-to-null>
+				</div>
 
+				<div class="form-group row">
+					<div class="col-md-6" style="padding-right: 5px">
+						<input type="number" class="form-control" placeholder="Min Area"
+							ng-model="searchCtrl.minArea" min="0"
+							max="{{searchCtrl.maxArea}}" data-toggle="tooltip"
+							title="Min Area">
+					</div>
+					<div class="col-md-6" style="padding-left: 5px">
+						<input type="number" class="form-control" placeholder="Max Area"
+							ng-model="searchCtrl.maxArea" min="{{searchCtrl.minArea}}"
+							data-toggle="tooltip" title="Max Area">
+					</div>
+				</div>
+
+
+				<div class="form-group row">
+					<div class="col-md-6" style="padding-right: 5px">
+						<input type="number" class="form-control" placeholder="Min Price"
+							ng-model="searchCtrl.minPrice" min="0"
+							max="{{searchCtrl.maxPrice}}" data-toggle="tooltip"
+							title="Min Price">
+					</div>
+					<div class="col-md-6" style="padding-left: 5px">
+						<input type="number" class="form-control" placeholder="Max Price"
+							ng-model="searchCtrl.maxPrice" min="{{searchCtrl.minPrice}}"
+							data-toggle="tooltip" title="Max Price">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-md-4" style="padding-right: 5px">Heating:</div>
+					<div class="col-md-8" style="padding-left: 5px">
+						<select class="form-control" data-toggle="tooltip"
+							title="Heating System" ng-model="searchCtrl.heating" empty-to-null>
+							<option value="" selected>All</option>
+							<option value="Central">Central</option>
+							<option value="Electric">Electric</option>
+							<option value="Firewood">Firewood</option>
+							<option value="Gas">Gas</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<input type="text" class="form-control"
+						ng-model="searchCtrl.equipment" placeholder="Equipment"
+						data-toggle="tooltip" title="Technical Equipment" empty-to-null>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-md-4" style="padding-right: 5px">
+						Publication:</div>
+					<div class="col-md-8" style="padding-left: 5px">
+						<input type="date" max="{{searchCtrl.expiry}}"
+							class="form-control" ng-model="searchCtrl.publication">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-md-4" style="padding-right: 5px">Expiry:</div>
+					<div class="col-md-8" style="padding-left: 5px">
+						<input type="date" min="{{searchCtrl.publication}}"
+							class="form-control" ng-model="searchCtrl.expiry">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-md-4" style="padding-right: 5px"></div>
+					<div class="col-md-8" style="padding-left: 5px">
+						<button ng-click="searchCtrl.getAdvert(0); searchCtrl.search()" type="submit"
+							class="btn btn-primary col-md-12">Filter</button>
+					</div>
+				</div>
+			</form>
 		</div>
+
 		<div class="col-md-8">
-			<p>results</p>
-			<ul class="pagination">
-				<li><a href="#">1</a></li>
-			</ul>
+
+			<div class="row">
+				<div class="col-sm-3 col-lg-3 col-md-3"
+					ng-repeat="advert in searchCtrl.adverts">
+					<div class="thumbnail">
+						<img src="http://placehold.it/320x150" alt="">
+						<div class="caption">
+							<h4 class="pull-right">${{advert.estate.price}}</h4>
+							<h4>
+								<a>{{advert.estate.name}}</a>
+							</h4>
+							<p>Area: {{advert.estate.area}}</p>
+							<p>City: {{advert.estate.city}}</p>
+							<p>
+								Advertiser : <a href="mailto:{{advert.advertiser.email}}">{{advert.advertiser.username}}</a>
+							</p>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="text-center row">
+
+				<div class="col-md-12" style="">
+					<ul class="pagination">
+						<li ng-repeat="num in searchCtrl.pages" 
+						ng-click="searchCtrl.getAdvert(num-1)"><a>{{num}}</a></li>
+					</ul>
+				</div>
+
+			</div>
 		</div>
 	</div>
 </div>

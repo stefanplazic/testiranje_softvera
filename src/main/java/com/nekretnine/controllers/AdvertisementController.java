@@ -215,5 +215,16 @@ public class AdvertisementController {
 		reportService.save(new Report(user, advertisement, message, "NEW", true));
 		return new ResponseEntity<>("braobrao", HttpStatus.OK);
 	}
+	
+	/**
+	 * Support function for pagination
+	 * @return total number of Advertisements so that we can calculate number of pages
+	 * @author Nemanja Zunic
+	 */
+	@RequestMapping(value="/count/", method = RequestMethod.GET)
+	public ResponseEntity<String> allAdvertisementsSize() {
+		
+		return new ResponseEntity<>(advertisementService.count().toString(), HttpStatus.OK);
+	}
 
 }
