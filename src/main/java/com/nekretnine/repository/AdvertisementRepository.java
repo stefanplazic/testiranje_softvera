@@ -36,7 +36,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 			+ "(:publicationDate is null or a.publicationDate > :publicationDate) AND "
 			+ "(:expiryDate is null or a.expiryDate < :expiryDate) AND "
 			+ "(:state is null or a.state = :state) AND "
-			+ "(:name is null or e.name = :name) AND "
+			+ "(:name is null or e.name LIKE :name) AND "
 			+ "(:minPrice = 0.0 or e.price > :minPrice) AND "
 			+ "(:maxPrice = 0.0 or e.price < :maxPrice) AND "
 			+ "(:minArea = 0.0 or e.area > :minArea) AND "
@@ -55,4 +55,23 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 	
 	@Query("select count(id) from Advertisement where soldTo = ?1")
 	int findBySoldto(Long id);
+	
+	@Query("select count(a.state) from Advertisement as a join a.estate as e WHERE "
+			+ "(:publicationDate is null or a.publicationDate > :publicationDate) AND "
+			+ "(:expiryDate is null or a.expiryDate < :expiryDate) AND "
+			+ "(:state is null or a.state = :state) AND "
+			+ "(:name is null or e.name LIKE :name) AND "
+			+ "(:minPrice = 0.0 or e.price > :minPrice) AND "
+			+ "(:maxPrice = 0.0 or e.price < :maxPrice) AND "
+			+ "(:minArea = 0.0 or e.area > :minArea) AND "
+			+ "(:maxArea = 0.0 or e.area < :maxArea) AND "
+			+ "(:address is null or e.address = :address) AND "
+			+ "(:city is null or e.city = :city) AND "
+			+ "(:cityPart is null or e.cityPart = :cityPart) AND "
+			+ "(:technicalEquipment is null or e.technicalEquipment = :technicalEquipment) AND "
+			+ "(:heatingSystem is null or e.heatingSystem = :heatingSystem)")
+	int countAdverts(@Param("publicationDate") Date publicationDate, @Param("expiryDate") Date expiryDate,
+			@Param("state") State state, @Param("name") String name, @Param("minPrice") Double minPrice, @Param("maxPrice") Double maxPrice,
+			@Param("minArea") Double minArea, @Param("maxArea") Double maxArea, @Param("address") String address, @Param("city") String city, @Param("cityPart") String cityPart,
+			@Param("technicalEquipment") String technicalEquipment, @Param("heatingSystem") String heatingSystem);
 }

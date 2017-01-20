@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nekretnine.dto.ResponseDTO;
 import com.nekretnine.dto.UserDTO;
 import com.nekretnine.models.Administrator;
 import com.nekretnine.models.Advertiser;
@@ -66,7 +67,7 @@ public class AdministratorController {
 	 * @author	Nemanja Zunic, Stefan Plazic
 	 */
 	@RequestMapping(value = "/register/{userType}", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> saveAdmin(@PathVariable String userType, @RequestBody UserDTO userDTO) {
+	public ResponseEntity<ResponseDTO> saveAdmin(@PathVariable String userType, @RequestBody UserDTO userDTO) {
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		User user;
@@ -83,11 +84,10 @@ public class AdministratorController {
 			userAuth.setUser(user);
 		}
 		else {
-			return new ResponseEntity<>(
-					String.format("Can't create %s type of user, ony Administrator and Moderator allowed.", userType),
+			return new ResponseEntity<>(new ResponseDTO(String.format("Can't create %s type of user, ony Administrator and Moderator allowed.", userType)),
 					HttpStatus.BAD_REQUEST);
 		}
-		
+		System.out.println(userDTO.getPassword());
 		user.setFirstName(userDTO.getFirstName());
 		user.setLastName(userDTO.getLastName());
 		user.setEmail(userDTO.getEmail());
@@ -97,15 +97,15 @@ public class AdministratorController {
 		
 		if(userService.findByEmail(user.getEmail())!=null || userService.findByUsername(user.getUsername())!=null)
 		{
-			return new ResponseEntity<>(String.format("%s with that username, or email already exists.", StringUtils.capitalize(userType)),
+			return new ResponseEntity<>(new ResponseDTO(String.format("%s with that username, or email already exists.", StringUtils.capitalize(userType))),
 					HttpStatus.CONFLICT);
 		}
 		user = userService.save(user);
 		userAuthorityRepository.save(userAuth);
 		mailSender.sendMail(user.getEmail(), "Registration", "Click her to finish registration: <a href='http://localhost:8080/api/users/verify/"+user.getVerifyCode()+"'>Click</a>");
-		return new ResponseEntity<>(
+		return new ResponseEntity<>(new ResponseDTO(
 				String.format("%s has been created. Go to: %s to verify your account.", 
-						StringUtils.capitalize(userType), user.getEmail()),
+						StringUtils.capitalize(userType), user.getEmail())),
 				HttpStatus.CREATED);	
 	}
 	

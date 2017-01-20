@@ -21,8 +21,7 @@
 			for ( var x in cookies) {
 				$cookies.remove(x);
 			}
-		}
-		;
+		};
 
 		// retrieving user token and saving it to cookie
 		function login(userData) {
@@ -55,6 +54,7 @@
 			if($cookies.get("token") != undefined){
 				console.log("IF Logged");
 				vm.loggedIn = true;
+				vm.userData = $cookies.getObject("userdata");
 				$window.location = "#/search";
 			}
 		}

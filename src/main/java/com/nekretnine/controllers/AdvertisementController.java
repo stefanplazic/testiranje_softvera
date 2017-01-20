@@ -218,13 +218,34 @@ public class AdvertisementController {
 	
 	/**
 	 * Support function for pagination
+	 *  * param example:
+	 * {
+		"state" : "OPEN",
+		"publicationDate" : "",
+		"expiryDate" : "",
+		"estate" : {
+			"name" : "s",
+			"price" : 3,
+			"area" : 3,
+			"address" : "sumadijska",
+			"city" : "s",
+			"cityPart" : "s",
+		 	"technicalEquipment" : "s",
+			"heatingSystem" : "s"
+		 }
+		}
 	 * @return total number of Advertisements so that we can calculate number of pages
 	 * @author Nemanja Zunic
 	 */
-	@RequestMapping(value="/count/", method = RequestMethod.GET)
-	public ResponseEntity<String> allAdvertisementsSize() {
+	@RequestMapping(value="/count/", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<String> allAdvertisementsSize(@RequestBody AdvertisementSearchDTO ad) {
 		
-		return new ResponseEntity<>(advertisementService.count().toString(), HttpStatus.OK);
+		EstateSearchDTO e = ad.getEstate();
+		int res = advertisementService.countAdverts(
+				ad.getPublicationDate(), ad.getExpiryDate(), ad.getState(), e.getName(), e.getMinPrice(), 
+				e.getMaxPrice(), e.getMinArea(), e.getMaxArea(), e.getAddress(), e.getCity(), e.getCityPart(),
+				e.getTechnicalEquipment(), e.getHeatingSystem());
+		return new ResponseEntity<>(""+res, HttpStatus.OK);
 	}
 
 }

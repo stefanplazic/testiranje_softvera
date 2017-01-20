@@ -39,7 +39,14 @@ public class AdvertisementService {
 	public Page<Advertisement> findAdvertisements(Date publicationDate, Date expiryDate, State state, String name, Double minPrice,
 			Double maxPrice, Double minArea, Double maxArea, String address, String city, String cityPart, String technicalEquipment,
 			String heatingSystem, Pageable pageable) {
-		return repository.findAdvertisement(publicationDate, expiryDate, state, name, minPrice, maxPrice,
+		String n = "";
+		if(name == null) {
+			n = null;
+		}
+		else {
+			n = '%'+name+'%';
+		}
+		return repository.findAdvertisement(publicationDate, expiryDate, state, n, minPrice, maxPrice,
 				minArea, maxArea, address, city, cityPart, technicalEquipment, heatingSystem, pageable);
 	}
 	
@@ -53,8 +60,18 @@ public class AdvertisementService {
 		return repository.findAllBySoldto(customer, pageable);
 	}
 	
-	public Long count() {
-		return repository.count();
+	public int countAdverts(Date publicationDate, Date expiryDate, State state, String name, Double minPrice,
+			Double maxPrice, Double minArea, Double maxArea, String address, String city, String cityPart, String technicalEquipment,
+			String heatingSystem) {
+		String n = "";
+		if(name == null) {
+			n = null;
+		}
+		else {
+			n = '%'+name+'%';
+		}
+		return repository.countAdverts(publicationDate, expiryDate, state, n, minPrice, maxPrice,
+				minArea, maxArea, address, city, cityPart, technicalEquipment, heatingSystem);
 	}
 
 	public int findBySoldto(Customer customer){

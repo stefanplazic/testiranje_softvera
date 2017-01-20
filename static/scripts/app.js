@@ -10,7 +10,6 @@ angular.module('myApp',
 				templateUrl : '/views/login.html',
 				controller : "loginController",
 				controllerAs : "loginCtrl"
-
 			}).when('/register', {
 				templateUrl : '/views/registration.html',
 				controller : 'registrationController',
@@ -23,6 +22,10 @@ angular.module('myApp',
 				templateUrl: '/views/boughtEst.html',
 				controller: 'BoughtEstateController',
 				controllerAs: 'EstCtrl'
+			}).when('/registerAdminOrModerator', {
+				templateUrl: '/views/registerAdminOrModerator.html',
+				controller: 'registerAdminOrModeratorController',
+				controllerAs: 'regAdminOrModCtrl'
 			}).otherwise({
 				redirectTo : '/'
 			});

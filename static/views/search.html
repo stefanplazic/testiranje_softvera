@@ -92,7 +92,7 @@
 				<div class="form-group row">
 					<div class="col-md-4" style="padding-right: 5px"></div>
 					<div class="col-md-8" style="padding-left: 5px">
-						<button ng-click="searchCtrl.getAdvert(0); searchCtrl.search()" type="submit"
+						<button ng-click="searchCtrl.getAdvert(0);" type="submit"
 							class="btn btn-primary col-md-12">Filter</button>
 					</div>
 				</div>
@@ -100,10 +100,8 @@
 		</div>
 
 		<div class="col-md-8">
-
 			<div class="row">
-				<div class="col-sm-3 col-lg-3 col-md-3"
-					ng-repeat="advert in searchCtrl.adverts">
+				<div class=" col-sm-3 col-lg-3 col-md-3" ng-repeat="advert in searchCtrl.adverts">
 					<div class="thumbnail">
 						<img src="http://placehold.it/320x150" alt="">
 						<div class="caption">
@@ -114,7 +112,7 @@
 							<p>Area: {{advert.estate.area}}</p>
 							<p>City: {{advert.estate.city}}</p>
 							<p>
-								Advertiser : <a href="mailto:{{advert.advertiser.email}}">{{advert.advertiser.username}}</a>
+								Advertiser: <a href="mailto:{{advert.advertiser.email}}">{{advert.advertiser.username}}</a>
 							</p>
 						</div>
 
@@ -123,14 +121,12 @@
 			</div>
 
 			<div class="text-center row">
-
 				<div class="col-md-12" style="">
 					<ul class="pagination">
 						<li ng-repeat="num in searchCtrl.pages" 
-						ng-click="searchCtrl.getAdvert(num-1)"><a>{{num}}</a></li>
+						ng-click="searchCtrl.getAdvert(num-1); indexCtrl.selectPage($event)"><a>{{num}}</a></li>
 					</ul>
 				</div>
-
 			</div>
 		</div>
 	</div>
