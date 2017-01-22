@@ -13,11 +13,6 @@
 		vm.getAdvert = getAdvert;	//method used to fetch one page of adverts
 		vm.countPages = countPages; //method used to count total pages of objects that fit the search parameter
 		
-		if ($cookies.getObject('userdata') === undefined)
-			$window.location="#/login";
-
-		$scope.indexCtrl.loggedIn = true;
-		vm.userData = $cookies.getObject('userdata');
 		countPages();
 		getAdvert(0);
 		

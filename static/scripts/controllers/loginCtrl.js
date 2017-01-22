@@ -12,7 +12,6 @@
         function login() {
         	console.log(vm.id+" and "+vm.pass);
             var userData =  { "username": vm.id, "password": vm.pass };
-            
             $scope.indexCtrl.login(userData);
         }
     }
