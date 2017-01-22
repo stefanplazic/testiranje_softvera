@@ -1,0 +1,39 @@
+<div class="container">
+	<h4>Reported Advertisements</h4>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Advertisement</th>
+				<th>Estate</th>
+				<th>User that Reported</th>
+				<th>Reason</th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="report in adReportsCtrl.reports" style="vertical-align: middle;">
+				<td><a>{{report.advertisement.id}}</a></td>
+				<td><a>{{report.advertisement.estate.name}}</a></td>
+				<td><a>{{report.user.username}}</a></td>
+				<td>{{report.message}}</td>
+				<td style="padding-right:0">
+					<button type="button" class="btn btn-default btn-sm"
+						ng-click="adReportsCtrl.acceptReport(report)"
+						style="margin-left: 10px; color: green; data-toggle="tooltip"
+						title="Accept Advertisement Report"">
+						<span class="glyphicon glyphicon-ok"></span>
+					</button>
+				</td>
+				<td>
+					<button type="button" class="btn btn-default btn-sm"
+						ng-click="adReportsCtrl.rejectReport(report)"
+						style="margin-left: 10px; color: red; data-toggle="tooltip"
+						title="Reject Advertisement Report">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

@@ -46,17 +46,18 @@ public class ModeratorController {
 	 * @param reportId id of the Report being accepted by the Moderator
 	 */
 	@RequestMapping(value = "/acceptReport/{reportId}", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<Object> acceptReport(Principal principal, @PathVariable Long reportId){
+	public ResponseEntity<String> acceptReport(Principal principal, @PathVariable Long reportId){
 
+		System.out.println(principal.getName());
 		Moderator mod = (Moderator) userService.findByUsername(principal.getName());
 		
 		// modify onHold to false and save in database
 		Report report = reportService.findOne(reportId);
 		if(report == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Wanted report is not found.",HttpStatus.NOT_FOUND);
 		}
 		else if(!report.isOnHold()) {
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
+			return new ResponseEntity<>("Wanted report is already rejected or accepted.",HttpStatus.CONFLICT);
 		}
 		report.setOnHold(false);
 		reportService.save(report);
@@ -78,7 +79,7 @@ public class ModeratorController {
 				+ report.getMessage() + ". Advertisement is removed.");
 		notification.setFromUser(mod);
 		notificationService.saveNotification(notification);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>("",HttpStatus.OK);
 		
 	}
 	
@@ -94,7 +95,7 @@ public class ModeratorController {
 	public ResponseEntity<Object> rejectReport(Principal principal, @PathVariable Long reportId){
 
 		Moderator mod = (Moderator) userService.findByUsername(principal.getName());
-		
+		System.out.println("karijera napreduje, da kucnem u drvo");
 		// modify onHold to false and save in database
 		Report report = reportService.findOne(reportId);		
 		if(report == null) {

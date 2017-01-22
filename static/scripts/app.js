@@ -1,5 +1,5 @@
 angular.module('myApp',
-		[ 'ngResource', 'ngRoute', 'ngCookies', 'ui.bootstrap', 'lodash' ])
+		[ 'ngResource', 'ngRoute', 'ngCookies', 'ui.bootstrap', 'lodash'])
 		.config([ '$routeProvider', function($routeProvider) {
 			$routeProvider
 			.when('/', {
@@ -26,6 +26,10 @@ angular.module('myApp',
 				templateUrl: '/views/registerAdminOrModerator.html',
 				controller: 'registerAdminOrModeratorController',
 				controllerAs: 'regAdminOrModCtrl'
+			}).when('/advertisementReports', {
+				templateUrl: '/views/advertisementReports.html',
+				controller: 'advertisementReportsController',
+				controllerAs: 'adReportsCtrl'
 			}).otherwise({
 				redirectTo : '/'
 			});

@@ -57,24 +57,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
-			.authorizeRequests()
-
-
-				.antMatchers( "/api/users/login", "/api/users/register/**","/api/users/verify/**","/api/users/data").
-					permitAll()
-					.and()
 				.authorizeRequests()
-				
-				/*.antMatchers( "/api/users/data").
-				hasAuthority("CUSTOMER|ADVERTISER|ADMINISTRATOR")
-				.and()
-				.authorizeRequests()*/
-				
-				.antMatchers( "/api/advertiser/profile/","/api/customer/profile/", "api/account/config"). 
-				hasAuthority("CUSTOMER|ADVERTISER")			
+				.antMatchers( "/api/users/login", "/api/users/register/**","/api/users/verify/**","/api/users/data")
+				.permitAll()
 				.and()
 				.authorizeRequests()
-				
+				.antMatchers( "/api/advertiser/profile/","/api/customer/profile/", "api/account/config")
+				.hasAuthority("CUSTOMER|ADVERTISER")			
+				.and()
+				.authorizeRequests()
 				.antMatchers( "/api/administrator/register")
 				.hasAuthority("ADMINISTRATOR")
 				.and()
@@ -87,9 +78,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/customer/myprofile","/api/customer/myEstates")
 				.hasAuthority("CUSTOMER")
 				.and()
-			.authorizeRequests()
-				.antMatchers( "/api/administrator/register")
-				.hasAuthority("ADMINISTRATOR");
+				.authorizeRequests()
+				.antMatchers("/api/moderator/acceptReport/**", "/api/moderator/rejectReport/**")
+				.hasAuthority("MODERATOR");
 				//.anyRequest().authenticated();
 				
 		

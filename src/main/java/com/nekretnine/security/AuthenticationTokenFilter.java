@@ -1,6 +1,8 @@
 package com.nekretnine.security;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -30,7 +32,6 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String authToken = httpRequest.getHeader("X-Auth-Token");
 		String username = tokenUtils.getUsernameFromToken(authToken);
-
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 			if (tokenUtils.validateToken(authToken, userDetails)) {
