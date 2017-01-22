@@ -7,20 +7,24 @@
 		var vm = this;
 		// is user logged in
 		
-		vm.loggedIn = false;
 		// login and logout methods
 		vm.logout = logout;
 		vm.login = login;
+		
 		vm.selectPage = selectPage;
 		checkIfLogged();
 
 		// method for deleting user data - cookies
 		function logout() {
 			vm.loggedIn = false;
+			vm.authority = null;
+			
 			var cookies = $cookies.getAll();
 			for ( var x in cookies) {
 				$cookies.remove(x);
 			}
+			$window.location = "#/login";
+			
 		};
 
 		// retrieving user token and saving it to cookie
@@ -51,11 +55,15 @@
 		
 		//get if there is user cookie, if so - redirect user to profile page (#profile)
 		function checkIfLogged(){
+			
 			if($cookies.get("token") != undefined){
 				console.log("IF Logged");
 				vm.loggedIn = true;
 				vm.userData = $cookies.getObject("userdata");
+				vm.authority = vm.userData.authority;
 				$window.location = "#/search";
+			}else{
+				$window.location = "#/";
 			}
 		}
 		
