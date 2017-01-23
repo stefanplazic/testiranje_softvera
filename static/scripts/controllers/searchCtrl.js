@@ -18,17 +18,19 @@
 		countPages();
 		getAdvert(0);
 		
-		$http.get("/api/view", { headers: { 'X-Auth-Token': $cookies.get("token")}})
-			.then(function (response){
-				for(var i = 0; i < response.data.length; i ++) {
-					response.data[i].time = new Date(response.data[i].time);
-					response.data[i].advert.estate.images.sort(vm.compare);
-				}
-				
-				vm.lastSeen = response.data;  //list last seen adverts
-		 		console.log(vm.lastSeen);
-		 	}
-		);
+		if($scope.indexCtrl.authority) {
+			$http.get("/api/view", { headers: { 'X-Auth-Token': $cookies.get("token")}})
+				.then(function (response){
+					for(var i = 0; i < response.data.length; i ++) {
+						response.data[i].time = new Date(response.data[i].time);
+						response.data[i].advert.estate.images.sort(vm.compare);
+					}
+					
+					vm.lastSeen = response.data;  //list last seen adverts
+			 		console.log(vm.lastSeen);
+			 	}
+			);
+		}
 		
 		//get adverts on specific page number and bind them to the scope
 		function getAdvert(pageNumber){
