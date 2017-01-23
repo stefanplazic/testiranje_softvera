@@ -1,6 +1,6 @@
 
 <center><h3>Estate</h3>
-		<md-button class='md-raised' ng-show="indexCtrl.userData.id == estateCtrl.estate.owner.id">Create advert for this estate</md-button>
+		<button class='md-raised' ng-show="indexCtrl.userData.id == estateCtrl.estate.owner.id">Create advert for this estate</button>
 </center>
 
 <div class="container-fluid">
@@ -52,6 +52,17 @@
 
 							</tbody>
 						</table>
+				<div class="form-group">
+
+			<div ng-show="indexCtrl.authority=='CUSTOMER'">
+	        	<label><input type="radio" name="rate" ng-model="estateCtrl.rate" value=1>1</label>
+	        	<label><input type="radio" name="rate" ng-model="estateCtrl.rate" value=2>2</label>
+	        	<label><input type="radio" name="rate" ng-model="estateCtrl.rate" value=3>3</label>
+	        	<label><input type="radio" name="rate" ng-model="estateCtrl.rate" value=4>4</label>
+	        	<label><input type="radio" name="rate" ng-model="estateCtrl.rate" value=5>5</label><br>
+	        	<button class='md-raised' ng-click='estateCtrl.rateEstate();'>RATE</button>
+        	</div>
+    </div>
 		</div>
 
 
