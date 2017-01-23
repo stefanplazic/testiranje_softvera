@@ -30,6 +30,10 @@ angular.module('myApp',
 				templateUrl: '/views/advertisementReports.html',
 				controller: 'advertisementReportsController',
 				controllerAs: 'adReportsCtrl'
+			}).when('/estate/:id',{
+				templateUrl: '/views/estate.html',
+				controller: 'estateController',
+				controllerAs: 'estateCtrl'
 			}).otherwise({
 				redirectTo : '/'
 			});
