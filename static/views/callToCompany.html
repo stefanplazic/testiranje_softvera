@@ -1,5 +1,10 @@
 
 <div class="col-md-8 col-md-offset-2" style="padding-left: 5px;">
+
+	<!-- *********************************TABS************************************************************ -->
+	<uib-tabset active="active"> <uib-tab index="0">
+	<uib-tab-heading> SEND COMPANY REQUEST </uib-tab-heading> <!-- SERACH BAR -->
+
 	<div class="input-group" ng-show="companyCtrl.hasCompany">
 
 		<input type="text" class="form-control "
@@ -16,7 +21,16 @@
 
 	<!-- this dive is shown if user doesnt work in any company -->
 	<div class="jumbotron" ng-show="companyCtrl.hasCompany == false">
-		<h2>You cant call others to company, because your don't work in any company</h2>
+		<h2>You cant call others to company, because your don't work in
+			any company</h2>
 	</div>
+
+
+	<!-- END OF SEARCH BAR --> </uib-tab> <uib-tab index="1" select="companyCtrl.getCompanyList()">
+	<uib-tab-heading> <i class="glyphicon glyphicon-bell"></i>INVITATION
+	LIST </uib-tab-heading>
+	
+	
+	 </uib-tab> </uib-tabset>
 
 </div>
