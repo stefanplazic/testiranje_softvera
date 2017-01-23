@@ -10,7 +10,8 @@
 				</div>
 				<div class="form-group">
 					<input type="text" class="form-control" ng-model="searchCtrl.city"
-						placeholder="City" data-toggle="tooltip" title="City" empty-to-null>
+						placeholder="City" data-toggle="tooltip" title="City"
+						empty-to-null>
 				</div>
 				<div class="form-group">
 					<input type="text" class="form-control"
@@ -56,7 +57,8 @@
 					<div class="col-md-4" style="padding-right: 5px">Heating:</div>
 					<div class="col-md-8" style="padding-left: 5px">
 						<select class="form-control" data-toggle="tooltip"
-							title="Heating System" ng-model="searchCtrl.heating" empty-to-null>
+							title="Heating System" ng-model="searchCtrl.heating"
+							empty-to-null>
 							<option value="" selected>All</option>
 							<option value="Central">Central</option>
 							<option value="Electric">Electric</option>
@@ -103,7 +105,7 @@
 			<div class="row">
 				<div class=" col-sm-3 col-lg-3 col-md-3" ng-repeat="advert in searchCtrl.adverts">
 					<div class="thumbnail">
-						<img src="http://placehold.it/320x150" alt="">
+						<img src="{{advert.estate.images[0].url}}" alt="Missing Image">
 						<div class="caption">
 							<h4 class="pull-right">${{advert.estate.price}}</h4>
 							<h4>
@@ -123,11 +125,38 @@
 			<div class="text-center row">
 				<div class="col-md-12" style="">
 					<ul class="pagination">
-						<li ng-repeat="num in searchCtrl.pages" 
-						ng-click="searchCtrl.getAdvert(num-1); indexCtrl.selectPage($event)"><a>{{num}}</a></li>
+						<li ng-repeat="num in searchCtrl.pages"
+							ng-click="searchCtrl.getAdvert(num-1); indexCtrl.selectPage($event)"><a>{{num}}</a></li>
 					</ul>
 				</div>
 			</div>
+		</div>
+
+		<div class="col-md-1">
+			Last Seen:
+			<table>
+				<tr class="btn-group-lg" ng-repeat="e in searchCtrl.lastSeen" ng-switch on="$index % 2">
+					<td ng-if="searchCtrl.lastSeen[$index]" ng-switch-when="0" width="30">
+						<button type="button" class="btn btn-block btn-sm"
+							data-toggle="tooltip"
+							style="padding:0"
+							title="{{searchCtrl.lastSeen[$index].advert.estate.name}} viewed on: {{searchCtrl.lastSeen[$index].time}}">
+							<span ng-if="!searchCtrl.lastSeen[$index].advert.estate.images" style="font-size:25px" class="glyphicon glyphicon-home"></span>
+							<img ng-if="searchCtrl.lastSeen[$index].advert.estate.images" src="{{searchCtrl.lastSeen[$index].advert.estate.images[0].url}}" width="30" height="30"/>
+						</button>
+					</td>
+					<td ng-if="searchCtrl.lastSeen[$index+1]" ng-switch-when="0" width="30" height="30">
+						<button type="button" class="btn btn-block btn-sm"
+							data-toggle="tooltip"
+							style="padding:0"
+							title="{{searchCtrl.lastSeen[$index+1].advert.estate.name}} viewed on: {{searchCtrl.lastSeen[$index+1].time}}">
+							<span ng-if="!searchCtrl.lastSeen[$index+1].advert.estate.images" style="font-size:25px" class="glyphicon glyphicon-home"></span>
+							<img ng-if="searchCtrl.lastSeen[$index+1].advert.estate.images" src="{{searchCtrl.lastSeen[$index+1].advert.estate.images[0].url}}" width="30" height="30"/>
+						</button>
+					</td>
+
+				</tr>
+			</table>
 		</div>
 	</div>
 </div>

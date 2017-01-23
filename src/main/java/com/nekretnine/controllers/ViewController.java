@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.nekretnine.dto.AdvertisementDTO;
+import com.nekretnine.dto.ViewDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Customer;
 import com.nekretnine.models.View;
@@ -56,21 +57,26 @@ public class ViewController {
 		
 	}
 	/**
-	 * Method used to get last seen adverts by a particular user
+	 * Method used to get ten last seen adverts by a particular user
 	 * @param principal Object filled with User data on login
 	 * @return List of adverts last seen by a user
 	 */
-	@RequestMapping(method = RequestMethod.GET, consumes = "application/json")
-	public ResponseEntity<List<AdvertisementDTO>> getLastSeen(Principal principal) {
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<ViewDTO>> getLastSeen(Principal principal) {
 		
 		Customer customer = (Customer) userService.findByUsername(principal.getName());
 		List<View> views = viewService.findViewsByViewer(customer);
 		if(views.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		List<AdvertisementDTO> result = new ArrayList<>();
-		for(View v : views) {
-			result.add(new AdvertisementDTO(v.getAdvert()));
+		List<ViewDTO> result = new ArrayList<>();
+		for(int i = 0; i < views.size(); i++) {
+			if(i < 10) {
+				result.add(new ViewDTO(views.get(i)));
+			}
+			else{
+				break;
+			}
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}

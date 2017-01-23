@@ -12,14 +12,29 @@
 		
 		vm.getAdvert = getAdvert;	//method used to fetch one page of adverts
 		vm.countPages = countPages; //method used to count total pages of objects that fit the search parameter
+		vm.compare = compare;		//method used to sort pictures by url so that we display 
+									//same image for the same estate
 		
 		if ($cookies.getObject('userdata') === undefined)
 			$window.location="#/login";
 
 		$scope.indexCtrl.loggedIn = true;
 		vm.userData = $cookies.getObject('userdata');
-		countPages();
+		
+		//display all adverts on page 1
 		getAdvert(0);
+		
+		$http.get("/api/view", { headers: { 'X-Auth-Token': $cookies.get("token")}})
+			.then(function (response){
+				for(var i = 0; i < response.data.length; i ++) {
+					response.data[i].time = new Date(response.data[i].time);
+					response.data[i].advert.estate.images.sort(vm.compare);
+				}
+				
+				vm.lastSeen = response.data;  //list last seen adverts
+		 		console.log(vm.lastSeen);
+		 	}
+		);
 		
 		//get adverts on specific page number and bind them to the scope
 		function getAdvert(pageNumber){
@@ -32,8 +47,11 @@
 			$http.post("/api/advertisement/?" + "page=" + pageNumber + "&count=" + vm.perPage,
 					params, { headers: { 'X-Auth-Token': $cookies.get("token") } })
 				.then(function (response){
+					for(var i = 0; i < response.data.length; i++) {
+						response.data[i].estate.images.sort(vm.compare);
+					}
 					vm.adverts = response.data;//list of my estates
-			 		console.log(vm.adverts);
+					console.log(vm.adverts);
 			 	}
 			);
 		}
@@ -57,6 +75,14 @@
 				// error monitor app
 				console.error("Error ocurred: " + response.status);
 			});
+		}
+		
+		function compare(a,b) {
+			if (a.url < b.url)
+				return -1;
+			if (a.url > b.url)
+				return 1;
+			return 0;
 		}
 
 	}

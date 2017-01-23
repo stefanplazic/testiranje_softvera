@@ -50,7 +50,7 @@ public class Estate {
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	private Advertiser owner;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy="estate")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="estate", fetch = FetchType.EAGER)
 	private Set<Image> images = new HashSet<>();
 	
 	@OneToMany(mappedBy="estate", fetch = FetchType.EAGER)
