@@ -28,7 +28,7 @@
 		 */
 		function typeSelect($item, $model, $label) {
 			console.log($item);
-			sendRequest($item);//send data to server
+			sendRequest($item);// send data to server
 		}
 		/**
 		 * this function enables to see if user is working in any company
@@ -59,27 +59,31 @@
 				"firstName" : vm.firstName,
 				"lastName" : vm.lastName
 			};
-			$http.post('api/advertiser/callToCompany', advertiser,{ headers: { 'X-Auth-Token': $cookies.get("token") } })
-					.then(function(response) {
-						if (response) {
-							alert(response.data.response);
-						}
-					}, function(response) {
-						alert(response.data.response);
-					});
+			$http.post('api/advertiser/callToCompany', advertiser, {
+				headers : {
+					'X-Auth-Token' : $cookies.get("token")
+				}
+			}).then(function(response) {
+				if (response) {
+					alert(response.data.response);
+				}
+			}, function(response) {
+				alert(response.data.response);
+			});
 		}
-		
+
 		/**
 		 * fetch list of all company invitations
 		 */
-		function getCompanyList(){
-			$http.post('api/advertiser/allCalls',{ headers: { 'X-Auth-Token': $cookies.get("token") } })
-			.then(function(response) {
-				if (response) {
-					console.log(response.data);
+		function getCompanyList() {
+			$http.get('api/advertiser/allCalls', {
+				headers : {
+					'X-Auth-Token' : $cookies.get("token")
 				}
+			}).then(function(response) {
 			}, function(response) {
-				console.log("No company calls for you");
+				vm.callList = response.data;
+				console.log(vm.callList);
 			});
 		}
 

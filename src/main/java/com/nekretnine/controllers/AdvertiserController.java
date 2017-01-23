@@ -238,9 +238,6 @@ public class AdvertiserController {
 		// get all call from company
 		List<CallToCompanyDTO> callToCompaniesDTO = new ArrayList<>();
 		List<CallToCompany> companies = callService.findByToadvrt(me);
-		// if companies list is empty - return not found
-		if (companies.isEmpty())
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
 		for (CallToCompany callToCompan : companies) {
 			callToCompaniesDTO.add(new CallToCompanyDTO(callToCompan));

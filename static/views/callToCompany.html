@@ -30,7 +30,35 @@
 	<uib-tab-heading> <i class="glyphicon glyphicon-bell"></i>INVITATION
 	LIST </uib-tab-heading>
 	
-	
+		<!-- ******************TABLE************************** -->
+		
+		<table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>Company name</th>
+        <th>Company address</th>
+        <th>Request sender</th>
+        <th>Date</th>
+        <th>Your response</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="request in companyCtrl.callList">
+        <td>{{request.company.name}}</td>
+        <td>{{request.company.address}}</td>
+        <td>{{request.fromadvrt.username}}</td>
+        <td>{{request.dateOfCall}}</td>
+        <td>
+        <button class="btn-success">Accept</button> 
+        <button class="btn-danger">Decline</button>
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
+		
+		
+		<!-- ******************END OF TABLE**************** -->
 	 </uib-tab> </uib-tabset>
 
 </div>
