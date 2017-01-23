@@ -51,14 +51,17 @@
 			</div>
 			<ul class="nav navbar-nav">
 				<!-- ovde buttons za akcije korisnika -->
-				<li ng-show="indexCtrl.loggedIn && indexCtrl.userData.authority == 'ADMINISTRATOR'" data-toggle="tooltip" title="Register Admin or Moderator">
+				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority == 'ADMINISTRATOR'" data-toggle="tooltip" title="Register Admin or Moderator">
 					<a href="/#/registerAdminOrModerator">Register</a>
 				</li>
-				<li ng-show="indexCtrl.loggedIn && indexCtrl.userData.authority == 'MODERATOR'" data-toggle="tooltip" title="Resolve Advertisement Reports">
+				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority == 'MODERATOR'" data-toggle="tooltip" title="Resolve Advertisement Reports">
 					<a href="/#/advertisementReports">Reports</a>
 				</li>
-				<li ng-show="indexCtrl.loggedIn && indexCtrl.userData.authority =='CUSTOMER'" data-toggle="tooltip" title="Bought estates">
+				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority =='CUSTOMER'" data-toggle="tooltip" title="Bought estates">
 				<a href="/#/boughtEstates"><span class="glyphicon glyphicon-list-alt"></span></a></li>
+				
+				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'" data-toggle="tooltip" title="Company">
+				<a href="/#/company">Company</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li ng-show="indexCtrl.loggedIn" data-toggle="tooltip" title="Profile">

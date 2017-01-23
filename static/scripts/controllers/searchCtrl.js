@@ -14,14 +14,8 @@
 		vm.countPages = countPages; //method used to count total pages of objects that fit the search parameter
 		vm.compare = compare;		//method used to sort pictures by url so that we display 
 									//same image for the same estate
-		
-		if ($cookies.getObject('userdata') === undefined)
-			$window.location="#/login";
 
-		$scope.indexCtrl.loggedIn = true;
-		vm.userData = $cookies.getObject('userdata');
-		
-		//display all adverts on page 1
+		countPages();
 		getAdvert(0);
 		
 		$http.get("/api/view", { headers: { 'X-Auth-Token': $cookies.get("token")}})

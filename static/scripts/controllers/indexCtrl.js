@@ -2,25 +2,31 @@
 	angular.module("myApp").controller('indexController', indexController);
 
 	// controller bound to application body, parent controller to all others
-	function indexController($cookies, $http, $window) {
+	function indexController($cookies, $scope, $http, $window) {
 
 		var vm = this;
 		// is user logged in
 		
-		vm.loggedIn = false;
 		// login and logout methods
 		vm.logout = logout;
 		vm.login = login;
+		
 		vm.selectPage = selectPage;
 		checkIfLogged();
 
 		// method for deleting user data - cookies
 		function logout() {
 			vm.loggedIn = false;
+			vm.authority = null;
+			
 			var cookies = $cookies.getAll();
 			for ( var x in cookies) {
 				$cookies.remove(x);
 			}
+			
+			$window.location = "#/";
+			
+			
 		};
 
 		// retrieving user token and saving it to cookie
@@ -35,7 +41,7 @@
 					$cookies.putObject('userdata', response.data);
 					vm.authority = response.data.authority;//set user role to scope
 					console.log(response.data);
-					$window.location = "#/search";
+					$window.location = "#/";
 				}, function(error) {
 					// log error response and maybe send it to
 					// error monitor app
@@ -51,12 +57,14 @@
 		
 		//get if there is user cookie, if so - redirect user to profile page (#profile)
 		function checkIfLogged(){
+			
 			if($cookies.get("token") != undefined){
 				console.log("IF Logged");
 				vm.loggedIn = true;
 				vm.userData = $cookies.getObject("userdata");
-				$window.location = "#/search";
+				vm.authority = vm.userData.authority;
 			}
+			
 		}
 		
 		//for adding active class to pagination
