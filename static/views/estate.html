@@ -1,0 +1,59 @@
+
+<center><h3>Estate</h3>
+		<md-button class='md-raised' ng-show="indexCtrl.userData.id == estateCtrl.estate.owner.id">Create advert for this estate</md-button>
+</center>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-3">
+				<table class="table table-user-information">
+							<tbody>
+								<tr>
+									<td>Name:</td>
+									<td>{{estateCtrl.estate.name}}</td>
+								</tr>
+								<tr>
+									<td>City:</td>
+									<td>{{estateCtrl.estate.city}}</td>
+								</tr>
+								<tr>
+									<td>City part:</td>
+									<td>{{estateCtrl.estate.cityPart}}</td>
+								</tr>
+								<tr>
+									<td>Address:</td>
+									<td>{{estateCtrl.estate.address}}</td>
+								</tr>
+								<tr>
+									<td>Area:</td>
+									<td>{{estateCtrl.estate.area}}</td>
+								</tr>
+								<tr>
+									<td>Price:</td>
+									<td>{{estateCtrl.estate.price}}</td>
+								</tr>
+								<tr>
+									<td>Heating sys:</td>
+									<td>{{estateCtrl.estate.heatingSystem}}</td>
+								</tr>
+								<tr>
+									<td>Tech equipment:</td>
+									<td>{{estateCtrl.estate.technicalEquipment}}</td>
+								</tr>
+								<tr>
+									<td>Owner:</td>
+									<td>{{estateCtrl.estate.owner.firstName}}</td>
+								</tr>
+								<tr>
+									<td>Rate:</td>
+									<td>{{estateCtrl.estate.rate}}</td>
+								</tr>
+
+
+							</tbody>
+						</table>
+		</div>
+
+
+	</div>
+</div>
