@@ -1,0 +1,22 @@
+
+<div class="col-md-8 col-md-offset-2" style="padding-left: 5px;">
+	<div class="input-group" ng-show="companyCtrl.hasCompany">
+
+		<input type="text" class="form-control "
+			uib-typeahead="advert.username for advert in companyCtrl.adverts | filter:$viewValue"
+			ng-model="selected" style="height: 60px;"
+			placeholder="Search advertisers" data-toggle="tooltip"
+			title="Send call to advertisers to work in company"
+			typeahead-on-select="companyCtrl.typeSelect($item, $model, $label)">
+		<span class="input-group-btn">
+			<button class="btn btn-primary" type="button" style="height: 60px;">SEND
+				INVITATION</button>
+		</span>
+	</div>
+
+	<!-- this dive is shown if user doesnt work in any company -->
+	<div class="jumbotron" ng-show="companyCtrl.hasCompany == false">
+		<h2>You cant call others to company, because your don't work in any company</h2>
+	</div>
+
+</div>

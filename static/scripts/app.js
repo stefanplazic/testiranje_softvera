@@ -30,7 +30,12 @@ angular.module('myApp',
 				templateUrl: '/views/advertisementReports.html',
 				controller: 'advertisementReportsController',
 				controllerAs: 'adReportsCtrl'
-			}).otherwise({
+			}).when('/CompanyCall', {
+				templateUrl: '/views/callToCompany.html',
+				controller: 'callToCompanyController',
+				controllerAs: 'companyCtrl'
+			})
+			.otherwise({
 				redirectTo : '/'
 			});
 		} ]);
