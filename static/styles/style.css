@@ -1,33 +1,76 @@
 .user-row {
-    margin-bottom: 14px;
+	margin-bottom: 14px;
 }
 
 .user-row:last-child {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 .dropdown-user {
-    margin: 13px 0;
-    padding: 5px;
-    height: 100%;
+	margin: 13px 0;
+	padding: 5px;
+	height: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html,body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
 }
 
 .dropdown-user:hover {
-    cursor: pointer;
+	cursor: pointer;
 }
 
-.table-user-information > tbody > tr {
-    border-top: 1px solid rgb(221, 221, 221);
+.table-user-information>tbody>tr {
+	border-top: 1px solid rgb(221, 221, 221);
 }
 
-.table-user-information > tbody > tr:first-child {
-    border-top: 0;
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#map {
+	height: 350px;
+	width: 100%;
 }
 
-
-.table-user-information > tbody > tr > td {
-    border-top: 0;
+.controls {
+	background-color: #fff;
+	border-radius: 2px;
+	border: 1px solid transparent;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+	box-sizing: border-box;
+	font-family: Roboto;
+	font-size: 15px;
+	font-weight: 300;
+	height: 29px;
+	margin-left: 17px;
+	margin-top: 10px;
+	outline: none;
+	padding: 0 11px 0 13px;
+	text-overflow: ellipsis;
+	width: 400px;
 }
-.toppad
-{margin-top:20px;
+
+.controls:focus {
+	border-color: #4d90fe;
+}
+
+#infowindow-content {
+	display: none;
+}
+
+#map #infowindow-content {
+	display: inline;
+}
+
+.table-user-information>tbody>tr:first-child {
+	border-top: 0;
+}
+
+.table-user-information>tbody>tr>td {
+	border-top: 0;
+}
+
+.toppad {
+	margin-top: 20px;
 }

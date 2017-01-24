@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nekretnine.models.Customer;
+import com.nekretnine.models.User;
 import com.nekretnine.models.View;
 import com.nekretnine.repository.ViewRepository;
 
@@ -19,7 +19,7 @@ public class ViewService {
 		return repository.save(view);
 	}
 	
-	public List<View> findViewsByViewer(Customer viewer) {
+	public List<View> findViewsByViewer(User viewer) {
 		return repository.findTop10ViewsByViewerOrderByTimeDesc(viewer);
 	}
 }

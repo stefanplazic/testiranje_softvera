@@ -8,14 +8,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.nekretnine.dto.AdvertisementDTO;
+
 import com.nekretnine.dto.ViewDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Customer;
+import com.nekretnine.models.User;
 import com.nekretnine.models.View;
 import com.nekretnine.services.AdvertisementService;
 import com.nekretnine.services.UserService;
@@ -64,7 +66,7 @@ public class ViewController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<ViewDTO>> getLastSeen(Principal principal) {
 		
-		Customer customer = (Customer) userService.findByUsername(principal.getName());
+		User customer = (User) userService.findByUsername(principal.getName());
 		List<View> views = viewService.findViewsByViewer(customer);
 		if(views.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

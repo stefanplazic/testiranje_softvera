@@ -1,0 +1,21 @@
+<form ng-controller="registerCompanyController as regCompanyCtrl">
+	<br>
+	<div class="form-group">
+		<label for="name">Name:</label> <input id="name" type="text"
+			class="form-control" ng-model="regCompanyCtrl.name" required>
+	</div>
+	<div class="form-group">
+		<label for="address">Address:</label> <input id="addressCompany"
+			type="text" class="form-control" ng-model="regCompanyCtrl.address"
+			ng-change="regCompanyCtrl.initMap()" required>
+	</div>
+
+	<div id="map" style="width: 100%; height: 250px;"
+		ng-show="regCompanyCtrl.showMap"></div>
+	<br>
+	<button class="btn btn-success" ng-click="regCompanyCtrl.sendRequest()">Send
+		Request</button>
+	<br>
+	<br>
+
+</form>

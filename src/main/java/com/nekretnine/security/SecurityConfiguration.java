@@ -70,7 +70,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.hasAuthority("ADMINISTRATOR")
 				.and()
 				.authorizeRequests()
-				.antMatchers("api/advertiser/callToCompany","api/advertiser/acceptCall",
+				.antMatchers("api/advertiser/callToCompany","api/advertiser/acceptCall", "api/advertiser/sendRequestForCompany",
 						"api/advertiser/allCalls","api/advertiser/myprofile","/api/advertiser/unemployed","/api/advertiser/soldEstates")
 				.hasAuthority("ADVERTISER")				
 				.and()

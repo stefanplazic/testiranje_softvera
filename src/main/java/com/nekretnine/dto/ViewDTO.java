@@ -6,7 +6,7 @@ import com.nekretnine.models.View;
 
 public class ViewDTO {
 
-	private CustomerDTO viewer;
+	private UserDTO viewer;
 	private AdvertisementDTO advert;
 	private Date time;
 	
@@ -14,7 +14,7 @@ public class ViewDTO {
 		super();
 	}
 
-	public ViewDTO(CustomerDTO viewer, AdvertisementDTO advert, Date time) {
+	public ViewDTO(UserDTO viewer, AdvertisementDTO advert, Date time) {
 		super();
 		this.viewer = viewer;
 		this.advert = advert;
@@ -22,16 +22,16 @@ public class ViewDTO {
 	}
 	
 	public ViewDTO(View v) {
-		this.viewer = new CustomerDTO(v.getViewer());
+		this.viewer = new UserDTO(v.getViewer());
 		this.advert = new AdvertisementDTO(v.getAdvert());
 		this.time = v.getTime();
 	}
 
-	public CustomerDTO getViewer() {
+	public UserDTO getViewer() {
 		return viewer;
 	}
 
-	public void setViewer(CustomerDTO viewer) {
+	public void setViewer(UserDTO viewer) {
 		this.viewer = viewer;
 	}
 

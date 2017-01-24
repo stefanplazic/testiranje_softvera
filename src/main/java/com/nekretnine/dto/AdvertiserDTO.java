@@ -12,6 +12,7 @@ public class AdvertiserDTO{
 	private String lastName;
 	private String email;
 	private String username;
+	private CompanyDTO company;
 	private double avRate;
 	
 	public AdvertiserDTO() {
@@ -89,6 +90,15 @@ public class AdvertiserDTO{
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public CompanyDTO getCompany() {
+		return company;
+	}
+
+	public void setCompany(CompanyDTO company) {
+		this.company = company;
+	}
+	
 	
 	
 }

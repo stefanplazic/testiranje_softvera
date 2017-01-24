@@ -21,6 +21,7 @@ import com.nekretnine.dto.CompanyDTO;
 import com.nekretnine.dto.CustomerMessageDTO;
 import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.dto.RateDTO;
+import com.nekretnine.dto.ResponseDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertisement.State;
 import com.nekretnine.models.Advertiser;
@@ -67,23 +68,7 @@ public class AdvertiserController {
 	@Autowired
 	private CustomerService customerService;
 
-	/**
-	 * 
-	 * @param id
-	 *            of advertiser who's profile we want to get data about
-	 * @return returns AdvertiserDTO
-	 * @author stefan plazic
-	 */
-	@RequestMapping(value = "/profile/{id}", method = RequestMethod.GET)
-	public ResponseEntity<AdvertiserDTO> getAdvertiserProfile(@PathVariable Long id) {
-		Advertiser advertiser = service.findOne(id);
-		if (advertiser == null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		AdvertiserDTO advertiserDTO = new AdvertiserDTO(advertiser);
-
-		return new ResponseEntity<>(advertiserDTO, HttpStatus.OK);
-	}
-
+	
 	/**
 	 * 
 	 * @param principal
@@ -165,7 +150,7 @@ public class AdvertiserController {
 	public ResponseEntity<CompanyDTO> getCompany(Principal principal) {
 		Advertiser me = (Advertiser) userService.findByUsername(principal.getName());
 		if (me.getCompany() == null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<CompanyDTO>(new CompanyDTO(), HttpStatus.OK);
 		CompanyDTO companyDTO = new CompanyDTO(me.getCompany());
 		companyDTO.setOwner(new AdvertiserDTO(me));
 		return new ResponseEntity<>(companyDTO, HttpStatus.OK);
@@ -382,12 +367,11 @@ public class AdvertiserController {
 	 * @author Miodrag Vilotijević
 	 */
 	@RequestMapping(value = "/sendRequestForCompany", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> sendRequestForCompany(Principal principal, @RequestBody CompanyDTO companyDTO) {
-
+	public ResponseEntity<ResponseDTO> sendRequestForCompany(Principal principal, @RequestBody CompanyDTO companyDTO) {
 		Advertiser owner = (Advertiser) userService.findByUsername(principal.getName());
 
 		if (owner.getCompany() != null) {
-			return new ResponseEntity<>("Owner is already employee.", HttpStatus.CONFLICT);
+			return new ResponseEntity<>(new ResponseDTO("Owner is already employee."), HttpStatus.CONFLICT);
 		}
 
 		Company company = companyService.findOneByNameAndAddress(companyDTO.getName(), companyDTO.getAddress());
@@ -397,9 +381,9 @@ public class AdvertiserController {
 			com.setOwner(new Advertiser(owner));
 			com = companyService.saveCompany(com);
 			service.setAdvertisersCompany(com, owner.getId());
-			return new ResponseEntity<>("The request for company has successfully added.", HttpStatus.OK);
+			return new ResponseEntity<>(new ResponseDTO("The request for company has successfully added."), HttpStatus.OK);
 		}
-		return new ResponseEntity<>("The company with entered name and address already exists.",
+		return new ResponseEntity<>(new ResponseDTO("The company with entered name and address already exists."),
 				HttpStatus.CONFLICT);
 
 	}

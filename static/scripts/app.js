@@ -18,6 +18,10 @@ angular.module('myApp',
 				templateUrl : '/views/profile.html',
 				controller : 'profileController',
 				controllerAs : 'profileCtrl'
+			}).when('/company', {
+				templateUrl : '/views/company.html',
+				controller : 'companyController',
+				controllerAs : 'companyCtrl'
 			}).when('/boughtEstates', {
 				templateUrl: '/views/boughtEst.html',
 				controller: 'BoughtEstateController',

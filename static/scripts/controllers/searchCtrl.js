@@ -34,6 +34,7 @@
 		
 		//get adverts on specific page number and bind them to the scope
 		function getAdvert(pageNumber){
+			
 			countPages();
 			var params = {"estate" : {"name" : vm.name, "city" : vm.city, "cityPart" : vm.cityPart, "address" : vm.address,
 				"minArea" : vm.minArea, "maxArea" : vm.maxArea, "minPrice" : vm.minPrice, "maxPrice" : vm.maxPrice, 

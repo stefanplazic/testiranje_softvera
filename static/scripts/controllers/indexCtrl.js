@@ -5,7 +5,6 @@
 	function indexController($cookies, $scope, $http, $window) {
 
 		var vm = this;
-		// is user logged in
 		
 		// login and logout methods
 		vm.logout = logout;

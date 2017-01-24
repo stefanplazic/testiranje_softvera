@@ -22,7 +22,7 @@ public class View {
 	
 	@OneToOne
 	@JoinColumn(name = "viewer")
-	private Customer viewer;
+	private User viewer;
 	
 	@OneToOne
 	@JoinColumn(name = "advert")
@@ -50,11 +50,11 @@ public class View {
 		this.id = id;
 	}
 
-	public Customer getViewer() {
+	public User getViewer() {
 		return viewer;
 	}
 
-	public void setViewer(Customer viewer) {
+	public void setViewer(User viewer) {
 		this.viewer = viewer;
 	}
 
