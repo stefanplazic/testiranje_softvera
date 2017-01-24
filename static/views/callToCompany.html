@@ -14,7 +14,7 @@
 			title="Send call to advertisers to work in company"
 			typeahead-on-select="companyCtrl.typeSelect($item, $model, $label)">
 		<span class="input-group-btn">
-			<button class="btn btn-primary" type="button" style="height: 60px;">SEND
+			<button class="btn btn-primary" type="button" style="height: 60px;" ng-click="companyCtrl.sendRequest()">SEND
 				INVITATION</button>
 		</span>
 	</div>
@@ -26,7 +26,7 @@
 	</div>
 
 
-	<!-- END OF SEARCH BAR --> </uib-tab> <uib-tab index="1" select="companyCtrl.getCompanyList()">
+	<!-- END OF SEARCH BAR --> </uib-tab> <uib-tab index="1" select="companyCtrl.getCompanyList()" disable="companyCtrl.hasCompany">
 	<uib-tab-heading> <i class="glyphicon glyphicon-bell"></i>INVITATION
 	LIST </uib-tab-heading>
 	
@@ -47,10 +47,9 @@
         <td>{{request.company.name}}</td>
         <td>{{request.company.address}}</td>
         <td>{{request.fromadvrt.username}}</td>
-        <td>{{request.dateOfCall}}</td>
+        <td>{{companyCtrl.formatDate(request.dateOfCall)}}</td>
         <td>
-        <button class="btn-success">Accept</button> 
-        <button class="btn-danger">Decline</button>
+        <button class="btn-success" ng-click="companyCtrl.acceptCall(request); active = 0">Accept</button> 
         </td>
       </tr>
       

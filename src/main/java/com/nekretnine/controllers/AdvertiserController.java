@@ -191,19 +191,20 @@ public class AdvertiserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/acceptCall", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> acceptCallTOCompany(@RequestBody CallToCompanyDTO callToCompanyDTO,
+	public ResponseEntity<ResponseDTO> acceptCallTOCompany(@RequestBody CallToCompanyDTO callToCompanyDTO,
 			Principal principal) {
 
 		// get the username of advertiser from token
 		Advertiser me = (Advertiser) userService.findByUsername(principal.getName());
 		if (me.getCompany() != null) {
-			return new ResponseEntity<>("Advertiser is already working in some company", HttpStatus.CONFLICT);
+			return new ResponseEntity<>(new ResponseDTO("Advertiser is already working in some company"),
+					HttpStatus.CONFLICT);
 		}
 		// get all data about sender advertiser
 		CallToCompany callToCompany = callService.findOne(callToCompanyDTO.getId());
 		// check if call to company exists at all
 		if (callToCompany == null)
-			return new ResponseEntity<>("Such call doesn't exists at all", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ResponseDTO("Such call doesn't exists at all"), HttpStatus.NOT_FOUND);
 		Advertiser sender = callToCompany.getFromAdvertiser();
 		Company company = sender.getCompany();
 		// register new advertiser as company employer
@@ -215,7 +216,7 @@ public class AdvertiserController {
 		for (CallToCompany callToCompan : companies) {
 			callService.remove(callToCompan.getId());
 		}
-		return new ResponseEntity<>("Congretulate you are company employee!!", HttpStatus.OK);
+		return new ResponseEntity<>(new ResponseDTO("Congretulate you are company employee!!"), HttpStatus.OK);
 	}
 
 	/**

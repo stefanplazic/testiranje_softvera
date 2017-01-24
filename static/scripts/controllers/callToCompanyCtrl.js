@@ -3,11 +3,14 @@
 			callToCompanyController);
 
 	// advertiser can call others to his company
-	function callToCompanyController($http, $scope, $window, $cookies) {
+	function callToCompanyController($http, $scope, $window, $cookies, $route) {
 		var vm = this;
 		vm.selected = undefined;
 		vm.typeSelect = typeSelect;
 		vm.getCompanyList = getCompanyList;
+		vm.formatDate = formatDate;
+		vm.acceptCall = acceptCall;
+		vm.sendRequest = sendRequest;
 		getCompany();
 
 		function getUnemployed() {
@@ -28,8 +31,10 @@
 		 */
 		function typeSelect($item, $model, $label) {
 			console.log($item);
-			sendRequest($item);// send data to server
+			vm.advertiser=$item;
+			//sendRequest($item);// send data to server
 		}
+		
 		/**
 		 * this function enables to see if user is working in any company
 		 */
@@ -51,15 +56,10 @@
 		/**
 		 * send request to user to start working in company.
 		 */
-		function sendRequest(advertiser) {
-			var userData = {
-				"username" : vm.username,
-				"password" : vm.pass,
-				"email" : vm.email,
-				"firstName" : vm.firstName,
-				"lastName" : vm.lastName
-			};
-			$http.post('api/advertiser/callToCompany', advertiser, {
+		function sendRequest() {
+			if(vm.advertiser === undefined)
+				return;
+			$http.post('api/advertiser/callToCompany', vm.advertiser, {
 				headers : {
 					'X-Auth-Token' : $cookies.get("token")
 				}
@@ -68,6 +68,7 @@
 					alert(response.data.response);
 				}
 			}, function(response) {
+				console.log("Error");
 				alert(response.data.response);
 			});
 		}
@@ -85,6 +86,27 @@
 				vm.callList = response.data;
 				console.log(vm.callList);
 			});
+		}
+		
+		function formatDate(myDate){
+			var date = new Date(myDate);
+			return date.getUTCDate()+"/"+ date.getUTCMonth()+1 +"/"+date.getFullYear();
+		}
+		
+		function acceptCall(companyCall){
+			console.log(companyCall);
+			$http.post('api/advertiser/acceptCall', companyCall, {
+				headers : {
+					'X-Auth-Token' : $cookies.get("token")
+				}
+			}).then(function(response) {
+				alert(response.data.response);
+				$route.reload();
+				
+			}, function(response) {
+				alert(response.data.response);
+			});
+			
 		}
 
 	}
