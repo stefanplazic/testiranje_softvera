@@ -41,6 +41,8 @@
 	<script src="/scripts/controllers/registerAdminOrModeratorCtrl.js"></script>
 	<script src="/scripts/controllers/advertisemenetReportsCtrl.js"></script>
 	<script src="/scripts/controllers/estateCtrl.js"></script>
+	<script src="/scripts/controllers/callToCompanyCtrl.js"></script>
+
 </head>
 
 <body ng-controller="indexController as indexCtrl">
@@ -63,6 +65,8 @@
 				
 				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'" data-toggle="tooltip" title="Company">
 				<a href="/#/company">Company</a></li>
+				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'" data-toggle="tooltip" title="Company Requests">
+				<a href="/#/CompanyCall"><span class="glyphicon glyphicon-alert"></span></a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li ng-show="indexCtrl.loggedIn" data-toggle="tooltip" title="Profile">

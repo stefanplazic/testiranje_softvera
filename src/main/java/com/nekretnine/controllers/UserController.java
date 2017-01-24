@@ -139,6 +139,10 @@ public class UserController {
 			Authentication authentication = authenticationManager.authenticate(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
+			// if user exists , check if he verified account
+			User user = service.findByUsername(loginDTO.getUsername());
+			if (user != null && user.isVerified() == false)
+				return new ResponseEntity<>(new ResponseDTO("You must verify your email"), HttpStatus.BAD_REQUEST);
 			// Reload user details so we can generate token
 			UserDetails details = userDetailsService.loadUserByUsername(loginDTO.getUsername());
 			return new ResponseEntity<ResponseDTO>(new ResponseDTO(tokenUtils.generateToken(details)), HttpStatus.OK);

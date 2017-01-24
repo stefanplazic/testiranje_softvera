@@ -34,6 +34,10 @@ angular.module('myApp',
 				templateUrl: '/views/estate.html',
 				controller: 'estateController',
 				controllerAs: 'estateCtrl'
+			}).when('/CompanyCall', {
+				templateUrl: '/views/callToCompany.html',
+				controller: 'callToCompanyController',
+				controllerAs: 'companyCtrl'
 			}).otherwise({
 				redirectTo : '/'
 			});
