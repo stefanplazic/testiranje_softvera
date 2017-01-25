@@ -1,0 +1,78 @@
+<div ng-show="indexCtrl.loggedIn" class="container">
+	<div class="row">
+		<div class="col-md-5  toppad  pull-right col-md-offset-3 ">
+
+			<br>
+
+		</div>
+
+		<div class="panel panel-info">
+			<div class="panel-heading"></div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-3 col-lg-3 " align="center"></div>
+
+
+					<div class=" col-md-9 col-lg-9 ">
+						<table class="table table-user-information">
+							<tbody>
+								<tr>
+									<td>First name:</td>
+									<td>{{profileCtrl.advertData.firstName}}</td>
+								</tr>
+								<tr>
+									<td>Last name:</td>
+									<td>{{profileCtrl.advertData.lastName}}</td>
+								</tr>
+								<tr>
+									<td>Username:</td>
+									<td>{{profileCtrl.advertData.username}}</td>
+								</tr>
+								<tr>
+									<td>Email</td>
+									<td><a href="mailto:{{profileCtrl.advertData.email}}">{{profileCtrl.advertData.email}}</a></td>
+								</tr>
+								<tr>
+									<td><font color="red"><font color="red">Average rate</font></font></td>
+									<td><font color="red">{{profileCtrl.advertData.avRate}}/5</font></font></td>
+								</tr>
+
+								<tr>
+									<td>{{profileCtrl.countRate(1)}} people rate it with</td>
+									<td><span class="glyphicon glyphicon-star"></span></td>
+								</tr>
+								<tr>
+									<td>{{profileCtrl.countRate(2)}} people rate it with</td>
+									<td><span class="glyphicon glyphicon-star"></span> <span
+										class="glyphicon glyphicon-star"></span></td>
+								</tr>
+								<tr>
+									<td>{{profileCtrl.countRate(3)}} people rate it with</td>
+									<td><span class="glyphicon glyphicon-star"></span>
+									<span class="glyphicon glyphicon-star"></span>
+									<span class="glyphicon glyphicon-star"></span></td>
+								</tr>
+								<tr>
+									<td>{{profileCtrl.countRate(4)}} people rate it with</td>
+									<td><span class="glyphicon glyphicon-star"></span>
+									<span class="glyphicon glyphicon-star"></span>
+									<span class="glyphicon glyphicon-star"></span>
+									<span class="glyphicon glyphicon-star"></span></td>
+								</tr>
+								<tr>
+									<td>{{profileCtrl.countRate(5)}} people rate it with</td>
+									<td><span class="glyphicon glyphicon-star"></span>
+									<span class="glyphicon glyphicon-star"></span>
+									<span class="glyphicon glyphicon-star"></span>
+									<span class="glyphicon glyphicon-star"></span>
+									<span class="glyphicon glyphicon-star"></span>
+									<span class="glyphicon glyphicon-star"></span></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
