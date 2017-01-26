@@ -55,8 +55,9 @@
 <div class="col-md-12" ng-show="companyCtrl.hasCompany && companyCtrl.myCompany.onHold">
 	<uib-tabset active="active"> 
 		<uib-tab index="0" heading="Info">
+			<br>
 			<div class="jumbotron">
-				<h2>Your request for company is on hold. Please wait...</h2>
+				<h2>Your request for company is on hold.</h2>
 			</div>
 		 </uib-tab>
 	</uib-tabset>
@@ -66,8 +67,9 @@
 <div class="col-md-12" ng-show="!companyCtrl.hasCompany">
 	<uib-tabset active="active"> <uib-tab index="0"
 		heading="Info">
+	<br>
 	<div class="jumbotron">
-		<h2>You don't work in any company</h2>
+		<h2>You don't work in any company.</h2>
 	</div>
 	</uib-tab> <uib-tab index="1" heading="Register Company">
 	<div ng-include="'views/registerCompany.html'"></div>
