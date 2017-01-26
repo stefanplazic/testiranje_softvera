@@ -53,7 +53,8 @@
 <script src="/scripts/controllers/estateCtrl.js"></script>
 <script src="/scripts/controllers/callToCompanyCtrl.js"></script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCy7-QAuubP_fP6XxTcifT9RWXeEeouEGQ"></script>
+<script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCy7-QAuubP_fP6XxTcifT9RWXeEeouEGQ"></script>
 
 </head>
 
@@ -67,19 +68,26 @@
 			<ul class="nav navbar-nav">
 				<!-- ovde buttons za akcije korisnika -->
 
-				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority == 'ADMINISTRATOR'" data-toggle="tooltip" title="Register Admin or Moderator">
-					<a href="/#/registerAdminOrModerator">Register</a>
-				</li>
-				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority == 'MODERATOR'" data-toggle="tooltip" title="Resolve Advertisement Reports">
-					<a href="/#/advertisementReports">Reports</a>
-				</li>
-				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority =='CUSTOMER'" data-toggle="tooltip" title="Bought estates">
-				<a href="/#/boughtEstates"><span class="glyphicon glyphicon-list-alt"></span></a></li>
-				
-				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'" data-toggle="tooltip" title="Company">
-				<a href="/#/company">Company</a></li>
-				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'" data-toggle="tooltip" title="Company Requests">
-				<a href="/#/CompanyCall"><span class="glyphicon glyphicon-alert"></span></a></li>
+				<li
+					ng-show="indexCtrl.loggedIn && indexCtrl.authority == 'ADMINISTRATOR'"
+					data-toggle="tooltip" title="Register Admin or Moderator"><a
+					href="/#/registerAdminOrModerator">Register</a></li>
+				<li
+					ng-show="indexCtrl.loggedIn && indexCtrl.authority == 'MODERATOR'"
+					data-toggle="tooltip" title="Resolve Advertisement Reports"><a
+					href="/#/advertisementReports">Reports</a></li>
+				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority =='CUSTOMER'"
+					data-toggle="tooltip" title="Bought estates"><a
+					href="/#/boughtEstates"><span
+						class="glyphicon glyphicon-list-alt"></span></a></li>
+
+				<li
+					ng-show="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'"
+					data-toggle="tooltip" title="Company"><a href="/#/company">Company</a></li>
+				<li
+					ng-show="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'"
+					data-toggle="tooltip" title="Company Requests"><a
+					href="/#/CompanyCall"><span class="glyphicon glyphicon-alert"></span></a></li>
 
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
@@ -95,7 +103,146 @@
 		</div>
 	</nav>
 
-	<ng-view></ng-view>
+	<div class="row">
+		<div class="container-fluid">
+			<div class="col-md-3">
+				<form>
+					<h4>Filter Advertisements</h4>
+					<div class="form-group">
+						<input type="text" class="form-control" ng-model="indexCtrl.name"
+							placeholder="Estate name" data-toggle="tooltip"
+							title="Estate name" empty-to-null>
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" ng-model="indexCtrl.city"
+							placeholder="City" data-toggle="tooltip" title="City"
+							empty-to-null>
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control"
+							ng-model="indexCtrl.cityPart" placeholder="City part"
+							data-toggle="tooltip" title="City part" empty-to-null>
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control"
+							ng-model="indexCtrl.address" placeholder="Address"
+							data-toggle="tooltip" title="Address" empty-to-null>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-md-6" style="padding-right: 5px">
+							<input type="number" class="form-control" placeholder="Min Area"
+								ng-model="indexCtrl.minArea" min="0" max="{{indexCtrl.maxArea}}"
+								data-toggle="tooltip" title="Min Area">
+						</div>
+						<div class="col-md-6" style="padding-left: 5px">
+							<input type="number" class="form-control" placeholder="Max Area"
+								ng-model="indexCtrl.maxArea" min="{{indexCtrl.minArea}}"
+								data-toggle="tooltip" title="Max Area">
+						</div>
+					</div>
+
+
+					<div class="form-group row">
+						<div class="col-md-6" style="padding-right: 5px">
+							<input type="number" class="form-control" placeholder="Min Price"
+								ng-model="indexCtrl.minPrice" min="0"
+								max="{{indexCtrl.maxPrice}}" data-toggle="tooltip"
+								title="Min Price">
+						</div>
+						<div class="col-md-6" style="padding-left: 5px">
+							<input type="number" class="form-control" placeholder="Max Price"
+								ng-model="indexCtrl.maxPrice" min="{{indexCtrl.minPrice}}"
+								data-toggle="tooltip" title="Max Price">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-md-4" style="padding-right: 5px">Heating:</div>
+						<div class="col-md-8" style="padding-left: 5px">
+							<select class="form-control" data-toggle="tooltip"
+								title="Heating System" ng-model="indexCtrl.heating"
+								empty-to-null>
+								<option value="" selected>All</option>
+								<option value="Central">Central</option>
+								<option value="Electric">Electric</option>
+								<option value="Firewood">Firewood</option>
+								<option value="Gas">Gas</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<input type="text" class="form-control"
+							ng-model="indexCtrl.equipment" placeholder="Equipment"
+							data-toggle="tooltip" title="Technical Equipment" empty-to-null>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-md-4" style="padding-right: 5px">Publication:</div>
+						<div class="col-md-8" style="padding-left: 5px">
+							<input type="date" max="{{indexCtrl.expiry}}"
+								class="form-control" ng-model="indexCtrl.publication">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-md-4" style="padding-right: 5px">Expiry:</div>
+						<div class="col-md-8" style="padding-left: 5px">
+							<input type="date" min="{{indexCtrl.publication}}"
+								class="form-control" ng-model="indexCtrl.expiry">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-md-4" style="padding-right: 5px"></div>
+						<div class="col-md-8" style="padding-left: 5px">
+							<button ng-click="indexCtrl.getAdvert(0);" type="submit"
+								class="btn btn-primary col-md-12">Filter</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-md-8">
+				<ng-view></ng-view>
+			</div>
+
+			<div ng-if="indexCtrl.authority" class="col-md-1">
+				Last Seen:
+				<table>
+					<tr class="btn-group-lg" ng-repeat="e in indexCtrl.lastSeen"
+						ng-switch on="$index % 2">
+						<td ng-if="indexCtrl.lastSeen[$index]" ng-switch-when="0"
+							width="30">
+							<button type="button" class="btn btn-block btn-sm"
+								data-toggle="tooltip" style="padding: 0"
+								title="{{indexCtrl.lastSeen[$index].advert.estate.name}} viewed on: {{indexCtrl.lastSeen[$index].time}}">
+								<span ng-if="!indexCtrl.lastSeen[$index].advert.estate.images"
+									style="font-size: 25px" class="glyphicon glyphicon-home"></span>
+								<img ng-if="indexCtrl.lastSeen[$index].advert.estate.images"
+									ng-src="{{indexCtrl.lastSeen[$index].advert.estate.images[0].url}}"
+									width="30" height="30" />
+							</button>
+						</td>
+						<td ng-if="indexCtrl.lastSeen[$index+1]" ng-switch-when="0"
+							width="30" height="30">
+							<button type="button" class="btn btn-block btn-sm"
+								data-toggle="tooltip" style="padding: 0"
+								title="{{indexCtrl.lastSeen[$index+1].advert.estate.name}} viewed on: {{indexCtrl.lastSeen[$index+1].time}}">
+								<span ng-if="!indexCtrl.lastSeen[$index+1].advert.estate.images"
+									style="font-size: 25px" class="glyphicon glyphicon-home"></span>
+								<img ng-if="indexCtrl.lastSeen[$index+1].advert.estate.images"
+									ng-src="{{indexCtrl.lastSeen[$index+1].advert.estate.images[0].url}}"
+									width="30" height="30" />
+							</button>
+						</td>
+
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
 
 </body>
 

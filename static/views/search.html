@@ -1,170 +1,31 @@
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-3">
-			<form>
-				<h4>Filter Advertisements</h4>
-				<div class="form-group">
-					<input type="text" class="form-control" ng-model="searchCtrl.name"
-						placeholder="Estate name" data-toggle="tooltip"
-						title="Estate name" empty-to-null>
-				</div>
-				<div class="form-group">
-					<input type="text" class="form-control" ng-model="searchCtrl.city"
-						placeholder="City" data-toggle="tooltip" title="City"
-						empty-to-null>
-				</div>
-				<div class="form-group">
-					<input type="text" class="form-control"
-						ng-model="searchCtrl.cityPart" placeholder="City part"
-						data-toggle="tooltip" title="City part" empty-to-null>
-				</div>
-				<div class="form-group">
-					<input type="text" class="form-control"
-						ng-model="searchCtrl.address" placeholder="Address"
-						data-toggle="tooltip" title="Address" empty-to-null>
-				</div>
 
-				<div class="form-group row">
-					<div class="col-md-6" style="padding-right: 5px">
-						<input type="number" class="form-control" placeholder="Min Area"
-							ng-model="searchCtrl.minArea" min="0"
-							max="{{searchCtrl.maxArea}}" data-toggle="tooltip"
-							title="Min Area">
-					</div>
-					<div class="col-md-6" style="padding-left: 5px">
-						<input type="number" class="form-control" placeholder="Max Area"
-							ng-model="searchCtrl.maxArea" min="{{searchCtrl.minArea}}"
-							data-toggle="tooltip" title="Max Area">
-					</div>
-				</div>
-
-
-				<div class="form-group row">
-					<div class="col-md-6" style="padding-right: 5px">
-						<input type="number" class="form-control" placeholder="Min Price"
-							ng-model="searchCtrl.minPrice" min="0"
-							max="{{searchCtrl.maxPrice}}" data-toggle="tooltip"
-							title="Min Price">
-					</div>
-					<div class="col-md-6" style="padding-left: 5px">
-						<input type="number" class="form-control" placeholder="Max Price"
-							ng-model="searchCtrl.maxPrice" min="{{searchCtrl.minPrice}}"
-							data-toggle="tooltip" title="Max Price">
-					</div>
-				</div>
-
-				<div class="form-group row">
-					<div class="col-md-4" style="padding-right: 5px">Heating:</div>
-					<div class="col-md-8" style="padding-left: 5px">
-						<select class="form-control" data-toggle="tooltip"
-							title="Heating System" ng-model="searchCtrl.heating"
-							empty-to-null>
-							<option value="" selected>All</option>
-							<option value="Central">Central</option>
-							<option value="Electric">Electric</option>
-							<option value="Firewood">Firewood</option>
-							<option value="Gas">Gas</option>
-						</select>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<input type="text" class="form-control"
-						ng-model="searchCtrl.equipment" placeholder="Equipment"
-						data-toggle="tooltip" title="Technical Equipment" empty-to-null>
-				</div>
-
-				<div class="form-group row">
-					<div class="col-md-4" style="padding-right: 5px">Publication:</div>
-					<div class="col-md-8" style="padding-left: 5px">
-						<input type="date" max="{{searchCtrl.expiry}}"
-							class="form-control" ng-model="searchCtrl.publication">
-					</div>
-				</div>
-
-				<div class="form-group row">
-					<div class="col-md-4" style="padding-right: 5px">Expiry:</div>
-					<div class="col-md-8" style="padding-left: 5px">
-						<input type="date" min="{{searchCtrl.publication}}"
-							class="form-control" ng-model="searchCtrl.expiry">
-					</div>
-				</div>
-
-				<div class="form-group row">
-					<div class="col-md-4" style="padding-right: 5px"></div>
-					<div class="col-md-8" style="padding-left: 5px">
-						<button ng-click="searchCtrl.getAdvert(0);" type="submit"
-							class="btn btn-primary col-md-12">Filter</button>
-					</div>
-				</div>
-			</form>
-		</div>
-
-		<div class="col-md-8">
-			<div class="row">
-				<div class=" col-sm-3 col-lg-3 col-md-3"
-					ng-repeat="advert in searchCtrl.adverts">
-					<div class="thumbnail">
-						<img ng-src="{{advert.estate.images[0].url}}" alt="Missing Image">
-						<div class="caption">
-							<h4 class="pull-right">${{advert.estate.price}}</h4>
-							<h4>
-								<a>{{advert.estate.name}}</a>
-							</h4>
-							<p>Area: {{advert.estate.area}}</p>
-							<p>City: {{advert.estate.city}}</p>
-							<p>
-								Advertiser: <a href="mailto:{{advert.advertiser.email}}">{{advert.advertiser.username}}</a>
-							</p>
-						</div>
-
-					</div>
-				</div>
+<div class="row">
+	<div class=" col-sm-3 col-lg-3 col-md-3"
+		ng-repeat="advert in indexCtrl.adverts">
+		<div class="thumbnail">
+			<img ng-src="{{advert.estate.images[0].url}}" alt="Missing Image">
+			<div class="caption">
+				<h4 class="pull-right">${{advert.estate.price}}</h4>
+				<h4>
+					<a>{{advert.estate.name}}</a>
+				</h4>
+				<p>Area: {{advert.estate.area}}</p>
+				<p>City: {{advert.estate.city}}</p>
+				<p>
+					Advertiser: <a href="mailto:{{advert.advertiser.email}}">{{advert.advertiser.username}}</a>
+				</p>
 			</div>
 
-			<div class="text-center row">
-				<div class="col-md-12" style="">
-					<ul class="pagination">
-						<li ng-repeat="num in searchCtrl.pages"
-							ng-class="{'active': num == searchCtrl.pages[0]}"
-							ng-click="searchCtrl.getAdvert(num-1); indexCtrl.selectPage($event)"><a>{{num}}</a></li>
-					</ul>
-				</div>
-			</div>
 		</div>
+	</div>
+</div>
 
-		<div ng-if="indexCtrl.authority" class="col-md-1">
-			Last Seen:
-			<table>
-				<tr class="btn-group-lg" ng-repeat="e in searchCtrl.lastSeen"
-					ng-switch on="$index % 2">
-					<td ng-if="searchCtrl.lastSeen[$index]" ng-switch-when="0"
-						width="30">
-						<button type="button" class="btn btn-block btn-sm"
-							data-toggle="tooltip" style="padding: 0"
-							title="{{searchCtrl.lastSeen[$index].advert.estate.name}} viewed on: {{searchCtrl.lastSeen[$index].time}}">
-							<span ng-if="!searchCtrl.lastSeen[$index].advert.estate.images"
-								style="font-size: 25px" class="glyphicon glyphicon-home"></span>
-							<img ng-if="searchCtrl.lastSeen[$index].advert.estate.images"
-								ng-src="{{searchCtrl.lastSeen[$index].advert.estate.images[0].url}}"
-								width="30" height="30" />
-						</button>
-					</td>
-					<td ng-if="searchCtrl.lastSeen[$index+1]" ng-switch-when="0"
-						width="30" height="30">
-						<button type="button" class="btn btn-block btn-sm"
-							data-toggle="tooltip" style="padding: 0"
-							title="{{searchCtrl.lastSeen[$index+1].advert.estate.name}} viewed on: {{searchCtrl.lastSeen[$index+1].time}}">
-							<span ng-if="!searchCtrl.lastSeen[$index+1].advert.estate.images"
-								style="font-size: 25px" class="glyphicon glyphicon-home"></span>
-							<img ng-if="searchCtrl.lastSeen[$index+1].advert.estate.images"
-								ng-src="{{searchCtrl.lastSeen[$index+1].advert.estate.images[0].url}}"
-								width="30" height="30" />
-						</button>
-					</td>
-
-				</tr>
-			</table>
-		</div>
+<div class="text-center row">
+	<div class="col-md-12" style="">
+		<ul class="pagination">
+			<li ng-repeat="num in searchCtrl.pages"
+				ng-class="{'active': num == searchCtrl.pages[0]}"
+				ng-click="searchCtrl.getAdvert(num-1); indexCtrl.selectPage($event)"><a>{{num}}</a></li>
+		</ul>
 	</div>
 </div>

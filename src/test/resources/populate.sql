@@ -4,9 +4,9 @@ INSERT INTO `user_authority` VALUES (2,4,2),(3,3,3),(4,2,4),(5,3,5),(6,4,6),(7,4
 
 INSERT INTO `company` VALUES (1,'adresa1','name1','','OLD',2),(2,'adresa2','name2','\0','NEW',6);
 
-INSERT INTO `estate` VALUES (1,'uzicka 67',150,'beograd','zemun','podno grejanje','kuca na sprat',30000,'kosilica',2),(2,'sumadijska',150,'uzice','belo groblje','p','p',3000,'p',6),(3,'adresa3',150,'sabac','centar','p','p',25000,'k',6);
+INSERT INTO `estate` VALUES (1,'uzicka 67',150,'beograd','zemun','podno grejanje','kuca na sprat',30000,'kosilica',2),(2,'sumadijska',150,'uzice','belo groblje','Gas','zunic estate',3000,'',6),(3,'adresa3',150,'sabac','centar','Firewood','stajcic estate',25000,'',6);
 
-INSERT INTO `image` VALUES (1,'slika1-1',1),(2,'slika2-1',1),(3,'slika3-1',1),(4,'slika1-3',3);
+INSERT INTO `image` VALUES (1,'https://cdn.houseplans.com/product/o2d2ui14afb1sov3cnslpummre/w560x373.jpg?v=9',1),(2,'https://s-media-cache-ak0.pinimg.com/736x/1e/cb/e8/1ecbe8d4a5b9b615d8a2fdf9197c4817.jpg',3), (3,'http://www.achristmasstoryhouse.com/images/homepagehouse.jpg',2);
 
 INSERT INTO `advertisement` VALUES (1,'2017-02-01 12:00:00','2016-12-01 00:00:00','OPEN',2,1,NULL),(2,'2016-09-01 12:00:00','2015-12-01 00:00:00','REPORTED',6,2,NULL),(3,'2016-10-10 12:00:00','2016-03-03 00:00:00','OPEN',6,3,NULL), (4,'2017-12-12 12:00:00','2016-03-03 00:00:00','OPEN',7,1,NULL);
 
@@ -18,8 +18,6 @@ INSERT INTO `favourites` VALUES (1,3,1),(2,3,2);
 
 INSERT INTO `notification` VALUES (1,'2016-12-22 20:47:44','message','\0','NEW','zdravo',1,5,2),(2,'2016-12-22 20:51:04','message','\0','NEW','odgovor',1,2,5);
 
-INSERT INTO `report` VALUES (1,'Picture is rude','','NEW',2,5);
-
-INSERT INTO `report` VALUES (2, 'House is mine', 0, 'OLD', 3, 3);
+INSERT INTO `report` VALUES (1,'Picture is rude','','NEW',2,5),(2, 'House is mine', 0, 'OLD', 3, 3);
 
 INSERT INTO `view` VALUES (1,'2016-12-22 12:00:00',1,3);
