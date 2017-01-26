@@ -3,7 +3,7 @@
         .controller('registrationController', registrationController);
 
     //register page controller
-    function registrationController($http, $scope) {
+    function registrationController($http, $scope, $window) {
 
         var vm = this;
         vm.register = register;
@@ -23,7 +23,9 @@
             
             $http.post('/api/users/register/'+vm.type, userData).then(function (response) {
                 if (response) {
-                    $scope.indexCtrl.login(userData);
+                    //$scope.indexCtrl.login(userData);
+                		alert(response.data.response);
+                		$window.location="#/login";
                 }
             },function(response){
             	alert(response.data.response);
