@@ -7,9 +7,17 @@
 			$routeParams) {
 
 		var vm = this;
+		vm.rate = 0;
+		vm.max = 5;
+		vm.voted = true;
 		vm.id = $routeParams.id;
 		vm.fetchData = fetchData;
 		vm.countRate = countRate;
+		vm.rateMe = rateMe;
+		vm.ratingStates = [ {
+			stateOn : 'glyphicon-star',
+			stateOff : 'glyphicon-star-empty'
+		} ];
 		vm.fetchData();
 
 		/**
@@ -22,6 +30,7 @@
 
 						vm.advertData = response.data;
 						console.log(vm.advertData);
+						checkIfVoted();
 					}, function(response) {
 						console.log("Error in fetching");
 					})
@@ -43,6 +52,46 @@
 
 				return count;
 			}
+		}
+
+		/**
+		 * check if user is already voted
+		 */
+		function checkIfVoted() {
+			if ($scope.indexCtrl.loggedIn == true && $scope.indexCtrl.authority =='CUSTOMER') {
+				var ratesArray = vm.advertData.rates;
+
+				for (var i = 0; i < ratesArray.length; i++) {
+					if (ratesArray[i].user.id == $cookies.getObject('userdata').id) {
+						console.log("Already voted");
+						vm.voted = true;
+						return;
+					}
+
+				}
+				vm.voted = false;
+			}
+			else
+				vm.voted = true;
+		}
+		
+		/**
+		 * function for rating
+		 */
+		function rateMe(){
+			var data = {"rate": vm.rate};
+			console.log(data);
+	                
+			 $http.post('/api/advertiser/rate/'+vm.id, data,{headers : {'X-Auth-Token' : $cookies.get("token")}}).then(function (response) {
+	                if (response) {
+	                	fetchData(); // fetch data
+	                	checkIfVoted(); // hide vote div
+	                	toastr.success(response.data.response, "Success");
+	                }
+	            },function(response){
+	            	toastr.error(response.data.response, 'Error');
+	            });
+	        
 		}
 
 	}

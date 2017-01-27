@@ -302,7 +302,7 @@ public class AdvertiserController {
 
 	// za kupca
 	@RequestMapping(value = "/rate/{advertiserId}", method = RequestMethod.POST)
-	public ResponseEntity<String> setRate(Principal principal, @RequestBody RateDTO rateDTO,
+	public ResponseEntity<ResponseDTO> setRate(Principal principal, @RequestBody RateDTO rateDTO,
 			@PathVariable Long advertiserId) {
 		Advertiser a = (Advertiser) userService.findOne(advertiserId); // oglasavac
 		Customer c = (Customer) userService.findByUsername(principal.getName());// kupac
@@ -314,7 +314,7 @@ public class AdvertiserController {
 		// da li je vec rejtovao
 		RateAdvertiser jel = rateService.alreadyRated(a, c);
 		if (jel != null)
-			return new ResponseEntity<>("vec si rejtovao", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ResponseDTO("vec si rejtovao"), HttpStatus.NOT_FOUND);
 
 		// kreiranje rate-advertiser objekta
 		RateAdvertiser ra = new RateAdvertiser();
@@ -325,7 +325,7 @@ public class AdvertiserController {
 		// sve to u bazu
 		rateService.save(ra);
 
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		return new ResponseEntity<>(new ResponseDTO("Successfully rated"),HttpStatus.CREATED);
 	}
 
 	/**
