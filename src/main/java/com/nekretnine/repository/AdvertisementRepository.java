@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertisement.State;
+import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Customer;
 
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long> {
@@ -74,4 +75,6 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 			@Param("state") State state, @Param("name") String name, @Param("minPrice") Double minPrice, @Param("maxPrice") Double maxPrice,
 			@Param("minArea") Double minArea, @Param("maxArea") Double maxArea, @Param("address") String address, @Param("city") String city, @Param("cityPart") String cityPart,
 			@Param("technicalEquipment") String technicalEquipment, @Param("heatingSystem") String heatingSystem);
+	
+	List<Advertisement> findAllByAdvertiser(Advertiser advertiser);
 }

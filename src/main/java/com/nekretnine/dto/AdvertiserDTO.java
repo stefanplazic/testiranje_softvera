@@ -1,12 +1,13 @@
 package com.nekretnine.dto;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.RateAdvertiser;
 
-public class AdvertiserDTO{
-	
+public class AdvertiserDTO {
+
 	private Long id;
 	private String firstName;
 	private String lastName;
@@ -14,7 +15,8 @@ public class AdvertiserDTO{
 	private String username;
 	private CompanyDTO company;
 	private double avRate;
-	
+	private Set<RateDTO> rates = new HashSet<>();
+
 	public AdvertiserDTO() {
 		super();
 	}
@@ -26,21 +28,30 @@ public class AdvertiserDTO{
 		this.email = advertiser.getEmail();
 		this.username = advertiser.getUsername();
 		this.avRate = AdvertiserDTO.calculateAverage(advertiser.getRates());
+		populateRates(advertiser.getRates());
+
 	}
-	
+
+	public void populateRates(Set<RateAdvertiser> ratess) {
+		for (RateAdvertiser rate : ratess)
+			rates.add(new RateDTO(rate));
+
+	}
+
 	/**
 	 * 
-	 * @param rates all customer rates for given advertiser
+	 * @param rates
+	 *            all customer rates for given advertiser
 	 * @return Avrage of all rates
 	 */
-	public static double calculateAverage(Set<RateAdvertiser> rates){
-		if(rates.isEmpty())
+	public static double calculateAverage(Set<RateAdvertiser> rates) {
+		if (rates.isEmpty())
 			return 0;
 		double res = 0;
-		for(RateAdvertiser rate : rates){
+		for (RateAdvertiser rate : rates) {
 			res += rate.getAdvertRate();
 		}
-		return res/ rates.size();
+		return res / rates.size();
 	}
 
 	public String getFirstName() {
@@ -98,7 +109,13 @@ public class AdvertiserDTO{
 	public void setCompany(CompanyDTO company) {
 		this.company = company;
 	}
-	
-	
-	
+
+	public Set<RateDTO> getRates() {
+		return rates;
+	}
+
+	public void setRates(Set<RateDTO> rates) {
+		this.rates = rates;
+	}
+
 }

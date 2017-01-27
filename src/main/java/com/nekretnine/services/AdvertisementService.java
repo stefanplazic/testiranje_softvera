@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertisement.State;
+import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Customer;
 import com.nekretnine.repository.AdvertisementRepository;
 
@@ -76,6 +77,10 @@ public class AdvertisementService {
 
 	public int findBySoldto(Customer customer){
 		return repository.findBySoldto(customer.getId());
+	}
+	
+	public List<Advertisement >findAllByAdvertiser(Advertiser advertiser){
+		return repository.findAllByAdvertiser(advertiser);
 	}
 	
 }

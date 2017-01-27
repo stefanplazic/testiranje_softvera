@@ -68,7 +68,23 @@ public class AdvertiserController {
 	@Autowired
 	private CustomerService customerService;
 
-	
+	/**
+	 * 
+	 * @param id
+	 *            of advertiser who's profile we want to get data about
+	 * @return returns AdvertiserDTO
+	 * @author stefan plazic
+	 */
+	@RequestMapping(value = "/profile/{id}", method = RequestMethod.GET)
+	public ResponseEntity<AdvertiserDTO> getAdvertiserProfile(@PathVariable Long id) {
+		Advertiser advertiser = service.findOne(id);
+		if (advertiser == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		AdvertiserDTO advertiserDTO = new AdvertiserDTO(advertiser);
+
+		return new ResponseEntity<>(advertiserDTO, HttpStatus.OK);
+	}
+
 	/**
 	 * 
 	 * @param principal
@@ -385,9 +401,10 @@ public class AdvertiserController {
 			com.setOwner(new Advertiser(owner));
 			com = companyService.saveCompany(com);
 			service.setAdvertisersCompany(com, owner.getId());
-			return new ResponseEntity<>(new ResponseDTO("The request for company has successfully added."), HttpStatus.OK);
+			return new ResponseEntity<>(new ResponseDTO("The request for company has successfully added."),
+					HttpStatus.OK);
 		}
-		
+
 		return new ResponseEntity<>(new ResponseDTO("The company with entered name and address already exists."),
 				HttpStatus.CONFLICT);
 
