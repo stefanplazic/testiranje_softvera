@@ -87,4 +87,22 @@
 	</center>
 </div>
 </div>
+<div class="row">
+	<div class=" col-sm-3 col-lg-3 col-md-3"
+		ng-repeat="advert in profileCtrl.adverts">
+		<div class="thumbnail">
+			<img ng-src="{{advert.estate.images[0].url}}" alt="Missing Image">
+			<div class="caption">
+				<h4 class="pull-right">${{advert.estate.price}}</h4>
+				<h4>
+					<a>{{advert.estate.name}}</a>
+				</h4>
+				<p>Area: {{advert.estate.area}}</p>
+				<p>City: {{advert.estate.city}}</p>
+
+			</div>
+
+		</div>
+	</div>
+</div>
 

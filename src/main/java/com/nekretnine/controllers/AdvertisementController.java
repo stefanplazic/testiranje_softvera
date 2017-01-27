@@ -28,6 +28,7 @@ import com.nekretnine.models.Estate;
 import com.nekretnine.models.Report;
 import com.nekretnine.models.User;
 import com.nekretnine.services.AdvertisementService;
+import com.nekretnine.services.AdvertiserService;
 import com.nekretnine.services.EstateService;
 import com.nekretnine.services.ReportService;
 import com.nekretnine.services.UserService;
@@ -47,6 +48,9 @@ public class AdvertisementController {
 	
 	@Autowired
 	private EstateService estateService;
+	
+	@Autowired
+	private AdvertiserService advertiserService;
 	
 	/**
 	 * <p>
@@ -248,4 +252,22 @@ public class AdvertisementController {
 		return new ResponseEntity<>(""+res, HttpStatus.OK);
 	}
 
+	/**
+	 * Get all advertisment for give advert id
+	 * @param id
+	 * @return
+	 * @author stefan
+	 */
+	@RequestMapping(value="/advert/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<AdvertisementDTO>> getAdvertismentByAdv(@PathVariable long id) {
+		
+		Advertiser ad = advertiserService.findOne(id);
+		if(ad == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
+		List<AdvertisementDTO> dtos = new ArrayList<AdvertisementDTO>();
+		for(Advertisement a: ad.getAdvertisements())
+			dtos.add(new AdvertisementDTO(a));
+		return new ResponseEntity<>(dtos ,HttpStatus.OK);
+	}
 }
