@@ -1,7 +1,6 @@
 package com.nekretnine.repository;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +14,12 @@ import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertisement.State;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Customer;
+import com.nekretnine.models.Estate;
 
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long> {
 
+	public Advertisement findOneByEstate(Estate estate);
+	
 	@Transactional
 	@Modifying(clearAutomatically = true)
 	@Query("update Advertisement a set a.state = ?1 where a.id = ?2")

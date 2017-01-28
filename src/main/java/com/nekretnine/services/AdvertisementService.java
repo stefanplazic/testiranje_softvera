@@ -12,6 +12,7 @@ import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertisement.State;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Customer;
+import com.nekretnine.models.Estate;
 import com.nekretnine.repository.AdvertisementRepository;
 
 @Service
@@ -26,6 +27,10 @@ public class AdvertisementService {
 	
 	public Advertisement findOne(Long id){
 		return repository.findOne(id);
+	}
+	
+	public Advertisement findOneByEstate(Estate e){
+		return repository.findOneByEstate(e);
 	}
 	
 	public void setState(State state,Long id){
