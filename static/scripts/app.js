@@ -1,5 +1,5 @@
 angular.module('myApp',
-		[ 'ngResource', 'ngRoute', 'ngCookies', 'ui.bootstrap', 'lodash'])
+		[ 'ngResource', 'ngRoute', 'ngCookies', 'ui.bootstrap', 'lodash','bootstrapLightbox'])
 		.config([ '$routeProvider', function($routeProvider) {
 			$routeProvider
 			.when('/', {
@@ -22,10 +22,6 @@ angular.module('myApp',
 				templateUrl : '/views/company.html',
 				controller : 'companyController',
 				controllerAs : 'companyCtrl'
-			}).when('/boughtEstates', {
-				templateUrl: '/views/boughtEst.html',
-				controller: 'BoughtEstateController',
-				controllerAs: 'EstCtrl'
 			}).when('/registerAdminOrModerator', {
 				templateUrl: '/views/registerAdminOrModerator.html',
 				controller: 'registerAdminOrModeratorController',

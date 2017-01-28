@@ -48,14 +48,17 @@ public class ViewController {
 	@RequestMapping(value = "/{advert}", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> saveView(Principal principal, @PathVariable Long advert) {
 		
-		Customer customer = (Customer) userService.findByUsername(principal.getName());
-		Advertisement advertisement = advertisementService.findOne(advert);
-		if(advertisement == null) {
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		if(principal != null) {
+			User user = (User) userService.findByUsername(principal.getName());
+			Advertisement advertisement = advertisementService.findOne(advert);
+			if(advertisement == null) {
+				return new ResponseEntity<>(HttpStatus.CONFLICT);
+			}
+			Date date = new Date();
+			viewService.save(new View(user, advertisement, date));
+			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
-		Date date = new Date();
-		viewService.save(new View(customer, advertisement, date));
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		
 	}
 	/**

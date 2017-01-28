@@ -35,7 +35,7 @@ public class View {
 		super();
 	}
 
-	public View(Customer viewer, Advertisement advert, Date time) {
+	public View(User viewer, Advertisement advert, Date time) {
 		super();
 		this.viewer = viewer;
 		this.advert = advert;

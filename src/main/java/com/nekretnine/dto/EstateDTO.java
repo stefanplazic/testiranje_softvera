@@ -8,8 +8,8 @@ import com.nekretnine.models.Image;
 import com.nekretnine.models.RateEstate;
 
 public class EstateDTO {
-	
-	private	long id; 
+
+	private long id;
 	private String name;
 	private double price;
 	private double area;
@@ -21,47 +21,51 @@ public class EstateDTO {
 	private AdvertiserDTO owner;
 	private Set<ImageDTO> images;
 	private double rate;
-	
+	private Set<RateDTO> rates = new HashSet<>();
+
 	public EstateDTO() {
 		super();
 	}
 
-	public EstateDTO(long id,String name,double price,double area,String address,
-			String city,String cityPart,String technicalEquipment,String heatingSystem){
-		this.id=id;
-		this.name=name;
-		this.price=price;
-		this.area=area;
-		this.address=address;
-		this.city=city;
-		this.cityPart=cityPart;
-		this.technicalEquipment=technicalEquipment;
-		this.heatingSystem=heatingSystem;
-	//	this.images=images;
+	public EstateDTO(long id, String name, double price, double area, String address, String city, String cityPart,
+			String technicalEquipment, String heatingSystem) {
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.area = area;
+		this.address = address;
+		this.city = city;
+		this.cityPart = cityPart;
+		this.technicalEquipment = technicalEquipment;
+		this.heatingSystem = heatingSystem;
+		// this.images=images;
 	}
-	
-	public EstateDTO(Estate estate){
-		this(estate.getId(),estate.getName(),estate.getPrice(),
-				estate.getArea(),estate.getAddress(),estate.getCity(),estate.getCityPart(),
-				estate.getTechnicalEquipment(),estate.getHeatingSystem());
 
-		this.images=new HashSet<>();
-		for(Image i : estate.getImages()){
+	public EstateDTO(Estate estate) {
+		this(estate.getId(), estate.getName(), estate.getPrice(), estate.getArea(), estate.getAddress(),
+				estate.getCity(), estate.getCityPart(), estate.getTechnicalEquipment(), estate.getHeatingSystem());
+
+		this.images = new HashSet<>();
+		for (Image i : estate.getImages()) {
 			this.images.add(new ImageDTO(i));
 		}
 		this.owner = new AdvertiserDTO(estate.getOwner());
-		
-		if(estate.getRates().size()!=0){
-			double sum=0;
-			for(RateEstate er : estate.getRates()){
-				sum=sum+er.getAdvertisementRate();
+
+		if (estate.getRates().size() != 0) {
+			double sum = 0;
+			for (RateEstate er : estate.getRates()) {
+				sum = sum + er.getAdvertisementRate();
+				RateDTO myRate = new RateDTO();
+				myRate.setRate(er.getAdvertisementRate());
+				myRate.setUser(new UserDTO(er.getCustomer()));
+				this.rates.add(myRate);
 			}
-			this.rate=sum/estate.getRates().size();
-		}else{
-			this.rate=0;
+			this.rate = sum / estate.getRates().size();
+		} else {
+			this.rate = 0;
 		}
 	}
-	
+
 	public double getRate() {
 		return rate;
 	}
@@ -157,7 +161,13 @@ public class EstateDTO {
 	public void setHeatingSystem(String heatingSystem) {
 		this.heatingSystem = heatingSystem;
 	}
-	
-		
+
+	public Set<RateDTO> getRates() {
+		return rates;
+	}
+
+	public void setRates(Set<RateDTO> rates) {
+		this.rates = rates;
+	}
 
 }

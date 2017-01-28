@@ -10,13 +10,15 @@
 		$scope.indexCtrl.getAdvert(0);
 		
 		function viewAdvert(id) {
-			$http.post("/api/view/"+id, {}, {headers : {'X-Auth-Token' : $cookies.get("token")}}).then(function(response) {
-				
-			}, function(error) {
-				// log error response and maybe send it to
-				// error monitor app
-				console.error("Error ocurred: " + error.status);
-			});
+			if ($scope.indexCtrl.loggedIn == true) {
+				$http.post("/api/view/"+id, {}, {headers : {'X-Auth-Token' : $cookies.get("token")}}).then(function(response) {
+					
+				}, function(error) {
+					// log error response and maybe send it to
+					// error monitor app
+					console.error("Error ocurred: " + error.status);
+				});
+			}
 		}
 	}
 
