@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.nekretnine.models.Estate;
 import com.nekretnine.models.Image;
+import com.nekretnine.models.RateEstate;
 
 public class EstateDTO {
 	
@@ -19,6 +20,7 @@ public class EstateDTO {
 	private String heatingSystem;
 	private AdvertiserDTO owner;
 	private Set<ImageDTO> images;
+	private double rate;
 	
 	public EstateDTO() {
 		super();
@@ -48,9 +50,26 @@ public class EstateDTO {
 			this.images.add(new ImageDTO(i));
 		}
 		this.owner = new AdvertiserDTO(estate.getOwner());
-
+		
+		if(estate.getRates().size()!=0){
+			double sum=0;
+			for(RateEstate er : estate.getRates()){
+				sum=sum+er.getAdvertisementRate();
+			}
+			this.rate=sum/estate.getRates().size();
+		}else{
+			this.rate=0;
+		}
 	}
 	
+	public double getRate() {
+		return rate;
+	}
+
+	public void setRate(double rate) {
+		this.rate = rate;
+	}
+
 	public Set<ImageDTO> getImages() {
 		return images;
 	}

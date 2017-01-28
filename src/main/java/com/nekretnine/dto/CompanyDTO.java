@@ -8,23 +8,33 @@ public class CompanyDTO {
 	private String name;
 	private String address;
 	private AdvertiserDTO owner;
-	
+	private boolean onHold;
+
 	public CompanyDTO() {
 		super();
 	}
 
-	public CompanyDTO(long id, String name, String address) {
+	public CompanyDTO(long id, String name, String address, boolean onHold) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.address = address;
+		this.onHold = onHold;
 	}
 
 	public CompanyDTO(Company comp){
-		this(comp.getId(), comp.getName(), comp.getAddress());
+		this(comp.getId(), comp.getName(), comp.getAddress(), comp.isonHold());
 		this.owner = new AdvertiserDTO(comp.getOwner());
 	}
 
+	public boolean isOnHold() {
+		return onHold;
+	}
+
+	public void setOnHold(boolean onHold) {
+		this.onHold = onHold;
+	}
+	
 	public long getId() {
 		return id;
 	}

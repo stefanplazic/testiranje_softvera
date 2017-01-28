@@ -22,12 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nekretnine.dto.AdvertisementDTO;
 import com.nekretnine.dto.AdvertisementSearchDTO;
 import com.nekretnine.dto.EstateSearchDTO;
+import com.nekretnine.dto.ResponseDTO;
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Estate;
 import com.nekretnine.models.Report;
 import com.nekretnine.models.User;
 import com.nekretnine.services.AdvertisementService;
+import com.nekretnine.services.AdvertiserService;
 import com.nekretnine.services.EstateService;
 import com.nekretnine.services.ReportService;
 import com.nekretnine.services.UserService;
@@ -48,6 +50,9 @@ public class AdvertisementController {
 	@Autowired
 	private EstateService estateService;
 	
+	@Autowired
+	private AdvertiserService advertiserService;
+	
 	/**
 	 * <p>
 	 * 	Add new advertisement
@@ -61,18 +66,18 @@ public class AdvertisementController {
 	 * @author sirko
 	 */
 	@RequestMapping(value="/add/{estateId}",method=RequestMethod.POST,consumes="application/json")
-	public ResponseEntity<String> addAdvertisement(Principal principal,
+	public ResponseEntity<ResponseDTO> addAdvertisement(Principal principal,
 			@RequestBody AdvertisementDTO advertisementDTO,@PathVariable Long estateId){
 		
 		Estate e=estateService.findOne(estateId);
 		
 		if(e==null) 
-			return new ResponseEntity<>("nematenekretnine",HttpStatus.NOT_FOUND);
+			return new ResponseEntity<ResponseDTO>(new ResponseDTO("nematenekretnine"),HttpStatus.NOT_FOUND);
 		
 		Advertiser u=(Advertiser)userService.findByUsername(principal.getName());
 		
 		if(e.getOwner().getId()!=u.getId()) 
-			return new ResponseEntity<>("nemoze",HttpStatus.CONFLICT);
+			return new ResponseEntity<ResponseDTO>(new ResponseDTO("nemoze"),HttpStatus.CONFLICT);
 		
 		Advertisement a=new Advertisement();
 		a.setExpiryDate(advertisementDTO.getExpiryDate());
@@ -83,7 +88,7 @@ public class AdvertisementController {
 
 		advertisementService.save(a);
 
-		return new ResponseEntity<>("aloebebebebe", HttpStatus.CREATED);
+		return new ResponseEntity<ResponseDTO>(new ResponseDTO("aloebebebebe"), HttpStatus.CREATED);
 	}
 
 	/**
@@ -248,4 +253,34 @@ public class AdvertisementController {
 		return new ResponseEntity<>(""+res, HttpStatus.OK);
 	}
 
+
+	/**
+	 * Get all advertisment for give advert id
+	 * @param id
+	 * @return
+	 * @author stefan
+	 */
+	@RequestMapping(value="/advert/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<AdvertisementDTO>> getAdvertismentByAdv(@PathVariable long id) {
+		
+		Advertiser ad = advertiserService.findOne(id);
+		if(ad == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
+		List<AdvertisementDTO> dtos = new ArrayList<AdvertisementDTO>();
+		for(Advertisement a: ad.getAdvertisements())
+			dtos.add(new AdvertisementDTO(a));
+		return new ResponseEntity<>(dtos ,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/check/{estateId}",method=RequestMethod.GET)
+	public ResponseEntity<ResponseDTO> checkAdForEstate(@PathVariable Long estateId){
+		Estate e = estateService.findOne(estateId);
+		if(e==null) return new ResponseEntity<ResponseDTO>(new ResponseDTO("nekretnina ne postoji"),HttpStatus.NOT_FOUND);
+		Advertisement a= advertisementService.findOneByEstate(e);
+		if(a==null) return new ResponseEntity<ResponseDTO>(new ResponseDTO("false"),HttpStatus.OK);
+		System.out.println("alo");
+		return new ResponseEntity<ResponseDTO>(new ResponseDTO("true"),HttpStatus.OK);
+
+	}
 }

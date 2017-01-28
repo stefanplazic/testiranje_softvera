@@ -12,7 +12,7 @@
         //method for user registration
         function register () {
         	if(vm.pass != vm.repeatpass){
-        		alert("Passwords must match!");
+        		toastr.error("Passwords must match!", 'Error');
         		return;
         	}
             var userData = {
@@ -24,11 +24,11 @@
             $http.post('/api/users/register/'+vm.type, userData).then(function (response) {
                 if (response) {
                     //$scope.indexCtrl.login(userData);
-                		alert(response.data.response);
-                		$window.location="#/login";
+                	toastr.success(response.data.response, "Success");
+                	$window.location="#/login";
                 }
             },function(response){
-            	alert(response.data.response);
+            	toastr.error(response.data.response, 'Error');
             });
         }
     }

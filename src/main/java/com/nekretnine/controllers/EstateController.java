@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.dto.RateDTO;
+import com.nekretnine.dto.ResponseDTO;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Customer;
 import com.nekretnine.models.Estate;
@@ -79,18 +80,18 @@ public class EstateController {
 	 * @author sirko
 	 */
 	@RequestMapping(value="/rate/{estateId}",method=RequestMethod.POST)
-	public ResponseEntity<String> setRate(Principal principal,@RequestBody RateDTO rateDTO,@PathVariable Long estateId){
+	public ResponseEntity<ResponseDTO> setRate(Principal principal,@RequestBody RateDTO rateDTO,@PathVariable Long estateId){
 			Estate e=estateService.findOne(estateId); //nekretnina
 			Customer c=(Customer) userService.findByUsername(principal.getName());//kupac
 			
 			//da li nekretnina postoji
 			if(e==null) 
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<ResponseDTO>(new ResponseDTO("nepostojinekretnina"),HttpStatus.NOT_FOUND);
 			
 			//da li je vec rejtovao
 			RateEstate jel =rateService.findOneByEstateAndCustomer(e, c);
 			if(jel!=null) 
-				return new ResponseEntity<>("vec si rejtovao",HttpStatus.CONFLICT);
+				return new ResponseEntity<ResponseDTO>(new ResponseDTO("vec si rejtovao"),HttpStatus.OK);
 			
 			//kreiranje rate-estate objekta
 			RateEstate re=new RateEstate();
@@ -101,7 +102,26 @@ public class EstateController {
 			//sve to u bazu
 			rateService.save(re);
 			
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return new ResponseEntity<ResponseDTO>(new ResponseDTO("brao"),HttpStatus.CREATED);
 		}
-
+	/**
+	 * <p>
+	 *	Get estate
+	 *	method-> get api/estate/{estate_id}
+	 * </p>
+	 * @param principal , user data
+	 * @param estateId	,Long estate id
+	 * @return EstateDTO
+	 * 
+	 * @author sirko
+	 */
+	@RequestMapping(value="/{estateId}",method=RequestMethod.GET)
+	public ResponseEntity<EstateDTO> getRate(Principal principal,@PathVariable Long estateId){
+		
+		if(principal==null) {return new ResponseEntity<EstateDTO>(new EstateDTO(),HttpStatus.BAD_REQUEST);}
+		Estate e=estateService.findOne(estateId); //nekretnina
+		
+		if(e==null) return new ResponseEntity<EstateDTO>(new EstateDTO(),HttpStatus.NOT_FOUND);
+		return new ResponseEntity<EstateDTO>(new EstateDTO(e),HttpStatus.OK);
+	}
 }

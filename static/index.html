@@ -2,6 +2,7 @@
 <html ng-app="myApp">
 
 <head>
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
@@ -38,8 +39,11 @@
 <link rel="stylesheet"
 	href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" />
 
+
+
 <link rel="stylesheet" href="/styles/style.css">
 <script src="/scripts/app.js"></script>
+<script src="/scripts/services/googleMapService.js"></script>
 <script src="/scripts/controllers/indexCtrl.js"></script>
 <script src="/scripts/controllers/loginCtrl.js"></script>
 <script src="/scripts/controllers/profileCtrl.js"></script>
@@ -51,10 +55,12 @@
 <script src="/scripts/controllers/registerAdminOrModeratorCtrl.js"></script>
 <script src="/scripts/controllers/advertisemenetReportsCtrl.js"></script>
 <script src="/scripts/controllers/estateCtrl.js"></script>
-<script src="/scripts/controllers/callToCompanyCtrl.js"></script>
+<script src="/scripts/controllers/advertiserProfileCtrl.js"></script>
+
 
 <script
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCy7-QAuubP_fP6XxTcifT9RWXeEeouEGQ"></script>
+
 
 </head>
 
@@ -84,10 +90,7 @@
 				<li
 					ng-show="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'"
 					data-toggle="tooltip" title="Company"><a href="/#/company">Company</a></li>
-				<li
-					ng-show="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'"
-					data-toggle="tooltip" title="Company Requests"><a
-					href="/#/CompanyCall"><span class="glyphicon glyphicon-alert"></span></a></li>
+
 
 			</ul>
 			<ul class="nav navbar-nav navbar-right">

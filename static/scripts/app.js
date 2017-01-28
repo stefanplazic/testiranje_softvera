@@ -40,9 +40,14 @@ angular.module('myApp',
 				controllerAs: 'estateCtrl'
 			}).when('/CompanyCall', {
 				templateUrl: '/views/callToCompany.html',
-				controller: 'callToCompanyController',
+				controller: 'companyController',
 				controllerAs: 'companyCtrl'
-			}).otherwise({
+			}).when('/advertProfile/:id', {
+				templateUrl: '/views/advertiserProfile.html',
+				controller: 'advertiseProfileController',
+				controllerAs: 'profileCtrl'
+			})
+			.otherwise({
 				redirectTo : '/'
 			});
 		} ]);

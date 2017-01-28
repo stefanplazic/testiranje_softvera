@@ -1,48 +1,47 @@
-<div ng-show="indexCtrl.loggedIn" class="container">
+<div class="col-md-12" ng-show="indexCtrl.loggedIn" class="container">
+
+	<uib-tabset> <uib-tab index="0" heading="Profile">
+	<br>
+
 	<div class="row">
-		<div class="col-md-5  toppad  pull-right col-md-offset-3 ">
-
-			<br>
-
-		</div>
 
 		<div class="panel panel-info">
 			<div class="panel-heading"></div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-md-3 col-lg-3 " align="center"></div>
+
+					<table class="table table-user-information">
+						<tbody>
+							<tr>
+								<td>First name:</td>
+								<td>{{profileCtrl.userData.firstName}}</td>
+							</tr>
+							<tr>
+								<td>Last name:</td>
+								<td>{{profileCtrl.userData.lastName}}</td>
+							</tr>
+							<tr>
+								<td>Username:</td>
+								<td>{{profileCtrl.userData.username}}</td>
+							</tr>
+							<tr>
+								<td>Role:</td>
+								<td>{{profileCtrl.userData.authority}}</td>
+							</tr>
+							<tr>
+								<td>Email</td>
+								<td><a href="mailto:{{profileCtrl.userData.email}}">{{profileCtrl.userData.email}}</a></td>
+							</tr>
 
 
-					<div class=" col-md-9 col-lg-9 ">
-						<table class="table table-user-information">
-							<tbody>
-								<tr>
-									<td>First name:</td>
-									<td>{{profileCtrl.userData.firstName}}</td>
-								</tr>
-								<tr>
-									<td>Last name:</td>
-									<td>{{profileCtrl.userData.lastName}}</td>
-								</tr>
-								<tr>
-									<td>Username:</td>
-									<td>{{profileCtrl.userData.username}}</td>
-								</tr>
-								<tr>
-									<td>Role:</td>
-									<td>{{profileCtrl.userData.authority}}</td>
-								</tr>
-								<tr>
-									<td>Email</td>
-									<td><a href="mailto:{{profileCtrl.userData.email}}">{{profileCtrl.userData.email}}</a></td>
-								</tr>
+
+						</tbody>
+					</table>
 
 
-							</tbody>
-						</table>
-					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	</uib-tab> </uib-tabset>
 </div>
