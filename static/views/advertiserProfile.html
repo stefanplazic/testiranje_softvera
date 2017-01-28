@@ -1,6 +1,7 @@
 <!-- ng-show="indexCtrl.loggedIn"  -->
 <div class="col-md-12">
 
+
 	<uib-tabset> <uib-tab index="0"
 		heading="Advertiser Profile"> <br>
 
@@ -85,7 +86,7 @@
 			<div class="caption">
 				<h4 class="pull-right">${{advert.estate.price}}</h4>
 				<h4>
-					<a>{{advert.estate.name}}</a>
+					<a href="#/viewAdvertisement/{{advert.estate.id}}">{{advert.estate.name}}</a>
 				</h4>
 				<p>Area: {{advert.estate.area}}</p>
 				<p>City: {{advert.estate.city}}</p>

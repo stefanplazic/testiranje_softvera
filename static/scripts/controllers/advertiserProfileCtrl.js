@@ -34,7 +34,7 @@
 						checkIfVoted();
 					}, function(response) {
 						console.log("Error in fetching");
-					})
+					});
 		}
 
 		/**

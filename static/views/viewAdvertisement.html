@@ -1,0 +1,88 @@
+<div class="col-md-12" class="container">
+
+	<uib-tabset> <uib-tab index="0"
+		heading="Advertisement  Info"> <br>
+
+	<div class="row">
+
+		<div class="panel panel-info">
+			<div class="panel-heading"></div>
+			<div class="panel-body">
+				<div class="row">
+
+					<table class="table table-user-information">
+						<tbody>
+							<tr>
+								<td>Estate name:</td>
+								<td>{{adversCtrl.data.estate.name}}</td>
+							</tr>
+							<tr>
+								<td>Price:</td>
+								<td>${{adversCtrl.data.estate.price}}</td>
+							</tr>
+
+							<tr ng-show="adversCtrl.isLogged == true">
+								<td>Advertiser username</td>
+								<td><a
+									href=#/advertProfile/{{adversCtrl.data.advertiser.id}}>{{adversCtrl.data.advertiser.username}}</a></td>
+							</tr>
+							<tr ng-show="adversCtrl.isLogged == true">
+								<td>Adress:</td>
+								<td>{{adversCtrl.data.estate.address}}</td>
+							</tr>
+							<tr>
+								<td>Area:</td>
+								<td>{{adversCtrl.data.estate.area}} m2</td>
+							</tr>
+
+							<tr>
+								<td>City:</td>
+								<td>{{adversCtrl.data.estate.city}}</td>
+							</tr>
+							<tr>
+								<td>City part:</td>
+								<td>{{adversCtrl.data.estate.cityPart}}</td>
+							</tr>
+							<tr>
+								<td>Heating system type:</td>
+								<td>{{adversCtrl.data.estate.heatingSystem}}</td>
+							</tr>
+
+							<tr>
+								<td>Publication date:</td>
+								<td>{{adversCtrl.formatDate(adversCtrl.data.publicationDate)}}</td>
+							</tr>
+							<tr>
+								<td>Expiry date:</td>
+								<td>{{adversCtrl.formatDate(adversCtrl.data.expiryDate)}}</td>
+							</tr>
+
+						</tbody>
+					</table>
+					<div id="map2" style="width: 100%; height: 400px;"></div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	</uib-tab> <!-- TAB NUMBER 2 --> <uib-tab index="1" heading="Gallery">
+	<br>
+
+	<div class="row">
+
+		<div class="panel panel-info">
+			<div class="panel-heading"></div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-3 col-md-4 col-xs-6 thumb"
+						ng-repeat="myImage in adversCtrl.data.estate.images">
+						<a class="thumbnail"> <img class="img-responsive"  
+							ng-src="{{myImage.url}}" alt="Missing image">
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</uib-tab> </uib-tabset>
+</div>

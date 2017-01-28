@@ -50,6 +50,10 @@ angular.module('myApp',
 				templateUrl: '/views/advertiserProfile.html',
 				controller: 'advertiseProfileController',
 				controllerAs: 'profileCtrl'
+			}).when('/viewAdvertisement/:id', {
+				templateUrl: '/views/viewAdvertisement.html',
+				controller: 'viewAdvertController',
+				controllerAs: 'adversCtrl'
 			})
 			.otherwise({
 				redirectTo : '/'
