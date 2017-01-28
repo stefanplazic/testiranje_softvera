@@ -1,0 +1,46 @@
+
+
+<div class="col-md-12">
+	<uib-tabset active="active"> <uib-tab index="0"
+		heading="Dashboard"> <br>
+	<!-- ukoliko nema zahteva-->
+	<div class="jumbotron"
+		ng-show="adminDashboardCtrl.requests.length == 0">
+		<h2>Inbox with requests is empty..</h2>
+	</div>
+	<!-- ukoliko ima zahteva ispisuje se tabela za zahtevima -->
+	<div>
+		<table class="table table-striped" id="aDashboard">
+			<tr>
+				<th>Owner</th>
+				<th>Company Name</th>
+				<th>Company Address</th>
+				<th>Accept</th>
+				<th>Reject</th>
+			</tr>
+			<tr ng-repeat="request in adminDashboardCtrl.requests">
+				<td><a>{{request.owner.firstName}}</a></td>
+				<td><a>{{request.name}}</a></td>
+				<td>{{request.address}}</td>
+
+				<td style="padding-right:0">
+					<button type="button" class="btn btn-default btn-sm"
+						ng-click="adminDashboardCtrl.acceptRequest(request)"
+						style="margin-left: 10px; color: green; data-toggle="tooltip"
+						title="Accept Company Request">
+						<span class="glyphicon glyphicon-ok"></span>
+					</button>
+				</td>
+				<td>
+					<button type="button" class="btn btn-default btn-sm"
+						ng-click="adminDashboardCtrl.rejectRequest(request)"
+						style="margin-left: 10px; color: red; toggle="tooltip"
+						title="Reject Company Request">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+	</uib-tab> </uib-tabset>
+</div>

@@ -34,6 +34,10 @@ angular.module('myApp',
 				templateUrl: '/views/advertisementReports.html',
 				controller: 'advertisementReportsController',
 				controllerAs: 'adReportsCtrl'
+			}).when('/adminsDashboard', {
+				templateUrl: '/views/adminsDashboard.html',
+				controller: 'adminDashboardController',
+				controllerAs: 'adminDashboardCtrl'
 			}).when('/estate/:id',{
 				templateUrl: '/views/estate.html',
 				controller: 'estateController',

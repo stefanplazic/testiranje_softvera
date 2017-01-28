@@ -52,9 +52,12 @@ public class AdminDashboardHandler extends TextWebSocketHandler{
 				companys = service.findAllByStatus("NEW");
 				
 				if (!companys.isEmpty()) {
+					companys.clear();
+					companys = service.findAllByOnHold(true);
 					dtos = createDtoList(companys);
 					session.sendMessage(new TextMessage(mapper
 							.writeValueAsString(dtos)));
+					Thread.sleep(3100);
 					service.setStatusToAllCompanys("OLD");
 					companys.clear();
 					dtos.clear();

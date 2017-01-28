@@ -54,4 +54,10 @@ public class CompanyService {
 		return repository.setOnHold(onHold, id);
 	}
 
+	public int setStatus(String status, Long companyId) {
+		return repository.setStatus(status, companyId);
+		
+	}
+
+
 }
