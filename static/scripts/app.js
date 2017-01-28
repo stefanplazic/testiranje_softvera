@@ -46,7 +46,12 @@ angular.module('myApp',
 				templateUrl: '/views/callToCompany.html',
 				controller: 'companyController',
 				controllerAs: 'companyCtrl'
-			}).otherwise({
+			}).when('/advertProfile/:id', {
+				templateUrl: '/views/advertiserProfile.html',
+				controller: 'advertiseProfileController',
+				controllerAs: 'profileCtrl'
+			})
+			.otherwise({
 				redirectTo : '/'
 			});
 		} ]);

@@ -1,7 +1,6 @@
 package com.nekretnine.repository;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,10 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertisement.State;
+import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Customer;
+import com.nekretnine.models.Estate;
 
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long> {
 
+	public Advertisement findOneByEstate(Estate estate);
+	
 	@Transactional
 	@Modifying(clearAutomatically = true)
 	@Query("update Advertisement a set a.state = ?1 where a.id = ?2")
@@ -74,4 +77,6 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 			@Param("state") State state, @Param("name") String name, @Param("minPrice") Double minPrice, @Param("maxPrice") Double maxPrice,
 			@Param("minArea") Double minArea, @Param("maxArea") Double maxArea, @Param("address") String address, @Param("city") String city, @Param("cityPart") String cityPart,
 			@Param("technicalEquipment") String technicalEquipment, @Param("heatingSystem") String heatingSystem);
+	
+	List<Advertisement> findAllByAdvertiser(Advertiser advertiser);
 }

@@ -68,11 +68,13 @@
 					// log error response and maybe send it to
 					// error monitor app
 					console.error("Error ocurred: " + response.status);
+					
 				});
 
 			}, function(response) {
-				alert(response.data.response);
+				//alert(response.data.response);
 				console.log("Wrong username and password combination");
+				toastr.error(response.data.response, 'Error');
 			});
 		}
 		;
