@@ -18,23 +18,10 @@
 		vm.selectPage = selectPage;
 		vm.getAdvert = getAdvert;	//method used to fetch one page of adverts
 		vm.countPages = countPages; //method used to count total pages of objects that fit the search parameter
+		vm.loadLastSeen = loadLastSeen //method for displaying last seen adverts by the user
 		vm.compare = compare;		//method used to sort pictures by url so that we display 
 									//same image for the same estate
 		checkIfLogged();
-		
-		if($scope.indexCtrl.authority) {
-			$http.get("/api/view", { headers: { 'X-Auth-Token': $cookies.get("token")}})
-				.then(function (response){
-					for(var i = 0; i < response.data.length; i ++) {
-						response.data[i].time = new Date(response.data[i].time);
-						response.data[i].advert.estate.images.sort(vm.compare);
-					}
-					
-					vm.lastSeen = response.data;  //list last seen adverts
-			 		console.log(vm.lastSeen);
-			 	}
-			);
-		}
 
 		// method for deleting user data - cookies
 		function logout() {
@@ -47,7 +34,6 @@
 			}
 			
 			$window.location = "#/";
-			
 			
 		};
 
@@ -63,6 +49,7 @@
 					$cookies.putObject('userdata', response.data);
 					vm.authority = response.data.authority;//set user role to scope
 					console.log(response.data);
+					vm.loadLastSeen();
 					$window.location = "#/";
 				}, function(error) {
 					// log error response and maybe send it to
@@ -96,9 +83,6 @@
 			$($event.currentTarget).addClass("active").siblings().removeClass("active");
 		}
 		
-		
-		
-		
 		//count number of adverts in database so that we know how many pages we have
 		function countPages() {
 			var params = {"estate" : {"name" : vm.name, "city" : vm.city, "cityPart" : vm.cityPart, "address" : vm.address,
@@ -119,7 +103,6 @@
 				console.error("Error ocurred: " + error.status);
 			});
 		}
-		
 		
 		//get adverts on specific page number and bind them to the scope
 		function getAdvert(pageNumber){
@@ -143,6 +126,23 @@
 						}
 						vm.adverts = response.data;//list of my estates
 						console.log(vm.adverts);
+				 	}
+				);
+			}
+		}
+		
+		//load last seen advertisements by the user
+		function loadLastSeen() {
+			
+			if($scope.indexCtrl.authority) {
+				$http.get("/api/view", { headers: { 'X-Auth-Token': $cookies.get("token")}})
+					.then(function (response){
+						for(var i = 0; i < response.data.length; i ++) {
+							response.data[i].time = new Date(response.data[i].time);
+							response.data[i].advert.estate.images.sort(vm.compare);
+						}
+						
+						vm.lastSeen = response.data;  //list last seen adverts
 				 	}
 				);
 			}
