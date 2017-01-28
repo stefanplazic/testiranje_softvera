@@ -1,6 +1,7 @@
 
 <center><h3>Estate</h3>
-		<button class='md-raised' ng-show="indexCtrl.userData.id == estateCtrl.estate.owner.id">Create advert for this estate</button>
+		<button class='md-raised' ng-click='estateCtrl.createAd()' 
+			ng-show="indexCtrl.userData.id == estateCtrl.estate.owner.id && estateCtrl.hasAd==false">Create advert for this estate</button>
 </center>
 
 <div class="container-fluid">
