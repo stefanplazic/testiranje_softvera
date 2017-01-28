@@ -21,7 +21,10 @@
 		vm.loadLastSeen = loadLastSeen //method for displaying last seen adverts by the user
 		vm.compare = compare;		//method used to sort pictures by url so that we display 
 									//same image for the same estate
+        vm.formatDate = formatDate; //function for showing date in a nice format
+        
 		checkIfLogged();
+		loadLastSeen();
 
 		// method for deleting user data - cookies
 		function logout() {
@@ -156,6 +159,12 @@
 			if (a.url > b.url)
 				return 1;
 			return 0;
+		}
+		
+        //function for showing date in nice format : day/month/year
+        function formatDate(myDate){
+			var date = new Date(myDate);
+			return date.getUTCDate()+"/"+ (parseInt(date.getUTCMonth())+1 )+"/"+date.getFullYear();
 		}
 		
 	}

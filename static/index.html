@@ -223,27 +223,29 @@
 						ng-switch on="$index % 2">
 						<td ng-if="indexCtrl.lastSeen[$index]" ng-switch-when="0"
 							width="30">
-							<button type="button" class="btn btn-block btn-sm"
+							<a type="button" class="btn btn-block btn-sm"
+								href="#/viewAdvertisement/{{indexCtrl.lastSeen[$index].advert.id}}"
 								data-toggle="tooltip" style="padding: 0"
-								title="{{indexCtrl.lastSeen[$index].advert.estate.name}} viewed on: {{indexCtrl.lastSeen[$index].time}}">
+								title="{{indexCtrl.lastSeen[$index].advert.estate.name}} viewed on: {{indexCtrl.formatDate(indexCtrl.lastSeen[$index].time)}}">
 								<span ng-if="!indexCtrl.lastSeen[$index].advert.estate.images"
 									style="font-size: 25px" class="glyphicon glyphicon-home"></span>
 								<img ng-if="indexCtrl.lastSeen[$index].advert.estate.images"
 									ng-src="{{indexCtrl.lastSeen[$index].advert.estate.images[0].url}}"
 									width="30" height="30" />
-							</button>
+							</a>
 						</td>
 						<td ng-if="indexCtrl.lastSeen[$index+1]" ng-switch-when="0"
 							width="30" height="30">
-							<button type="button" class="btn btn-block btn-sm"
+							<a type="button" class="btn btn-block btn-sm"
+								href="#/viewAdvertisement/{{indexCtrl.lastSeen[$index+1].advert.id}}"
 								data-toggle="tooltip" style="padding: 0"
-								title="{{indexCtrl.lastSeen[$index+1].advert.estate.name}} viewed on: {{indexCtrl.lastSeen[$index+1].time}}">
+								title="{{indexCtrl.lastSeen[$index+1].advert.estate.name}} viewed on: {{indexCtrl.formatDate(indexCtrl.lastSeen[$index+1].time)}}">
 								<span ng-if="!indexCtrl.lastSeen[$index+1].advert.estate.images"
 									style="font-size: 25px" class="glyphicon glyphicon-home"></span>
 								<img ng-if="indexCtrl.lastSeen[$index+1].advert.estate.images"
 									ng-src="{{indexCtrl.lastSeen[$index+1].advert.estate.images[0].url}}"
 									width="30" height="30" />
-							</button>
+							</a>
 						</td>
 
 					</tr>

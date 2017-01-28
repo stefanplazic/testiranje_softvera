@@ -4,7 +4,6 @@
 		<thead>
 			<tr>
 				<th>Advertisement</th>
-				<th>Estate</th>
 				<th>User that Reported</th>
 				<th>Reason</th>
 				<th></th>
@@ -13,8 +12,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="report in adReportsCtrl.reports" style="vertical-align: middle;">
-				<td><a>{{report.advertisement.id}}</a></td>
-				<td><a>{{report.advertisement.estate.name}}</a></td>
+				<td><a href="#/viewAdvertisement/{{report.advertisement.id}}">{{report.advertisement.estate.name}}</a></td>
 				<td><a>{{report.user.username}}</a></td>
 				<td>{{report.message}}</td>
 				<td style="padding-right:0">

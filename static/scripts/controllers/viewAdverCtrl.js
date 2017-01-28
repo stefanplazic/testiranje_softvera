@@ -8,7 +8,6 @@
         var vm = this;
         vm.id = $routeParams.id;
         vm.isLogged = $scope.indexCtrl.loggedIn;
-        vm.formatDate = formatDate;
         vm.userData = $cookies.getObject('userdata');
         getData();
 
@@ -23,17 +22,9 @@
 					});
         }
         
-        /**
-         * function for showing date in nice format : day/month/year
-         */
-        function formatDate(myDate){
-			var date = new Date(myDate);
-			return date.getUTCDate()+"/"+ date.getUTCMonth()+1 +"/"+date.getFullYear();
-		}
-        
         function initMap(){
         	if(vm.isLogged)
-        		googleMap.showMap(document.getElementById('map2'), vm.data.estate.address);
+        		googleMap.showMap(document.getElementById('map2'), vm.data.estate.address + " " + vm.data.estate.city);
 		}
        
     }

@@ -50,7 +50,7 @@ INSERT INTO `estate` VALUES
 (4,'Prvomajska 10',100,'Sabac','Centar','Firewood','Stajcic Estate',35000,'',9),
 (5,'Milosa Obilica 5',50,'Sombor','Centar','Electric','Family House',50000,'',10),
 (6,'Mice Zarica 2',15,'Kosjeric','','Central','Comfy Place',15500,'',11),
-(7,'Zelengorska 7',45,'Nis','Crveni Pevac','Central','Penthouse in Nis',100000,'',12),
+(7,'Nikole Pasica 7',45,'Nis','Crveni Pevac','Central','Penthouse in Nis',100000,'',12),
 (8,'Drinske Divizije 2',15,'Zlatibor','Rujno','Firewood','Winter Lodge',70000,'',13),
 (9,'Tolstojeva 1',35,'Subotica','Centar','Gas','Subotica Apartment',35000,'',14);
 
