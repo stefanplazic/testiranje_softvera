@@ -39,5 +39,10 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 	@Modifying(clearAutomatically = true)
 	@Query("update Company c set c.onHold = ?1 where c.id = ?2")
 	int setOnHold(boolean onHold, long id);
+
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query("update Company c set c.status = ?1 where c.id = ?2")
+	int setStatus(String status, Long companyId);
 	
 }

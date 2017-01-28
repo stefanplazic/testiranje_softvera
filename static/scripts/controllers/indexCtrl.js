@@ -114,7 +114,7 @@
 			}, function(error) {
 				// log error response and maybe send it to
 				// error monitor app
-				console.error("Error ocurred: " + response.status);
+				console.error("Error ocurred: " + error.status);
 			});
 		}
 		

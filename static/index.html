@@ -53,6 +53,7 @@
 <script src="/scripts/controllers/regCompanyCtrl.js"></script>
 <script src="/scripts/controllers/registerAdminOrModeratorCtrl.js"></script>
 <script src="/scripts/controllers/advertisemenetReportsCtrl.js"></script>
+<script src="/scripts/controllers/adminDashboardCtrl.js"></script>
 <script src="/scripts/controllers/estateCtrl.js"></script>
 
 
@@ -79,11 +80,14 @@
 					ng-show="indexCtrl.loggedIn && indexCtrl.authority == 'MODERATOR'"
 					data-toggle="tooltip" title="Resolve Advertisement Reports"><a
 					href="/#/advertisementReports">Reports</a></li>
+				<li
+					ng-show="indexCtrl.loggedIn && indexCtrl.authority == 'ADMINISTRATOR'"
+					data-toggle="tooltip" title="Resolve Advertisement Reports"><a
+					href="/#/adminsDashboard">Dashboard</a></li>
+					
 				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority =='CUSTOMER'"
 					data-toggle="tooltip" title="Bought estates"><a
-					href="/#/boughtEstates"><span
-						class="glyphicon glyphicon-list-alt"></span></a></li>
-
+					href="/#/boughtEstates">My Estates</a></li>
 				<li
 					ng-show="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'"
 					data-toggle="tooltip" title="Company"><a href="/#/company">Company</a></li>

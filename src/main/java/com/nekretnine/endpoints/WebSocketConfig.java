@@ -13,7 +13,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	@Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(notificationHandler(), "/notification").withSockJS();
-		registry.addHandler(adminDashboardHandler(), "/adminDashboard").withSockJS();
+		registry.addHandler(adminDashboardHandler(), "/adminDashboard").setAllowedOrigins("*").withSockJS();
 		registry.addHandler(moderatorDashboardHandler(), "/moderatorDashboard").withSockJS();
     }
 
