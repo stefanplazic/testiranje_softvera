@@ -12,6 +12,9 @@
 			vm.userData = $cookies.getObject('userdata');
 			console.log(vm.userData);
 		}
+		if($scope.indexCtrl.authority =='ADVERTISER'){
+			$window.location = "#advertProfile/"+vm.userData.id;
+		}
 
 	}
 })();

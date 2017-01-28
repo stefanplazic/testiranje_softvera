@@ -108,7 +108,7 @@
 						console.log(vm.advertisements);
 					}, function(response) {
 						console.log("Error in fetching");
-					})
+					});
 		}
 
 	}

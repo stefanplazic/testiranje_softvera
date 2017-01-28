@@ -54,7 +54,7 @@
 							</tr>
 							<tr>
 								<td>Expiry date:</td>
-								<td>{{adversCtrl.formatDate(adversCtrl.data.expiryDate)}}</td>
+								<td>{{indexCtrl.formatDate(adversCtrl.data.expiryDate)}}</td>
 							</tr>
 
 						</tbody>
@@ -76,10 +76,73 @@
 				<div class="row">
 					<div class="col-lg-3 col-md-4 col-xs-6 thumb"
 						ng-repeat="myImage in adversCtrl.data.estate.images">
-						<a class="thumbnail"> <img class="img-responsive"  
-							ng-src="{{myImage.url}}" alt="Missing image">
+						<a class="thumbnail"
+							ng-click="adversCtrl.openLightBoxModal($index)"> <img
+							class="img-responsive" ng-src="{{myImage.url}}"
+							alt="Missing image">
 						</a>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</uib-tab> <!-- THIRD TAB --> <uib-tab index="2" heading="Rating"> <br>
+
+	<div class="row">
+
+		<div class="panel panel-info">
+			<div class="panel-heading"></div>
+			<div class="panel-body">
+				<div class="row">
+					<table class="table table-user-information">
+						<tbody>
+							<tr ng-show="adversCtrl.voted == false" class="info">
+								<td>PLEASE RATE US</td>
+								<td><span uib-rating ng-model="adversCtrl.rate"
+									ng-click="adversCtrl.rateMe()" max="{{adversCtrl.max}}"
+									read-only="isReadonly"></span></td>
+
+							</tr>
+							<tr>
+								<td><font color="red"><font color="red">Average
+											rate</font></font></td>
+								<td><font color="red">{{adversCtrl.data.estate.rate}}/5</font></font></td>
+							</tr>
+							<tr>
+								<td>{{adversCtrl.countRate(1)}} people rate it with</td>
+								<td><span class="glyphicon glyphicon-star"></span></td>
+							</tr>
+							<tr>
+								<td>{{adversCtrl.countRate(2)}} people rate it with</td>
+								<td><span class="glyphicon glyphicon-star"></span> <span
+									class="glyphicon glyphicon-star"></span></td>
+							</tr>
+							<tr>
+								<td>{{adversCtrl.countRate(3)}} people rate it with</td>
+								<td><span class="glyphicon glyphicon-star"></span> <span
+									class="glyphicon glyphicon-star"></span> <span
+									class="glyphicon glyphicon-star"></span></td>
+							</tr>
+							<tr>
+								<td>{{adversCtrl.countRate(4)}} people rate it with</td>
+								<td><span class="glyphicon glyphicon-star"></span> <span
+									class="glyphicon glyphicon-star"></span> <span
+									class="glyphicon glyphicon-star"></span> <span
+									class="glyphicon glyphicon-star"></span></td>
+							</tr>
+							<tr>
+								<td>{{adversCtrl.countRate(5)}} people rate it with</td>
+								<td><span class="glyphicon glyphicon-star"></span> <span
+									class="glyphicon glyphicon-star"></span> <span
+									class="glyphicon glyphicon-star"></span> <span
+									class="glyphicon glyphicon-star"></span> <span
+									class="glyphicon glyphicon-star"></span></td>
+							</tr>
+
+
+
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>

@@ -16,6 +16,7 @@
 <script
 	src="bower_components/angular-lodash-module/angular-lodash-module.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+<script src="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.js"></script>
 
 <script src="//cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 
@@ -27,6 +28,8 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
 	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
 	crossorigin="anonymous">
+	
+	<link rel="stylesheet" href="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.css">
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
@@ -49,7 +52,6 @@
 <script src="/scripts/controllers/profileCtrl.js"></script>
 <script src="/scripts/controllers/registrationCtrl.js"></script>
 <script src="/scripts/controllers/searchCtrl.js"></script>
-<script src="/scripts/controllers/boughtEstCtrl.js"></script>
 <script src="/scripts/controllers/companyCtrl.js"></script>
 <script src="/scripts/controllers/regCompanyCtrl.js"></script>
 <script src="/scripts/controllers/registerAdminOrModeratorCtrl.js"></script>
@@ -89,9 +91,7 @@
 					data-toggle="tooltip" title="Resolve Advertisement Reports"><a
 					href="/#/adminsDashboard">Dashboard</a></li>
 					
-				<li ng-show="indexCtrl.loggedIn && indexCtrl.authority =='CUSTOMER'"
-					data-toggle="tooltip" title="Bought estates"><a
-					href="/#/boughtEstates">My Estates</a></li>
+				
 				<li
 					ng-show="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'"
 					data-toggle="tooltip" title="Company"><a href="/#/company">Company</a></li>
