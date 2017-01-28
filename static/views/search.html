@@ -24,9 +24,9 @@
 <div class="text-center row">
 	<div class="col-md-12" style="">
 		<ul class="pagination">
-			<li ng-repeat="num in searchCtrl.pages"
-				ng-class="{'active': num == searchCtrl.pages[0]}"
-				ng-click="searchCtrl.getAdvert(num-1); indexCtrl.selectPage($event)"><a>{{num}}</a></li>
+			<li ng-repeat="num in indexCtrl.pages"
+				ng-class="{'active': num == indexCtrl.pages[0]}"
+				ng-click="indexCtrl.getAdvert(num-1); indexCtrl.selectPage($event)"><a>{{num}}</a></li>
 		</ul>
 	</div>
 </div>

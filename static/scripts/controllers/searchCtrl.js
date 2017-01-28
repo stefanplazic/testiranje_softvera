@@ -1,7 +1,7 @@
 (function () {
 	angular.module("myApp").controller('searchController', searchController);
 	
-	function searchController($cookies, $http, $window, $scope) {
+	function searchController($scope) {
 		
 		var vm = this;
 
