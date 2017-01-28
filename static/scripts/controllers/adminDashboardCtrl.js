@@ -43,11 +43,9 @@
 			}).then(function(response) {
 				var index = vm.requests.indexOf(request);
 				vm.requests.splice(index, 1);
-				toastr.success("Company is accepted","Success");
 
 			}, function(error) {
 				console.log(error);
-				toastr.error("Error");
 			})
 
 		}
@@ -61,11 +59,9 @@
 			}).then(function(response) {
 				var index = vm.requests.indexOf(request);
 				vm.requests.splice(index, 1);
-				toastr.success("Company is rejected","Success");
 
 			}, function(error) {
 				console.log(error);
-				toastr.error("Error");
 			})
 
 		}
