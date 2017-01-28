@@ -93,5 +93,12 @@ public class Report {
 	public void setOnHold(boolean onHold) {
 		this.onHold = onHold;
 	}
+
+	@Override
+	public String toString() {
+		return "Report [id=" + id + ", user=" + user + ", advertisement=" + advertisement + ", message=" + message
+				+ ", status=" + status + ", onHold=" + onHold + "]";
+	}
+	
 	
 }

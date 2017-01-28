@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Report;
+import com.nekretnine.models.User;
 import com.nekretnine.repository.ReportRepository;
 
 @Service
@@ -44,6 +46,11 @@ public class ReportService {
 	
 	public void setOnHold(boolean onHold, Long reportId) {
 		repository.setOnHold(onHold, reportId);
+	}
+	
+	public Report findOneByUserAndAdvertisementAndOnHold(User user, 
+			Advertisement ad, boolean onHold) {
+		return repository.findOneByUserAndAdvertisementAndOnHold(user, ad, onHold);
 	}
 	
 }

@@ -62,7 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.permitAll()
 				.and()
 				.authorizeRequests()
-				.antMatchers( "/api/advertiser/profile/","/api/customer/profile/", "api/account/config")
+				.antMatchers( "/api/advertiser/profile/","/api/customer/profile/", "api/account/config", "api/user/report/**", "api/user/ifreported/**")
 				.hasAuthority("CUSTOMER|ADVERTISER")			
 				.and()
 				.authorizeRequests()

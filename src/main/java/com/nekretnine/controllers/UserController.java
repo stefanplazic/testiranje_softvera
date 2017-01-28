@@ -1,6 +1,8 @@
 package com.nekretnine.controllers;
 
 import java.security.Principal;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +24,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nekretnine.dto.LoginDTO;
 import com.nekretnine.dto.ResponseDTO;
 import com.nekretnine.dto.UserDTO;
+import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Customer;
+import com.nekretnine.models.Report;
 import com.nekretnine.models.User;
 import com.nekretnine.models.UserAuthority;
 import com.nekretnine.repository.AuthorityRepository;
 import com.nekretnine.repository.UserAuthorityRepository;
 import com.nekretnine.security.TokenUtils;
+import com.nekretnine.services.AdvertisementService;
 import com.nekretnine.services.MyMailSenderService;
+import com.nekretnine.services.ReportService;
 import com.nekretnine.services.UserService;
 
 @RestController
@@ -44,7 +50,13 @@ public class UserController {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private ReportService reportService;
 
+	@Autowired
+	private AdvertisementService advertisementService;
+	
 	@Autowired
 	TokenUtils tokenUtils;
 
@@ -53,6 +65,7 @@ public class UserController {
 
 	@Autowired
 	private AuthorityRepository authorityRepository;
+	
 	@Autowired
 	private UserAuthorityRepository userAuthorityRepository;
 
@@ -153,6 +166,7 @@ public class UserController {
 		}
 	}
 
+
 	/**
 	 * @author Stefan Plazic
 	 * @param verifyCode
@@ -191,6 +205,34 @@ public class UserController {
 		User user = service.findByUsername(principal.getName());
 
 		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
+	}
+	
+	/**
+	 * Write new Advertisement Report in the database
+	 * 
+	 * @param principal
+	 * @author Nemanja Zunic
+	 */
+	@RequestMapping(value = "/report/{advertisementId}", method = RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<String> reportAdvertisement(@RequestBody String message,
+			@PathVariable Long advertisementId, Principal principal) {
+		User user = service.findByUsername(principal.getName());
+		Advertisement ad = advertisementService.findOne(advertisementId);
+		Report report = new Report(user, ad, message, "NEW", true);
+		reportService.save(report);
+		return new ResponseEntity<>("[\"Success!\"]", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/ifreported/{advertisementId}", method = RequestMethod.POST, produces = "application/json")
+	public Map<String, Boolean> ifReported(@PathVariable Long advertisementId, Principal principal) {
+		User user = service.findByUsername(principal.getName());
+		Advertisement ad = advertisementService.findOne(advertisementId);
+		Report report = reportService.findOneByUserAndAdvertisementAndOnHold(
+				user, ad, true);
+		if(report == null) 
+			return Collections.singletonMap("reported", false);
+		else
+			return Collections.singletonMap("reported", true);
 	}
 
 }

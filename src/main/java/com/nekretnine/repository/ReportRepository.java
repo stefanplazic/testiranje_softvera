@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Report;
+import com.nekretnine.models.User;
 
 public interface ReportRepository extends JpaRepository<Report, Long> {
 	
@@ -24,4 +26,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 	@Modifying(clearAutomatically = true)
 	@Query("update Report r set r.onHold = ?1 where r.id = ?2")
 	int setOnHold(boolean onHold, long id);
+	
+	Report findOneByUserAndAdvertisementAndOnHold(User user, 
+			Advertisement advertisement, boolean onHold);
 }
