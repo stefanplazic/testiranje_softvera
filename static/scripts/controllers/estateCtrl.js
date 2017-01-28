@@ -2,7 +2,7 @@
 	angular.module("myApp").controller('estateController', estateController);
 
 	
-	function estateController($routeParams,$cookies,$http) {
+	function estateController($routeParams,$cookies,$http,$window) {
 		var vm=this;
 		vm.estate;
 		vm.rate;
@@ -14,8 +14,9 @@
 		})
 
 		$http.get('api/advertisement/check/'+$routeParams.id).then(function(response){
-			if(response.data.response=="true"){
+			if(response.data.response!="false"){
 				vm.hasAd=true;
+				vm.adId=response.data.response;
 			}
 		})
 
@@ -46,6 +47,9 @@
 			}
 		}
 
+		vm.goToAd=function(){
+			$window.location='#/advertisement'+vm.adId;
+		}
 	}
 
 
