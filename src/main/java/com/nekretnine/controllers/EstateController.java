@@ -1,6 +1,8 @@
 package com.nekretnine.controllers;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nekretnine.dto.AdvertisementDTO;
 import com.nekretnine.dto.EstateDTO;
 import com.nekretnine.dto.RateDTO;
 import com.nekretnine.dto.ResponseDTO;
+import com.nekretnine.models.Advertisement;
 import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Customer;
 import com.nekretnine.models.Estate;
@@ -48,13 +52,13 @@ public class EstateController {
 	 * @author 	sirko
 	 */
 	@RequestMapping(value="/add",method=RequestMethod.POST,consumes="application/json")
-	public ResponseEntity<String> saveEstate(Principal principal,@RequestBody EstateDTO estateDTO){
-		
+	public ResponseEntity<ResponseDTO> saveEstate(Principal principal,@RequestBody EstateDTO estateDTO){
+		System.out.println(estateDTO.toString());
 		Advertiser owner=(Advertiser) userService.findByUsername(principal.getName());
 		Estate e = estateService.findOneByName(estateDTO.getName());
 		
 		if(e!=null) 
-			return new ResponseEntity<>("vecima",HttpStatus.CONFLICT);
+			return new ResponseEntity<>(new ResponseDTO("vecima"),HttpStatus.CONFLICT);
 		
 		Estate estate= new Estate(estateDTO);
 		estate.setOwner(owner);
@@ -64,7 +68,7 @@ public class EstateController {
 		}
 		estateService.save(estate);	
 				
-		return new ResponseEntity<>("aloebebebebe",HttpStatus.CREATED);
+		return new ResponseEntity<>(new ResponseDTO("aloebebebebe"),HttpStatus.CREATED);
 	}
 	
 	/**
@@ -123,5 +127,30 @@ public class EstateController {
 		
 		if(e==null) return new ResponseEntity<EstateDTO>(new EstateDTO(),HttpStatus.NOT_FOUND);
 		return new ResponseEntity<EstateDTO>(new EstateDTO(e),HttpStatus.OK);
+	}
+	
+	/**
+	 * <p>
+	 *	Get estate by user
+	 *	method-> get api/estate/user
+	 * </p>
+	 * @param principal , user data
+	 * @return List<EstateDTO>
+	 * 
+	 * @author sirko
+	 */
+	@RequestMapping(value="/user",method=RequestMethod.GET)
+	public ResponseEntity<List<EstateDTO>> getByUser(Principal principal){
+		
+		if(principal==null) {return new ResponseEntity<>(new ArrayList<EstateDTO>(),HttpStatus.BAD_REQUEST);}
+		Advertiser owner=(Advertiser) userService.findByUsername(principal.getName());
+		List<Estate> estates=estateService.findAllByOwnerId(owner); //nekretnina
+		
+		if(estates==null) return new ResponseEntity<>(new ArrayList<EstateDTO>(),HttpStatus.NOT_FOUND);
+		List<EstateDTO> result = new ArrayList<EstateDTO>();
+		for(Estate e: estates) {
+			result.add(new EstateDTO(e));
+		}
+		return new ResponseEntity<List<EstateDTO>>(result,HttpStatus.OK);
 	}
 }

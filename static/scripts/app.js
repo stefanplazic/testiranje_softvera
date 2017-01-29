@@ -58,6 +58,10 @@ angular.module('myApp',
 				templateUrl: '/views/viewAdvertisement.html',
 				controller: 'viewAdvertController',
 				controllerAs: 'adversCtrl'
+			}).when('/myEstates',{
+				templateUrl: '/views/myEstates.html',
+				controller: 'myEstatesController',
+				controllerAs: 'myEstatesCtrl'
 			})
 			.otherwise({
 				redirectTo : '/'

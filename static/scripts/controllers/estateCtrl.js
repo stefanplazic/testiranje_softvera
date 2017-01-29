@@ -11,6 +11,7 @@
 		$http.get('api/estate/'+$routeParams.id,{headers : {'X-Auth-Token' : $cookies.get("token")}}).then(function(response){
 			
 			vm.estate=response.data;
+			console.log(JSON.stringify(vm.estate))
 		})
 
 		$http.get('api/advertisement/check/'+$routeParams.id).then(function(response){
@@ -48,7 +49,7 @@
 		}
 
 		vm.goToAd=function(){
-			$window.location='#/advertisement'+vm.adId;
+			$window.location='#/viewAdvertisement/'+vm.adId;
 		}
 	}
 

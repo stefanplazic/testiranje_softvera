@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.nekretnine.models.Advertiser;
 import com.nekretnine.models.Estate;
 import com.nekretnine.repository.EstateRepository;
 
@@ -38,5 +39,9 @@ public class EstateService {
 	
 	public Estate findOneByName(String name){
 		return repository.findOneByName(name);
+	}
+	
+	public List<Estate> findAllByOwnerId(Advertiser owner){
+		return repository.findAllByOwnerId(owner.getId());
 	}
 }
