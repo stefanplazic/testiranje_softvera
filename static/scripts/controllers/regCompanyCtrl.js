@@ -23,13 +23,16 @@
 				"address" : vm.address
 			};
 
-			$http.post('/api/advertiser/sendRequestForCompany', companyData, {headers : {'X-Auth-Token' : $cookies.get("token")}}).then(
-					function(result) {
-						toastr.success(result.data.response, "Success");
-						$route.reload();
-					}, function(result) {
-						toastr.error(result.data.response, 'Error');
-					});
+			$http.post('/api/advertiser/sendRequestForCompany', companyData, {
+				headers : {
+					'X-Auth-Token' : $cookies.get("token")
+				}
+			}).then(function(result) {
+				toastr.success(result.data.response, "Success");
+				$route.reload();
+			}, function(result) {
+				toastr.error(result.data.response, 'Error');
+			});
 
 		}
 

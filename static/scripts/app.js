@@ -22,6 +22,14 @@ angular.module('myApp',
 				templateUrl : '/views/company.html',
 				controller : 'companyController',
 				controllerAs : 'companyCtrl'
+			}).when('/messages', {
+				templateUrl : '/views/messages.html',
+				controller : 'messageController',
+				controllerAs : 'messageCtrl'
+			}).when('/notifications', {
+				templateUrl : '/views/notifications.html',
+				controller: 'notificationController',
+				controllerAs: 'notificationCtrl'
 			}).when('/registerAdminOrModerator', {
 				templateUrl: '/views/registerAdminOrModerator.html',
 				controller: 'registerAdminOrModeratorController',

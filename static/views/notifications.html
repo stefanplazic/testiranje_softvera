@@ -1,0 +1,27 @@
+<div class="col-md-12">
+	<uib-tabset active="active"> <uib-tab index="0"
+		heading="Notifications"> <br>
+	<div class="row">
+		<div class="col-md-3">
+			<nav id="myScrollspy">
+				<ul class="nav nav-pills nav-stacked" style="height: 500px; overflow: auto">
+					<li ng-repeat="n in notificationCtrl.notifications" 
+					ng-click="notificationCtrl.showNotification(n)">
+						<a href="">{{n.fromUser.firstName}}
+						<div ng-show="!n.seen" style="color:red">new</div>
+						</a>
+					</li>
+					
+				</ul>
+			</nav>
+		</div>
+		
+		<div class="col-md-9">
+			<p class="noti">{{notificationCtrl.formatDate(notificationCtrl.notification.made)}}</p>
+			<br>
+			<p class="noti">{{notificationCtrl.notification.text}}</p>
+		</div>
+		
+	</div>
+	</uib-tab> </uib-tabset>
+</div>

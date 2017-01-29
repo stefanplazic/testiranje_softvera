@@ -11,8 +11,6 @@
 		vm.acceptRequest = acceptRequest;
 		vm.rejectRequest = rejectRequest;
 		
-		
-		
 		var sock = new SockJS('http://' + window.location.hostname + ':8080/adminDashboard');
 		
 		sock.onopen = function() {

@@ -31,8 +31,22 @@ public class NotificationService {
 		repository.setNotificationsStatus(status, toUser);
 	}
 	
-	void setNotificationView(boolean view, Long notificationId){
+	public void setNotificationView(boolean view, Long notificationId){
 		repository.setNotificationView(view, notificationId);
 	}
+
+	public List<Notification> findByToUserAndNType(User user, String type) {
+		return repository.findByToUserAndNType(user, type);
+	}
+
+	public List<Notification> findByToUserAndStatusAndNType(User user,
+			String status, String type) {
+		return repository.findByToUserAndStatusAndNType(user, status, type);
+	}
+
+	public List<Notification> findByFromUserAndNType(User user, String type) {
+		return repository.findByFromUserAndNType(user, type);
+	}
+
 
 }

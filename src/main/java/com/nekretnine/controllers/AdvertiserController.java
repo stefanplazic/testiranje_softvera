@@ -371,6 +371,15 @@ public class AdvertiserController {
 		notificationService.saveNotification(notification);
 		return new ResponseEntity<>("Message is sent to customer", HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/updateSeenToTrue/{id}", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<ResponseDTO> updateSeenToTrue(@PathVariable Long id) {
+		
+		notificationService.setNotificationView(true, id);
+		return new ResponseEntity<>(new ResponseDTO("Seen field is update."),
+				HttpStatus.OK);
+		
+	}
 
 	/**
 	 * Method send request for company to administrators for approval.

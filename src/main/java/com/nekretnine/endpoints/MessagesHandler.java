@@ -14,7 +14,7 @@ import com.nekretnine.models.Notification;
 import com.nekretnine.models.User;
 import com.nekretnine.services.NotificationService;
 
-public class NotificationHandler extends TextWebSocketHandler {
+public class MessagesHandler extends TextWebSocketHandler {
 
 	@Autowired
 	private NotificationService service;
@@ -30,7 +30,8 @@ public class NotificationHandler extends TextWebSocketHandler {
 		ObjectMapper mapper = new ObjectMapper();
 
 		// send all notifications to client
-		List<Notification> notifications = service.findByToUserAndNType(new User(id), "info");
+		List<Notification> notifications = service.findByToUserAndNType(new User(id), "message");
+		//notifications.addAll(service.findByFromUserAndNType(new User(id), "message"));
 		List<NotificationDTO> dtos;
 		if (!notifications.isEmpty()) {
 			dtos = createDtoList(notifications);
@@ -53,11 +54,12 @@ public class NotificationHandler extends TextWebSocketHandler {
 			try {
 				Thread.sleep(3000);
 				notifications = service.findByToUserAndStatusAndNType(new User(id),
-						"NEW", "info");
+						"NEW", "message");
 				
 				if (!notifications.isEmpty()) {
 					notifications.clear();
-					notifications = service.findByToUserAndNType(new User(id), "info");
+					notifications = service.findByToUserAndNType(new User(id), "message");
+					//notifications.addAll(service.findByFromUserAndNType(new User(id), "message"));
 					dtos = createDtoList(notifications);
 					session.sendMessage(new TextMessage(mapper
 							.writeValueAsString(dtos)));

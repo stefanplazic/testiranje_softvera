@@ -27,4 +27,11 @@ public interface NotificationRepository extends
 	@Query("update Notification n set n.seen = ?1 where n.id = ?2")
 	void setNotificationView(boolean seen, Long notificationId);
 
+	List<Notification> findByToUserAndNType(User user, String type);
+
+	List<Notification> findByToUserAndStatusAndNType(User user, String status,
+			String type);
+
+	List<Notification> findByFromUserAndNType(User user, String type);
+
 }

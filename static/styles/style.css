@@ -19,6 +19,13 @@ html,body {
 	
 }
 
+.badge-notify{
+   background:red;
+   position:absolute;
+   top: 5px;
+   left: -1px;
+}
+
 .dropdown-user:hover {
 	cursor: pointer;
 }
@@ -40,6 +47,10 @@ html,body {
    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
+.noti {
+	color: #008B8B;
+   	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
 .controls {
 	background-color: #fff;
 	border-radius: 2px;

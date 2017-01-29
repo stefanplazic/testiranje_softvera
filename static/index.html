@@ -16,7 +16,7 @@
 <script
 	src="bower_components/angular-lodash-module/angular-lodash-module.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
-<script src="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.js"></script>
+<script src="scripts/controllers/angular-bootstrap-lightbox.min.js"></script>
 
 <script src="//cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 
@@ -29,7 +29,7 @@
 	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
 	crossorigin="anonymous">
 	
-	<link rel="stylesheet" href="bower_components/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.css">
+	<link rel="stylesheet" href="scripts/controllers/angular-bootstrap-lightbox.min.css">
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
@@ -57,6 +57,8 @@
 <script src="/scripts/controllers/estateCtrl.js"></script>
 <script src="/scripts/controllers/advertiserProfileCtrl.js"></script>
 <script src="/scripts/controllers/viewAdverCtrl.js"></script>
+<script src="/scripts/controllers/messageCtrl.js"></script>
+<script src="/scripts/controllers/notificationCtrl.js"></script>
 
 
 <script
@@ -65,9 +67,9 @@
 
 </head>
 
-<body ng-controller="indexController as indexCtrl">
+<body ng-controller="indexController as indexCtrl ">
 
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-inverse" >
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="/#/search">Homepage</a>
@@ -87,8 +89,7 @@
 					ng-show="indexCtrl.loggedIn && indexCtrl.authority == 'ADMINISTRATOR'"
 					data-toggle="tooltip" title="Resolve Advertisement Reports"><a
 					href="/#/adminsDashboard">Dashboard</a></li>
-					
-				
+
 				<li
 					ng-show="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'"
 					data-toggle="tooltip" title="Company"><a href="/#/company">Company</a></li>
@@ -99,11 +100,28 @@
 				<li ng-show="indexCtrl.loggedIn" data-toggle="tooltip"
 					title="Profile"><a href="/#/profile"><span
 						class="glyphicon glyphicon-user"></span></a></li>
+				<li ng-if="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'" data-toggle="tooltip" title="Messages">
+						<a href="/#/messages">
+							<span class="glyphicon glyphicon-comment"></span>
+							<span class="badge badge-notify" id="messagesDiv"
+							ng-controller="messageController as messageCtrl">
+							</span>
+						</a>
+				</li>
+				<li ng-if="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'" data-toggle="tooltip" title="Notifications">
+						<a href="/#/notifications">
+							<span class="glyphicon glyphicon-bell"></span>
+							<span class="badge badge-notify" id="notDiv"
+							ng-controller="notificationController as notificationCtrl">
+							</span>
+						</a>
+				</li>
 				<li ng-show="indexCtrl.loggedIn" ng-click="indexCtrl.logout()"><a
 					href="/#/"><span class="glyphicon glyphicon-log-out"></span>
 						Logout</a></li>
 				<li ng-show="!indexCtrl.loggedIn"><a href="/#/login"><span
 						class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				
 			</ul>
 		</div>
 	</nav>
