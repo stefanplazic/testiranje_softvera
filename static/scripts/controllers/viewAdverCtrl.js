@@ -4,7 +4,7 @@
 
 	// all data about advertisement
 	function viewAdvertController($http, $scope, $window, $routeParams,
-			$cookies, googleMap, Lightbox) {
+			$cookies, googleMap, Lightbox, errorService) {
 
 		var vm = this;
 		vm.id = $routeParams.id;
@@ -144,6 +144,8 @@
 				"rate" : vm.rate
 			};
 			console.log(data);
+			//call the rate function
+			sendMessage("Advertisement rated with " + vm.rate);
 
 			$http.post('api/estate/rate/' + vm.id, data, {
 				headers : {
@@ -159,6 +161,19 @@
 				toastr.error(response.data.response, 'Error');
 			});
 
+		}
+		
+		/**
+		 * error log function
+		 * 
+		 */
+		function sendMessage(Msg) {
+			var event = {
+				"stack" : Msg,
+				"version" : "1.8",
+				"fragment" : "Advertisement rating"
+			};
+			errorService.sendEvent(event);
 		}
 	}
 })();
