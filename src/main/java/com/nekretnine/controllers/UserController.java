@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,13 +52,13 @@ public class UserController {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private ReportService reportService;
 
 	@Autowired
 	private AdvertisementService advertisementService;
-	
+
 	@Autowired
 	TokenUtils tokenUtils;
 
@@ -65,7 +67,7 @@ public class UserController {
 
 	@Autowired
 	private AuthorityRepository authorityRepository;
-	
+
 	@Autowired
 	private UserAuthorityRepository userAuthorityRepository;
 
@@ -84,7 +86,7 @@ public class UserController {
 	 * @author Stefan Plazic
 	 */
 	@RequestMapping(value = "/register/{userType}", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<ResponseDTO> saveCustomer(@PathVariable String userType, @RequestBody UserDTO userDTO) {
+	public ResponseEntity<ResponseDTO> saveCustomer(@PathVariable String userType, @RequestBody UserDTO userDTO, HttpServletRequest request) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		User user;
 		UserAuthority authority = new UserAuthority();
@@ -122,13 +124,15 @@ public class UserController {
 
 		user = service.save(user);
 		userAuthorityRepository.save(authority);
-		mailSender.sendMail(user.getEmail(), "Registration",
-				"Click her to finish registration: <a href='http://localhost:8080/api/users/verify/"
-						+ user.getVerifyCode() + "'>Click</a>");
+		String newEmail = "Click her to finish registration: <a href='" + request.getScheme() + "://"
+				+ request.getServerName() + ":" + request.getServerPort() + "/api/users/verify/" + user.getVerifyCode()
+				+ "'>Click</a>";
+		mailSender.sendMail(user.getEmail(), "Registration",newEmail);
 		ResponseDTO dto = new ResponseDTO();
-		dto.setResponse("Customer has been created Go to " + user.getEmail() + " to verify your account");
+		dto.setResponse("User has been created Go to " + user.getEmail() + " to verify your account");
 		return new ResponseEntity<ResponseDTO>(dto, HttpStatus.CREATED);
 	}
+
 
 	/**
 	 * <p>
@@ -165,7 +169,6 @@ public class UserController {
 					HttpStatus.NOT_FOUND);
 		}
 	}
-
 
 	/**
 	 * @author Stefan Plazic
@@ -206,7 +209,7 @@ public class UserController {
 
 		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
 	}
-	
+
 	/**
 	 * Write new Advertisement Report in the database
 	 * 
@@ -214,22 +217,21 @@ public class UserController {
 	 * @author Nemanja Zunic
 	 */
 	@RequestMapping(value = "/report/{advertisementId}", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<String> reportAdvertisement(@RequestBody String message,
-			@PathVariable Long advertisementId, Principal principal) {
+	public ResponseEntity<String> reportAdvertisement(@RequestBody String message, @PathVariable Long advertisementId,
+			Principal principal) {
 		User user = service.findByUsername(principal.getName());
 		Advertisement ad = advertisementService.findOne(advertisementId);
 		Report report = new Report(user, ad, message, "NEW", true);
 		reportService.save(report);
 		return new ResponseEntity<>("[\"Success!\"]", HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/ifreported/{advertisementId}", method = RequestMethod.POST, produces = "application/json")
 	public Map<String, Boolean> ifReported(@PathVariable Long advertisementId, Principal principal) {
 		User user = service.findByUsername(principal.getName());
 		Advertisement ad = advertisementService.findOne(advertisementId);
-		Report report = reportService.findOneByUserAndAdvertisementAndOnHold(
-				user, ad, true);
-		if(report == null) 
+		Report report = reportService.findOneByUserAndAdvertisementAndOnHold(user, ad, true);
+		if (report == null)
 			return Collections.singletonMap("reported", false);
 		else
 			return Collections.singletonMap("reported", true);

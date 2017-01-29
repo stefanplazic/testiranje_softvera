@@ -4,6 +4,8 @@ import java.security.Principal;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,7 +69,7 @@ public class AdministratorController {
 	 * @author	Nemanja Zunic, Stefan Plazic
 	 */
 	@RequestMapping(value = "/register/{userType}", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<ResponseDTO> saveAdmin(@PathVariable String userType, @RequestBody UserDTO userDTO) {
+	public ResponseEntity<ResponseDTO> saveAdmin(@PathVariable String userType, @RequestBody UserDTO userDTO, HttpServletRequest request) {
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		User user;
@@ -102,7 +104,10 @@ public class AdministratorController {
 		}
 		user = userService.save(user);
 		userAuthorityRepository.save(userAuth);
-		mailSender.sendMail(user.getEmail(), "Registration", "Click her to finish registration: <a href='http://localhost:8080/api/users/verify/"+user.getVerifyCode()+"'>Click</a>");
+		String newEmail = "Click her to finish registration: <a href='" + request.getScheme() + "://"
+				+ request.getServerName() + ":" + request.getServerPort() + "/api/users/verify/" + user.getVerifyCode()
+				+ "'>Click</a>";
+		mailSender.sendMail(user.getEmail(), "Registration", newEmail);
 		return new ResponseEntity<>(new ResponseDTO(
 				String.format("%s has been created. Go to: %s to verify your account.", 
 						StringUtils.capitalize(userType), user.getEmail())),
