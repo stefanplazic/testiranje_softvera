@@ -92,8 +92,10 @@ public class Estate {
 		this.technicalEquipment = estate.getTechnicalEquipment();
 		this.heatingSystem = estate.getHeatingSystem();
 		this.images = new HashSet<>();
-		for(ImageDTO i:estate.getImages()){
-			this.images.add(new Image(i));
+		if(estate.getImages()!=null){
+			for(ImageDTO i:estate.getImages()){
+				this.images.add(new Image(i));
+			}
 		}
 	}
 	

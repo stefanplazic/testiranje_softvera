@@ -1,0 +1,112 @@
+<div class='col-md-12'>
+	<uib-tabset active='active'>
+		<!--tab0 -->
+		<uib-tab index='0' heading="Estates list">
+
+			<div class="jumbotron" ng-show='myEstatesCtrl.estates.length=="0"'>
+					<h2>You haven't added any...</h2>
+			</div>
+			<div class='col-md-6'>
+			<table class="table table-striped">
+				<tbody>
+					
+					<tr ng-repeat='estate in myEstatesCtrl.estates'>
+						<td><img ng-src='{{estate.images[0].url}}' alt="Missing image" width='60' height="60"></td>
+						<td>{{estate.name}}</td>
+						<td>{{estate.address}}</td>
+						<td><a href='#/estate/{{estate.id}}'>view</a></td>
+
+					</tr>
+				
+				</tbody>
+			</table>
+			</div>
+		</uib-tab>
+
+
+		<!--tab1 -->
+		<uib-tab index='1' heading='Create New Estate'>
+		<div class="container-fluid">
+		
+				<form>
+					
+					<div class="form-group">
+						<label for="name">Name:</label> 
+						<input type="text" class="form-control" ng-model="myEstatesCtrl.estate.name"
+							placeholder="Estate name" data-toggle="tooltip"
+							title="Estate name" empty-to-null>
+					</div>
+					<div class="form-group">
+						<label for="name">City:</label> 
+						<input type="text" class="form-control" ng-model="myEstatesCtrl.estate.city"
+							placeholder="City" data-toggle="tooltip" title="City"
+							empty-to-null>
+					</div>
+					<div class="form-group">
+						<label for="name">City part:</label> 
+						<input type="text" class="form-control"
+							ng-model="myEstatesCtrl.estate.cityPart" placeholder="City part"
+							data-toggle="tooltip" title="City part" empty-to-null>
+					</div>
+					<div class="form-group">
+						<label for="name">Address:</label> 
+						<input type="text" class="form-control"
+							ng-model="myEstatesCtrl.estate.address" placeholder="Address"
+							data-toggle="tooltip" title="Address" empty-to-null>
+					</div>
+
+					<div class="form-group ">
+							<label for="name">Area:</label> 
+							<input type="number" class="form-control" placeholder="Area"
+								ng-model="myEstatesCtrl.estate.area" min="0" 
+								data-toggle="tooltip" title="Area">
+						
+					</div>
+
+
+					<div class="form-group ">
+						
+							<label for="name">Price:</label> 
+							<input type="number" class="form-control" placeholder="Price"
+								ng-model="myEstatesCtrl.estate.price" min="0"
+								 data-toggle="tooltip"
+								title="Price">
+					
+					</div>
+
+					
+					<div class="form-group">
+						<label for="name">Heating:</label> 
+					
+						
+							<select class="form-control" data-toggle="tooltip"
+								title="Heating System" ng-model="myEstatesCtrl.estate.heatingSystem"
+								empty-to-null>
+								<option value="" selected>All</option>
+								<option value="Central">Central</option>
+								<option value="Electric">Electric</option>
+								<option value="Firewood">Firewood</option>
+								<option value="Gas">Gas</option>
+							</select>
+					</div>
+						
+					
+
+					<div class="form-group">
+						<label for="name">Equipment:</label> 
+						<input type="text" class="form-control"
+							ng-model="myEstatesCtrl.estate.technicalEquipment" placeholder="Technical Equipment"
+							data-toggle="tooltip" title="Technical Equipment" empty-to-null>
+					</div>
+					<div class="form-group row">
+					
+						<button ng-click="myEstatesCtrl.addEstate();" type="submit"
+							class="btn btn-success ">Create</button>
+					</div>
+					
+				</form>
+			
+		</uib-tab>
+
+	</uib-tabset>
+</div>

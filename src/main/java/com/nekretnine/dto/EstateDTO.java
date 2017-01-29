@@ -9,6 +9,14 @@ import com.nekretnine.models.RateEstate;
 
 public class EstateDTO {
 	
+	@Override
+	public String toString() {
+		return "EstateDTO [id=" + id + ", name=" + name + ", price=" + price + ", area=" + area + ", address=" + address
+				+ ", city=" + city + ", cityPart=" + cityPart + ", technicalEquipment=" + technicalEquipment
+				+ ", heatingSystem=" + heatingSystem + ", owner=" + owner + ", images=" + images + ", rate=" + rate
+				+ "]";
+	}
+
 	private	long id; 
 	private String name;
 	private double price;

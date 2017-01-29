@@ -280,7 +280,7 @@ public class AdvertisementController {
 		Advertisement a= advertisementService.findOneByEstate(e);
 		if(a==null) return new ResponseEntity<ResponseDTO>(new ResponseDTO("false"),HttpStatus.OK);
 		System.out.println("alo");
-		return new ResponseEntity<ResponseDTO>(new ResponseDTO("true"),HttpStatus.OK);
+		return new ResponseEntity<ResponseDTO>(new ResponseDTO(a.getId().toString()),HttpStatus.OK);
 
 	}
 }
