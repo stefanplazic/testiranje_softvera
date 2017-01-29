@@ -140,17 +140,17 @@ public class EstateController {
 	 * @author sirko
 	 */
 	@RequestMapping(value="/user",method=RequestMethod.GET)
-	public ResponseEntity<List<EstateDTO>> getByUser(Principal principal){
+	public ResponseEntity<ArrayList<EstateDTO>> getByUser(Principal principal){
 		
 		if(principal==null) {return new ResponseEntity<>(new ArrayList<EstateDTO>(),HttpStatus.BAD_REQUEST);}
 		Advertiser owner=(Advertiser) userService.findByUsername(principal.getName());
 		List<Estate> estates=estateService.findAllByOwnerId(owner); //nekretnina
 		
 		if(estates==null) return new ResponseEntity<>(new ArrayList<EstateDTO>(),HttpStatus.NOT_FOUND);
-		List<EstateDTO> result = new ArrayList<EstateDTO>();
+		ArrayList<EstateDTO> result = new ArrayList<EstateDTO>();
 		for(Estate e: estates) {
 			result.add(new EstateDTO(e));
 		}
-		return new ResponseEntity<List<EstateDTO>>(result,HttpStatus.OK);
+		return new ResponseEntity<>(result,HttpStatus.OK);
 	}
 }

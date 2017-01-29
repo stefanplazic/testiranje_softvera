@@ -98,9 +98,15 @@
 							ng-model="myEstatesCtrl.estate.technicalEquipment" placeholder="Technical Equipment"
 							data-toggle="tooltip" title="Technical Equipment" empty-to-null>
 					</div>
+					<div class='form-group'>
+						<input type="file" id="fileImage" accept="image/*" 
+						ng-model='myEstatesCtrl.asdf'
+						/>
+		
+					</div>
 					<div class="form-group row">
 					
-						<button ng-click="myEstatesCtrl.addEstate();" type="submit"
+						<button ng-click="myEstatesCtrl.uploadFile();" type="submit"
 							class="btn btn-success ">Create</button>
 					</div>
 					
