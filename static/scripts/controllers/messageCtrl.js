@@ -6,9 +6,11 @@
     function messageController($http, $scope, $cookies) {
     	var vm = this;
 		vm.showMessages = showMessages;
+		vm.sendMessage = sendMessage;
 		vm.formatDate = formatDate;
 		vm.messages = [];
 		vm.unreadMessages = 0;
+		vm.message = null;
 		$("#messagesDiv").hide();
 
 		var sock = new SockJS('http://' + window.location.hostname
@@ -73,6 +75,10 @@
 					console.log(error);
 				})
 			}
+		}
+		function sendMessage() {
+
+			alert(vm.message.text);
 		}
 
 		/**
