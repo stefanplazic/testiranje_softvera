@@ -344,22 +344,22 @@ public class AdvertiserController {
 	 * @author Miodrag Vilotijević
 	 */
 	@RequestMapping(value = "/sendMessageToCustomer", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> sendMessageToCustomer(Principal principal,
+	public ResponseEntity<ResponseDTO> sendMessageToCustomer(Principal principal,
 			@RequestBody AdvertiserMessageDTO messageDTO) {
 		Advertiser fromUser = (Advertiser) userService.findByUsername(principal.getName());
 		Advertisement advertisement = advertisementService.findOne(messageDTO.getAdvertisementId());
 
 		if (advertisement == null) {
-			return new ResponseEntity<>("Advertisement not found", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ResponseDTO("Advertisement not found"), HttpStatus.NOT_FOUND);
 		}
 
 		if (fromUser.getId() != advertisement.getAdvertiser().getId()) {
-			return new ResponseEntity<>("You are not advertiser on passed advertisement", HttpStatus.CONFLICT);
+			return new ResponseEntity<>(new ResponseDTO("You are not advertiser on passed advertisement"), HttpStatus.CONFLICT);
 		}
 
 		Customer toUser = customerService.findOne(messageDTO.getToUserId());
 		if (toUser == null) {
-			return new ResponseEntity<>("Customer not found", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ResponseDTO("Customer not found"), HttpStatus.NOT_FOUND);
 		}
 
 		Notification notification = new Notification();
@@ -369,7 +369,7 @@ public class AdvertiserController {
 		notification.setText(messageDTO.getMessage());
 		notification.setAdvertisement(advertisement);
 		notificationService.saveNotification(notification);
-		return new ResponseEntity<>("Message is sent to customer", HttpStatus.OK);
+		return new ResponseEntity<>(new ResponseDTO("Message is sent to customer"), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/updateSeenToTrue/{id}", method = RequestMethod.POST, consumes = "application/json")

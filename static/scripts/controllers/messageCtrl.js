@@ -11,13 +11,15 @@
 		vm.messages = [];
 		vm.unreadMessages = 0;
 		vm.message = null;
+		vm.data = $cookies.getObject("userdata");
+		
 		$("#messagesDiv").hide();
 
 		var sock = new SockJS('http://' + window.location.hostname
 				+ ':8080/messages');
 
 		sock.onopen = function() {
-			sock.send($cookies.getObject("userdata").id);
+			sock.send(vm.data.id);
 		};
 
 		sock.onmessage = function(e) {
@@ -25,13 +27,14 @@
 			var data = JSON.parse(e.data);
 			vm.messages.splice(0);
 			vm.unreadMessages = 0;
+			
 			for (var i = 0; i < data.length; i++) {
 				var authority = data[i].fromUser.authority;
 				data[i].fromUser.authority = authority.charAt(0).toUpperCase()
 						+ authority.slice(1).toLowerCase()
 
 				vm.messages.push(data[i]);
-				if (!data[i].seen && data[i].fromUser.id!=$cookies.getObject("userdata").id)
+				if (!data[i].seen && data[i].fromUser.id!=data.id)
 					vm.unreadMessages++;
 
 			}
@@ -53,7 +56,7 @@
 
 		function showMessages(m) {
 			vm.message = m;
-			vm.user = $cookies.getObject("userdata").id;
+			vm.user = vm.data.id;
 
 			if (!m.seen) {
 				m.seen = true;
@@ -77,8 +80,39 @@
 			}
 		}
 		function sendMessage() {
-
-			alert(vm.message.text);
+			
+			
+			if(vm.data.authority=="CUSTOMER"){
+				$http.post("/api/customer/sendMessageToAdvertiser/", {
+					"message" : $("#answer").val(),
+					"advertisementId": vm.message.advertisement.id }, {
+					headers : {
+						'X-Auth-Token' : $cookies.get("token")
+					}
+				}).then(function(response) {
+					toastr.success("Message has been sent to the Advertiser.");
+				}, function(error) {
+					// log error response and maybe send it to
+					// error monitor app
+					console.error("Error ocurred: " + error);
+				});
+			}else{
+				$http.post("/api/advertiser/sendMessageToCustomer/", {
+					"message" : $("#answer").val(),
+					"toUserId" : vm.message.fromUser.id,
+					"advertisementId": vm.message.advertisement.id }, {
+					headers : {
+						'X-Auth-Token' : $cookies.get("token")
+					}
+				}).then(function(response) {
+					toastr.success("Message has been sent to the Customer.");
+				}, function(error) {
+					// log error response and maybe send it to
+					// error monitor app
+					console.error("Error ocurred: " + error);
+				});
+			}
+			
 		}
 
 		/**

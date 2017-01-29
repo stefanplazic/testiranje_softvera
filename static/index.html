@@ -109,7 +109,7 @@
 				<li ng-show="indexCtrl.loggedIn" data-toggle="tooltip"
 					title="Profile"><a href="/#/profile"><span
 						class="glyphicon glyphicon-user"></span></a></li>
-				<li ng-if="indexCtrl.loggedIn && indexCtrl.authority =='ADVERTISER'" data-toggle="tooltip" title="Messages">
+				<li ng-if="indexCtrl.loggedIn && (indexCtrl.authority =='ADVERTISER' || indexCtrl.authority =='CUSTOMER')" data-toggle="tooltip" title="Messages">
 						<a href="/#/messages">
 							<span class="glyphicon glyphicon-comment"></span>
 							<span class="badge badge-notify" id="messagesDiv"
