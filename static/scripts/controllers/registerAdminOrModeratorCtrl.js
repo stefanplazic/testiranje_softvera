@@ -23,12 +23,13 @@
             
             $http.post('/api/administrator/register/'+vm.type, userData, { headers: { 'X-Auth-Token': $cookies.get("token") } })
 	            .then(function (response) {
-	            	alert(response.data.response);
+	            	toastr.success(response.data.response, "Success");
 	            	if (response) {
 	                	$window.location = "#/search";
 	                }
 	            },function(response) {
-                	alert(response.data.response);
+	            	toastr.error(response.data.response, 'Error');
+                	//alert(response.data.response);
                 }
 	        );
         }
