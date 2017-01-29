@@ -108,6 +108,7 @@
 				}
 			}).then(function(response) {
 				toastr.success("Message has been sent to the Advertiser.");
+				$("#messageContent").val("");
 			}, function(error) {
 				// log error response and maybe send it to
 				// error monitor app
