@@ -263,14 +263,14 @@ public class CustomerController {
 	 * @author Miodrag Vilotijević
 	 */
 	@RequestMapping(value = "/sendMessageToAdvertiser", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> sendMessageToAdvertiser(Principal principal,
+	public ResponseEntity<ResponseDTO> sendMessageToAdvertiser(Principal principal,
 			@RequestBody CustomerMessageDTO messageDTO) {
 		Customer fromUser = (Customer) userService.findByUsername(principal
 				.getName());
 		Advertisement advertisement = advertisementService.findOne(messageDTO
 				.getAdvertisementId());
 		if (advertisement == null) {
-			return new ResponseEntity<>("Advertisement not found",
+			return new ResponseEntity<>(new ResponseDTO("Advertisement not found"),
 					HttpStatus.NOT_FOUND);
 		}
 		Notification notification = new Notification();
@@ -280,7 +280,7 @@ public class CustomerController {
 		notification.setText(messageDTO.getMessage());
 		notification.setAdvertisement(advertisement);
 		notificationService.saveNotification(notification);
-		return new ResponseEntity<>("Message is sent to advertiser",
+		return new ResponseEntity<>(new ResponseDTO("Message is sent to advertiser"),
 				HttpStatus.OK);
 	}
 

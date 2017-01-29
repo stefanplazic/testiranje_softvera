@@ -11,6 +11,7 @@
 		vm.isLogged = $scope.indexCtrl.loggedIn;
 		vm.userData = $cookies.getObject('userdata');
 		vm.sendReport = sendReport;
+		vm.sendMessage = sendMessage;
 		vm.disableReport = disableReport;
 		vm.checkIfReported = checkIfReported;
         vm.openLightBoxModal = openLightBoxModal;
@@ -81,7 +82,7 @@
 			}
         }
         
-		function sendReport(msg) {
+		function sendReport() {
 
 			$http.post("/api/users/report/" + vm.data.id, $("#message").val(), {
 				headers : {
@@ -90,6 +91,23 @@
 			}).then(function(response) {
 				toastr.success("Advertisement Report successfully sent to a Moderator for a review.");
 				vm.disableReport();
+			}, function(error) {
+				// log error response and maybe send it to
+				// error monitor app
+				console.error("Error ocurred: " + error);
+			});
+		}
+		
+		function sendMessage() {
+
+			$http.post("/api/customer/sendMessageToAdvertiser/", {
+				"message" : $("#messageContent").val(),
+				"advertisementId": vm.data.id }, {
+				headers : {
+					'X-Auth-Token' : $cookies.get("token")
+				}
+			}).then(function(response) {
+				toastr.success("Message has been sent to the Advertiser.");
 			}, function(error) {
 				// log error response and maybe send it to
 				// error monitor app

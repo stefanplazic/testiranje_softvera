@@ -2,8 +2,14 @@
 
 	<button id="flagButton" ng-show="indexCtrl.loggedIn" type="button" class="btn btn-danger" 
 		data-toggle="tooltip" title="Flag Advertisement as inappropriate" 
-		style="float: right" ng-click="showDiv = !showDiv" ng-disabled="adversCtrl.disabled">
+		style="float: right" ng-click="showDiv = !showDiv; showMsgDiv = false" ng-disabled="adversCtrl.disabled">
 		<span class="glyphicon glyphicon-flag"></span> Report
+	</button>
+	
+	<button id="msgButton" ng-show="indexCtrl.authority == 'CUSTOMER'" type="button" class="btn btn-success" 
+		data-toggle="tooltip" title="Send message to the Advertiser" 
+		style="float: right; margin-right: 5px" ng-click="showMsgDiv = !showMsgDiv; showDiv = false">
+		<span class="glyphicon glyphicon-envelope"></span> Send Message
 	</button>
 	
 	<uib-tabset> <uib-tab index="0"
@@ -13,6 +19,13 @@
 		<textarea class="form-control" rows="5" id="message"></textarea>
 		<button type="button" class="btn btn-success"
 		ng-click="adversCtrl.sendReport(); showDiv = !showDiv">Submit</button>
+	</div>
+	
+	<div class="row form-group" ng-show="showMsgDiv">
+		Please provide the message content:
+		<textarea class="form-control" rows="5" id="messageContent"></textarea>
+		<button type="button" class="btn btn-success"
+		ng-click="adversCtrl.sendMessage(); showMsgDiv = !showMsgDiv">Send</button>
 	</div>
 	<div class="row">
 		<div class="panel panel-info">
