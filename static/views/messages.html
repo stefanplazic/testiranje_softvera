@@ -1,27 +1,35 @@
 <div class="col-md-12">
-	<uib-tabset > <uib-tab index="0"
-		heading="Messages"> <br>
+	<uib-tabset> <uib-tab index="0" heading="Messages">
+	<br>
 	<div class="row">
 		<div class="col-md-3">
 			<nav id="myScrollspy">
-				<ul class="nav nav-pills nav-stacked" style="height: 500px; overflow: auto">
-					<li ng-repeat="m in messageCtrl.messages" 
-					ng-click="messageCtrl.showMessages(m)">
-						<a href="">{{m.fromUser.firstName}}
-						<div ng-show="!m.seen" style="color:red">new</div>
-						</a>
-					</li>
-					
+				<ul class="nav nav-pills nav-stacked"
+					style="height: 500px; overflow: auto">
+					<li ng-repeat="m in messageCtrl.messages"
+						ng-click="messageCtrl.showMessages(m)"><a href="">{{m.fromUser.firstName}}
+							<div ng-show="!m.seen" style="color: red">new</div>
+					</a></li>
+
 				</ul>
 			</nav>
 		</div>
-		
+
 		<div class="col-md-9">
 			<p class="noti">{{messageCtrl.formatDate(messageCtrl.message.made)}}</p>
 			<br>
 			<p class="noti">{{messageCtrl.message.text}}</p>
+			<br><br>
+			<div class="row form-group" ng-show="messageCtrl.message!=null">
+				
+				<textarea class="form-control" rows="5" id="answer"></textarea>
+				<br>
+				<button type="button" class="btn btn-success"
+					ng-click="messageCtrl.sendMessage()">Answer</button>
+			</div>
 		</div>
-		
+
+
 	</div>
 	</uib-tab> </uib-tabset>
 </div>
